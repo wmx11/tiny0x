@@ -1,13 +1,5 @@
-import Navigation from '@/components/Navigation';
-import { Button, Container } from '@mantine/core';
+import Home from '@/views/Home';
 
-export default function Home() {
-  return (
-    <>
-      <Navigation />
-      <Container>
-        <Button>Test</Button>
-      </Container>
-    </>
-  );
+export default function HomePage() {
+  return <Home />;
 }

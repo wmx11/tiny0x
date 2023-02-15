@@ -1,3 +1,4 @@
+import Layout from '@/components/Layout';
 import mantineCache from '@/mantineCache';
 import '@/styles/globals.css';
 import { MantineProvider } from '@mantine/core';
@@ -9,8 +10,13 @@ export default function App({ Component, pageProps }: AppProps) {
       emotionCache={mantineCache}
       withGlobalStyles
       withNormalizeCSS
+      theme={{
+        defaultRadius: 10,
+      }}
     >
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </MantineProvider>
   );
 }
