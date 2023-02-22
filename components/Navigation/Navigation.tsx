@@ -1,26 +1,30 @@
-import { Button, Container } from '@mantine/core';
+import generalRoutes from '@/routes/general';
+import { Container } from '@mantine/core';
+import Link from 'next/link';
+import Logo from '../Logo';
+import WalletConnect from '../WalletConnect';
 
 const Navigation = () => {
   return (
-    <div data-component="navigation" className="bg-orange-600 py-4">
+    <header className="bg-darkPurple/50 py-4 sticky top-0 backdrop-blur-xl z-50">
       <Container className="flex justify-between items-center gap-4">
-        <div>Logo</div>
-        <nav className="flex items-center gap-4 text-white1xxxxxxx">
-          <a href="#" className="href">
-            Home
-          </a>
-          <a href="#">About</a>
-          <a href="#">Mint</a>
-          <a href="#">Leaderboard</a>
-          <a href="#">Tiny Profile</a>
+        <div>
+          <Link href="/">
+            <Logo />
+          </Link>
+        </div>
+        <nav className="flex items-center gap-10 text-white">
+          <Link href="/">Home</Link>
+          <Link href={generalRoutes.about}>About</Link>
+          <Link href={generalRoutes.leaderboard}>Leaderboard</Link>
+          <Link href={generalRoutes.campaigns}>Campaigns</Link>
+          <Link href={generalRoutes.profile}>Profile</Link>
         </nav>
         <div>
-          <Button size="md" variant="white" color="orange">
-            Connect
-          </Button>
+          <WalletConnect />
         </div>
       </Container>
-    </div>
+    </header>
   );
 };
 

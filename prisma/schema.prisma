@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Users of the platform
+model User {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  address      String   @unique
+  email        String   @unique @default("")
+  ip           String?
+  profile      Profile?
+  links        Link[]
+  orders       Order[]
+  reviews      Review[]
+  nfts         Nft[]
+  posts        Post[]
+  date_created DateTime @default(now())
+  date_updated DateTime @updatedAt
+}
+
+// Shortened links
+model Link {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug          String   @unique
+  target        String
+  isPromoted    Boolean
+  doesAcceptAds Boolean
+  enabled       Boolean  @default(true)
+  trackMetrics  Boolean  @default(false)
+  user          User?    @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  userId        String?  @db.ObjectId
+  nft           Nft?     @relation(fields: [nftId], references: [id])
+  nftId         String?  @unique @db.ObjectId
+  stats         Stats[]
+  actions       Action[]
+  date_created  DateTime @default(now())
+  date_updated  DateTime @updatedAt
+}
+
+model Stats {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  link         Link?    @relation(fields: [linkId], references: [id], onUpdate: NoAction)
+  linkId       String?  @db.ObjectId
+  date_created DateTime @default(now())
+  date_updated DateTime @updatedAt
+}
+
+model Review {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  review       String
+  rating       Int      @default(0)
+  Profile      Profile? @relation(fields: [profileId], references: [id], onUpdate: NoAction)
+  profileId    String?  @db.ObjectId
+  reviewer     User     @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  userId       String   @db.ObjectId
+  date_created DateTime @default(now())
+  date_updated DateTime @updatedAt
+}
+
+model Profile {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  isPromoted    Boolean
+  username      String   @unique
+  name          String
+  subtitle      String
+  description   String
+  profile_links Json
+  user          User     @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  userId        String   @unique @db.ObjectId
+  reviews       Review[]
+  actions       Action[]
+  nft           Nft?     @relation(fields: [nftId], references: [id])
+  nftId         String?  @unique @db.ObjectId
+  date_created  DateTime @default(now())
+  date_updated  DateTime @updatedAt
+}
+
+model Action {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  ip           String?
+  country      String?
+  country_code String?
+  city         String?
+  referer      String?
+  device       String?
+  user_agent   String?
+  timezone     String?
+  type         Int      @default(0) // 0 -> Impression, 1 -> Click
+  link         Link?    @relation(fields: [linkId], references: [id])
+  linkId       String?  @db.ObjectId
+  profile      Profile? @relation(fields: [profileId], references: [id])
+  profileId    String?  @db.ObjectId
+  date_created DateTime @default(now())
+  date_updated DateTime @updatedAt
+
+  @@index([type, date_created])
+}
+
+model Nft {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  address      String
+  token_id     String
+  image        String
+  metadata     Json
+  User         User?    @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  userId       String?  @db.ObjectId
+  link         Link?
+  profile      Profile?
+  date_created DateTime @default(now())
+  date_updated DateTime @updatedAt
+}
+
+model Post {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  slug         String   @unique
+  content      Json
+  image        String
+  author       User?    @relation(fields: [userId], references: [id])
+  userId       String?  @db.ObjectId
+  date_created DateTime @default(now())
+  date_updated DateTime @updatedAt
+}
+
+// Orders of the user (NFT mints)
+model Order {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  user         User?    @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  userId       String?  @db.ObjectId
+  date_created DateTime @default(now())
+  date_updated DateTime @updatedAt
+}

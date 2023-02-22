@@ -6,7 +6,12 @@ module.exports = {
     './views/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        darkPurple: '#140C2D',
+      },
+    },
   },
   plugins: [],
+  important: '#__next',
 };
