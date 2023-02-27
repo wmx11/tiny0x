@@ -4,9 +4,19 @@ import '@/styles/globals.css';
 import { MantineProvider } from '@mantine/core';
 import type { AppProps } from 'next/app';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
+import { NextPage } from 'next';
+import { ReactElement, ReactNode } from 'react';
 
-export default function App({ Component, pageProps }: AppProps) {
-  console.log(pageProps);
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <MantineProvider
@@ -48,9 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
         {pageProps.isProfile ? (
           <Component {...pageProps} />
         ) : (
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
         )}
       </ThirdwebProvider>
     </MantineProvider>

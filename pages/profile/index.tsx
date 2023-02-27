@@ -1,8 +1,13 @@
+import ProfileLayout from '@/components/Layout/ProfileLayout';
 import Profile from '@/views/Profile/Profile';
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-const index = () => {
+const ProfilePage = () => {
   return <Profile />;
 };
 
-export default index;
+ProfilePage.getLayout = (page: ReactElement) => {
+  return <ProfileLayout>{page}</ProfileLayout>;
+};
+
+export default ProfilePage;

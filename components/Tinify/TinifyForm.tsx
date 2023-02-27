@@ -32,6 +32,8 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
     initialValues: {
       slug: `0x${nanoid(8)}`,
       target: target || '',
+      title: '',
+      description: '',
       doesAcceptAds: false,
       trackMetrics: false,
       isPromoted: false,
@@ -66,7 +68,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
       <Text>
         You can view all of your previously Tinified links and NFTs on your{' '}
         <Link
-          href={generalRoutes.profile}
+          href={generalRoutes.profile.profile}
           className="underline underline-offset-2 text-pink-500"
         >
           Profile
@@ -93,7 +95,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
   ) : (
     <form
       onSubmit={form.onSubmit(handleSubmit)}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-4 py-10"
     >
       <TextInput
         size="md"
@@ -103,7 +105,6 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
         placeholder="https://my-super-long-url.com/with-some-long-slug"
         {...form.getInputProps('target')}
       />
-
       <div>
         <div className="flex items-start gap-4 mb-4">
           <TextInput
@@ -131,26 +132,38 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
         </Text>
       </div>
 
+      <TextInput
+        size="md"
+        label="Title"
+        description="Title for your link. Used for easier link management and idendification."
+        placeholder="A Twitter post that I want to share"
+        {...form.getInputProps('title')}
+      />
+
+      <TextInput
+        size="md"
+        label="Description"
+        description="Description for your link. Used for easier link management and idendification."
+        placeholder="We are tracking clicks to this Twitter post"
+        {...form.getInputProps('description')}
+      />
+
       <Title color="white" order={2} className="mb-2">
         Options
       </Title>
-
       <Divider />
-
       <Checkbox
         size="md"
         label="Track Clicks and Traffic"
         description="Do you want to track the click through rate going to the new Tiny link?"
         {...form.getInputProps('trackMetrics', { type: 'checkbox' })}
       />
-
       <Checkbox
         size="md"
         label="Accept Advertising"
         description="Do you allow other users or projects to display ads using your link? 80% of the ad's budget would be allocated to your account."
         {...form.getInputProps('doesAcceptAds', { type: 'checkbox' })}
       />
-
       {address && isLoggedIn ? (
         <PrimaryButton
           size="md"

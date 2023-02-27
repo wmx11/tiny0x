@@ -43,6 +43,8 @@ export default function handler(
       data: {
         slug: body?.slug,
         target: body?.target,
+        title: body?.title,
+        description: body?.description,
         isPromoted: body?.isPromoted,
         doesAcceptAds: body?.doesAcceptAds,
         trackMetrics: body?.trackMetrics,

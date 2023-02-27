@@ -12,12 +12,10 @@ export const Section: FC<SectionTypes> = ({
 }) => {
   return (
     <section className="overflow-hidden relative">
-      <div
-        className={`bg-darkPurple/80 relative backdrop-blur-xl z-10 ${className}`}
-      >
+      {backdrop}
+      <div className={`bg-darkPurple/80 relative z-10 ${className}`}>
         {children}
       </div>
-      {backdrop}
     </section>
   );
 };

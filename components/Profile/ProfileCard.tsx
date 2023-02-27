@@ -1,18 +1,13 @@
-import { Button } from '@mantine/core';
-import React from 'react';
+import { SecondaryButton } from '../Buttons/Buttons';
 import ProfileHeader from './ProfileHeader';
 import ProfileImage from './ProfileImage';
 
 const ProfileCard = () => {
   return (
     <div>
-      <ProfileHeader src="https://static.vecteezy.com/system/resources/previews/001/984/880/original/abstract-colorful-geometric-overlapping-background-and-texture-free-vector.jpg" />
+      <ProfileHeader />
       <div className="translate-y-[-60px] ml-6">
-        <ProfileImage
-          title="John Doe"
-          subtitle="Some Title"
-          src="https://images.unsplash.com/photo-1628563694622-5a76957fd09c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW5zdGFncmFtJTIwcHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80"
-        />
+        <ProfileImage title="John Doe" subtitle="Some Title" />
       </div>
       <div className="mb-8">
         Sed ut perspiciatis unde omnis iste natus error sit voluptatem
@@ -26,10 +21,30 @@ const ProfileCard = () => {
         voluptatem
       </div>
       <div className="flex flex-col gap-4">
-        <Button size="md">Discord</Button>
-        <Button size="md">Telegram</Button>
-        <Button size="md">Twitter</Button>
-        <Button size="md">LinkedIn</Button>
+        <SecondaryButton
+          size="lg"
+          className="hover:-translate-y-1 hover:scale-105 transition"
+        >
+          Discord
+        </SecondaryButton>
+        <SecondaryButton
+          size="lg"
+          className="hover:-translate-y-1 hover:scale-105 transition"
+        >
+          Telegram
+        </SecondaryButton>
+        <SecondaryButton
+          size="lg"
+          className="hover:-translate-y-1 hover:scale-105 transition"
+        >
+          Twitter
+        </SecondaryButton>
+        <SecondaryButton
+          size="lg"
+          className="hover:-translate-y-1 hover:scale-105 transition"
+        >
+          LinkedIn
+        </SecondaryButton>
       </div>
     </div>
   );

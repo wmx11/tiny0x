@@ -18,7 +18,7 @@ const Navigation = () => {
           <Link href={generalRoutes.about}>About</Link>
           <Link href={generalRoutes.leaderboard}>Leaderboard</Link>
           <Link href={generalRoutes.campaigns}>Campaigns</Link>
-          <Link href={generalRoutes.profile}>Profile</Link>
+          <Link href={generalRoutes.profile.profile}>Profile</Link>
         </nav>
         <div>
           <WalletConnect />

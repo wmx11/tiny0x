@@ -5,9 +5,9 @@ import Header from '../Header';
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="relative">
+    <div className="">
       <Header />
-      <main className="min-h-screen">{children}</main>
+      <main className="min-h-screen relative">{children}</main>
       <Footer />
     </div>
   );

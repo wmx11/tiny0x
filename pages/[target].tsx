@@ -1,3 +1,4 @@
+import { GlassCard } from '@/components/Cards/Cards';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import prisma from '@/prisma/prisma';
 import { DEFAULT_URL } from '@/utils/config';
@@ -7,17 +8,19 @@ import React from 'react';
 
 const ProfilePageOrRedirect = () => {
   return (
-    <Container
-      size="sm"
-      className="py-10 flex flex-col justify-between items-center min-h-screen"
-    >
-      <div>
-        <ProfileCard />
-      </div>
-      <div>
-        <a href={DEFAULT_URL}>Powered By Tiny0x</a>
-      </div>
-    </Container>
+    <div>
+      <Container
+        size="sm"
+        className="py-10 flex flex-col justify-between items-center"
+      >
+        <GlassCard>
+          <ProfileCard />
+          <div className="text-center my-10">
+            <a href={DEFAULT_URL}>Powered By Tiny0x</a>
+          </div>
+        </GlassCard>
+      </Container>
+    </div>
   );
 };
 

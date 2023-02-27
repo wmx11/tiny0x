@@ -14,7 +14,7 @@ datasource db {
 model User {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   address      String   @unique
-  email        String   @unique @default("")
+  email        String?  @unique
   ip           String?
   profile      Profile?
   links        Link[]
@@ -31,8 +31,10 @@ model Link {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   slug          String   @unique
   target        String
-  isPromoted    Boolean
-  doesAcceptAds Boolean
+  title         String?
+  description   String?
+  isPromoted    Boolean  @default(false)
+  doesAcceptAds Boolean  @default(false)
   enabled       Boolean  @default(true)
   trackMetrics  Boolean  @default(false)
   user          User?    @relation(fields: [userId], references: [id], onUpdate: NoAction)
@@ -66,21 +68,27 @@ model Review {
 }
 
 model Profile {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  isPromoted    Boolean
-  username      String   @unique
-  name          String
-  subtitle      String
-  description   String
-  profile_links Json
-  user          User     @relation(fields: [userId], references: [id], onUpdate: NoAction)
-  userId        String   @unique @db.ObjectId
-  reviews       Review[]
-  actions       Action[]
-  nft           Nft?     @relation(fields: [nftId], references: [id])
-  nftId         String?  @unique @db.ObjectId
-  date_created  DateTime @default(now())
-  date_updated  DateTime @updatedAt
+  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
+  isPromoted              Boolean
+  username                String   @unique
+  name                    String
+  subtitle                String
+  description             String
+  profile_links           Json
+  header_image_id         String
+  header_image_extension  String
+  header_image_url        String
+  profile_image_id        String
+  profile_image_extension String
+  profile_image_url       String
+  user                    User     @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  userId                  String   @unique @db.ObjectId
+  reviews                 Review[]
+  actions                 Action[]
+  nft                     Nft?     @relation(fields: [nftId], references: [id])
+  nftId                   String?  @unique @db.ObjectId
+  date_created            DateTime @default(now())
+  date_updated            DateTime @updatedAt
 }
 
 model Action {
@@ -105,29 +113,33 @@ model Action {
 }
 
 model Nft {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  address      String
-  token_id     String
-  image        String
-  metadata     Json
-  User         User?    @relation(fields: [userId], references: [id], onUpdate: NoAction)
-  userId       String?  @db.ObjectId
-  link         Link?
-  profile      Profile?
-  date_created DateTime @default(now())
-  date_updated DateTime @updatedAt
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  address             String
+  token_id            String
+  nft_image_id        String
+  nft_image_extension String
+  nft_image_url       String
+  metadata            Json
+  User                User?    @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  userId              String?  @db.ObjectId
+  link                Link?
+  profile             Profile?
+  date_created        DateTime @default(now())
+  date_updated        DateTime @updatedAt
 }
 
 model Post {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  slug         String   @unique
-  content      Json
-  image        String
-  author       User?    @relation(fields: [userId], references: [id])
-  userId       String?  @db.ObjectId
-  date_created DateTime @default(now())
-  date_updated DateTime @updatedAt
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                String
+  slug                 String   @unique
+  content              Json
+  post_image_id        String
+  post_image_extension String
+  post_image_url       String
+  author               User?    @relation(fields: [userId], references: [id])
+  userId               String?  @db.ObjectId
+  date_created         DateTime @default(now())
+  date_updated         DateTime @updatedAt
 }
 
 // Orders of the user (NFT mints)
