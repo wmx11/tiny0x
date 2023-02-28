@@ -1,9 +1,11 @@
-import { ActionIcon, Text, Textarea, TextInput } from '@mantine/core';
+import { ActionIcon, Button, Text, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import Icons from '@/utils/icons';
 import { SecondaryButton } from '../Buttons/Buttons';
 import { GlassCard } from '../Cards/Cards';
+import { signedRequest } from '@/utils/api/signedRequest';
+import apiRoutes from '@/routes/api';
 
 const ProfileCrud = () => {
   const form = useForm({
@@ -16,6 +18,14 @@ const ProfileCrud = () => {
       profile_links: [{ label: '', target: '' }],
     },
   });
+
+  const handleSubmit = async (values: typeof form.values) => {
+    const data = await signedRequest({
+      type: 'post',
+      data: values,
+      url: apiRoutes.profile.createOrUpdate,
+    });
+  };
 
   const linkFields = form.values.profile_links.length ? (
     form.values.profile_links.map((_, index) => (
@@ -67,7 +77,10 @@ const ProfileCrud = () => {
 
   return (
     <div>
-      <form action="" className="flex flex-col gap-4">
+      <form
+        onSubmit={form.onSubmit(handleSubmit)}
+        className="flex flex-col gap-4"
+      >
         <TextInput
           label="Username"
           description="Your username which will be used to find your profile online"
@@ -118,6 +131,8 @@ const ProfileCrud = () => {
             Add Link
           </SecondaryButton>
         </div>
+
+        <Button type="submit">Save</Button>
       </form>
     </div>
   );

@@ -1,13 +1,13 @@
 import ProfileLayout from '@/components/Layout/ProfileLayout';
-import CreateOrEditProfile from '@/views/Profile/CreateOrEditProfile';
+import CreateOrUpdateProfile from '@/views/Profile/CreateOrUpdateProfile';
 import React, { ReactElement } from 'react';
 
-const CreateOrEditProfilePage = () => {
-  return <CreateOrEditProfile />;
+const CreateOrUpdateProfilePage = () => {
+  return <CreateOrUpdateProfile />;
 };
 
-CreateOrEditProfilePage.getLayout = (page: ReactElement) => {
+CreateOrUpdateProfilePage.getLayout = (page: ReactElement) => {
   return <ProfileLayout>{page}</ProfileLayout>;
 };
 
-export default CreateOrEditProfilePage;
+export default CreateOrUpdateProfilePage;
