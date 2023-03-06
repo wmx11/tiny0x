@@ -1,50 +1,38 @@
+import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
+import { requestProfileByUser } from '@/services/profile';
+import { useUser } from '@thirdweb-dev/react';
+import useSWR from 'swr';
 import { SecondaryButton } from '../Buttons/Buttons';
 import ProfileHeader from './ProfileHeader';
 import ProfileImage from './ProfileImage';
 
 const ProfileCard = () => {
+  const { user } = useUser<UserSession, Session>();
+  const { data, error, isLoading } = useSWR('/profile', () =>
+    requestProfileByUser(user?.session?.id as string)
+  );
+
   return (
-    <div>
+    <div className="max-w-[720px]">
       <ProfileHeader />
       <div className="translate-y-[-60px] ml-6">
-        <ProfileImage title="John Doe" subtitle="Some Title" />
+        <ProfileImage title={data?.name} subtitle={data?.subtitle as string} />
       </div>
-      <div className="mb-8">
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-        accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
-        illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-        explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
-        odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-        voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
-        quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam
-        eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat
-        voluptatem
-      </div>
+      <div className="mb-8">{data?.description}</div>
       <div className="flex flex-col gap-4">
-        <SecondaryButton
-          size="lg"
-          className="hover:-translate-y-1 hover:scale-105 transition"
-        >
-          Discord
-        </SecondaryButton>
-        <SecondaryButton
-          size="lg"
-          className="hover:-translate-y-1 hover:scale-105 transition"
-        >
-          Telegram
-        </SecondaryButton>
-        <SecondaryButton
-          size="lg"
-          className="hover:-translate-y-1 hover:scale-105 transition"
-        >
-          Twitter
-        </SecondaryButton>
-        <SecondaryButton
-          size="lg"
-          className="hover:-translate-y-1 hover:scale-105 transition"
-        >
-          LinkedIn
-        </SecondaryButton>
+        {data?.profile_links &&
+          data?.profile_links?.map((item, index) => {
+            return (
+              <SecondaryButton
+                size="lg"
+                className="hover:-translate-y-1 hover:scale-105 transition"
+                href={item.target}
+                component="a"
+              >
+                {item.label}
+              </SecondaryButton>
+            );
+          })}
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
 import {
   FaArrowLeft,
   FaArrowRight,
+  FaCamera,
   FaCheck,
+  FaChevronDown,
   FaCogs,
   FaCopy,
   FaDiscord,
@@ -24,6 +26,8 @@ export default {
   ArrowLeft: FaArrowLeft,
   Cogs: FaCogs,
   Copy: FaCopy,
+  ChevronDown: FaChevronDown,
+  Camera: FaCamera,
   Check: FaCheck,
   Wallet: FaWallet,
   Discord: FaDiscord,

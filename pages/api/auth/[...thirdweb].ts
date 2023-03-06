@@ -1,7 +1,18 @@
-import { ThirdwebAuth } from '@thirdweb-dev/auth/next';
-import { PrivateKeyWallet } from '@thirdweb-dev/auth/evm';
 import prisma from '@/prisma/prisma';
-import { DEFAULT_URL } from '@/utils/config';
+import { getIpAddress } from '@/utils/utils';
+import { PrivateKeyWallet } from '@thirdweb-dev/auth/evm';
+import { ThirdwebAuth } from '@thirdweb-dev/auth/next';
+import { NextApiRequest } from 'next';
+
+export type Session = {
+  id: string;
+  profileId: string;
+};
+
+export type UserSession = {
+  address: string;
+  session?: Session;
+};
 
 // Here we configure thirdweb auth with a domain and wallet
 export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
@@ -12,20 +23,40 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
       'Please ensure that the domain above matches the URL of the current website.',
   },
   callbacks: {
-    onLogin: async (address: string) => {
-      const existingUser = await prisma.user.findUnique({
+    onLogin: async (address: string, req) => {
+      const ip = getIpAddress(req as NextApiRequest);
+      
+      const existingUser = await prisma?.user.findUnique({
         where: {
           address,
+        },
+        select: {
+          id: true,
+          address: true,
+          profile: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
 
       if (!existingUser) {
-        await prisma.user.create({
+        await prisma?.user.create({
           data: {
             address,
+            email: undefined,
+            ip,
           },
         });
       }
+
+      const session: Session = {
+        id: existingUser?.id as string,
+        profileId: existingUser?.profile?.id as string,
+      };
+
+      return session;
     },
   },
 });

@@ -1,21 +1,24 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import request, { Auth } from '@/utils/api/request';
+import { getProfileByUser } from '@/services/profile';
+import request from '@/utils/api/request';
 import { response } from '@/utils/api/response';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { AUTH_COOKIE } from '@/utils/config';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const requestHandler = request(req, res);
   const responseHandler = response(res);
 
-  const profileCrud = (auth: Auth) => {
-    if (!auth.id) {
-      return responseHandler.forbidden();
+  const getProfile = async () => {
+    const { userId } = req.body as { userId: string };
+
+    if (!userId) {
+      return responseHandler.badRequest('User ID not found');
     }
 
-    const { username, name, subtitle, description, profile_links, isUpdate } =
-      req.body;
+    const data = await getProfileByUser(userId);
+
+    return responseHandler.ok(data);
   };
 
-  return requestHandler.signedPost(profileCrud);
+  return requestHandler.post(getProfile);
 }

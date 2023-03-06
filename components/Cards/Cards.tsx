@@ -31,7 +31,7 @@ export const GlassCard: FC<PropsWithChildren & { className?: string }> = ({
 }) => {
   return (
     <div
-      className={`bg-white/10 backdrop-filter backdrop-blur-lg rounded-xl p-4 shadow-md ${className}`}
+      className={`bg-white/10 backdrop-filter backdrop-blur-lg rounded-xl px-4 py-7 shadow-md ${className}`}
     >
       {children}
     </div>

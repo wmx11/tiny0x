@@ -9,27 +9,30 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const requestHandler = request(req, res);
   const responseHandler = response(res);
 
-  const CreateOrUpdateProfile = async () => {
-    // if (!auth.id) {
-    //   return responseHandler.forbidden();
-    // }
+  const CreateOrUpdateProfile = async (auth: Auth) => {
+    const {
+      username,
+      description,
+      isPromoted,
+      name,
+      profile_links,
+      subtitle,
+      isUpdate,
+    } = req.body as ProfileSchema & { isUpdate: boolean };
 
-    const { username, description, isPromoted, name, profile_links, subtitle } =
-      req.body as ProfileSchema & { isUpdate: boolean };
-
-    const existingProfile = await prisma.profile.findUnique({
+    const existingProfile = await prisma?.profile.findUnique({
       where: {
         username,
       },
     });
 
-    if (existingProfile) {
+    if (!isUpdate && existingProfile) {
       return responseHandler.badRequest('Username already exists');
     }
 
-    const profile = await prisma.profile.upsert({
+    const profile = await prisma?.profile.upsert({
       where: {
-        username,
+        userId: auth.id,
       },
       create: {
         username,
@@ -38,7 +41,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         profile_links,
         subtitle,
         isPromoted,
-        // userId: auth.id,
+        userId: auth.id,
       },
       update: {
         username,
@@ -53,5 +56,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return responseHandler.ok(profile);
   };
 
-  return requestHandler.post(CreateOrUpdateProfile);
+  return requestHandler.signedPost(CreateOrUpdateProfile);
 }

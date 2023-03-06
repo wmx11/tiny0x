@@ -14,37 +14,37 @@ const Hero = () => {
   item: 'paper',
   background: 'sunset',
 }`;
-  
+
   return (
     <div className="overflow-hidden relative">
       <div className="text-white bg-darkPurple/80 min-h-screen relative backdrop-blur-xl z-10 flex items-center">
-        <Container className="grid grid-cols-[1fr,320px] gap-24">
-          <div className="flex items-center">
-            <div>
-              <Title className="mb-4 text-7xl leading-tight" order={1}>
-                Turn your links into{' '}
-                <Text
-                  span
-                  weight={700}
-                  variant="gradient"
-                  gradient={{ from: 'pink', to: 'violet' }}
-                >
-                  TINY NFTs
-                </Text>
-              </Title>
-              <Title className="mb-8 text-3xl leading-tight" order={2}>
-                Unique & owned by you
-              </Title>
-              <Tinify />
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <NFTCard code={codeBlock} />
-            <NFTCard code={codeBlock} />
-            <NFTCard code={codeBlock} />
+        <Container size="md">
+          <div>
+            <Title align="center" className="text-6xl mb-4"></Title>
+            <Text align="center" className="text-xl mb-4">
+              Turn your links into NFTs!
+            </Text>
+            <Tinify />
           </div>
         </Container>
+        <div className="absolute flex flex-col gap-6 z-10 left-10 verticalReel h-[100%] bottom-0 opacity-30">
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+        </div>
+        <div className="absolute flex flex-col gap-6 z-10 right-10 verticalReel h-[100%] bottom-0 opacity-30">
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+          <NFTCard code={codeBlock} />
+        </div>
       </div>
+
       <OrangeBackdrop />
     </div>
   );

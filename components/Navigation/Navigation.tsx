@@ -16,9 +16,7 @@ const Navigation = () => {
         <nav className="flex items-center gap-10 text-white">
           <Link href="/">Home</Link>
           <Link href={generalRoutes.about}>About</Link>
-          <Link href={generalRoutes.leaderboard}>Leaderboard</Link>
-          <Link href={generalRoutes.campaigns}>Campaigns</Link>
-          <Link href={generalRoutes.profile.profile}>Profile</Link>
+          <Link href={generalRoutes.profiles}>Discover Profiles</Link>
         </nav>
         <div>
           <WalletConnect />

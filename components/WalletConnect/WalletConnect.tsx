@@ -1,3 +1,4 @@
+import generalRoutes from '@/routes/general';
 import Icons from '@/utils/icons';
 import {
   Button,
@@ -21,11 +22,12 @@ import {
   useWalletConnect,
 } from '@thirdweb-dev/react';
 import Image from 'next/image';
+import Link from 'next/link';
+import CoinbaseLogo from 'public/images/wallets/coinbase.jpg';
+import MetamaskLogo from 'public/images/wallets/metamask.jpg';
+import WalletConnectLogo from 'public/images/wallets/walletconnect.jpg';
 import { useEffect, useState } from 'react';
 import { PrimaryButton } from '../Buttons/Buttons';
-import MetamaskLogo from 'public/images/wallets/metamask.jpg';
-import CoinbaseLogo from 'public/images/wallets/coinbase.jpg';
-import WalletConnectLogo from 'public/images/wallets/walletconnect.jpg';
 
 const styledConnectButton: CSSObject = {
   borderRadius: '15px',
@@ -43,28 +45,45 @@ const WalletConnect = () => {
   const address = useAddress();
   const [isOpen, setIsOpen] = useState(false);
   const { login } = useLogin();
+  const { logout } = useLogout();
   const { user, isLoggedIn } = useUser();
+
+  useEffect(() => {
+    if (address && !isLoggedIn) {
+      login();
+    }
+  }, [isLoggedIn]);
 
   return (
     <>
       {address ? (
         <Menu shadow="md" width={200} withinPortal={true} withArrow>
           <Menu.Target>
-            <Button
-              size="md"
-              rightIcon={<Icons.Wallet className="text-xs" />}
-              variant="gradient"
-              gradient={{ from: 'pink', to: 'violet' }}
-            >
-              {address.substring(0, 4)}...
-              {address.substring(address.length - 4)}
-            </Button>
+            <div className="relative">
+              {/* <div className="p-4 bg-red-200 absolute rounded-full z-10"></div> */}
+              <Button
+                size="md"
+                rightIcon={<Icons.ChevronDown className="text-xs" />}
+                leftIcon={<Icons.Wallet className="text-xs" />}
+                variant="gradient"
+                gradient={{ from: 'pink', to: 'violet' }}
+              >
+                {address.substring(0, 4)}...
+                {address.substring(address.length - 4)}
+              </Button>
+            </div>
           </Menu.Target>
 
           <Menu.Dropdown>
             <Menu.Label>Profile</Menu.Label>
+            <Menu.Item>
+              <Link href={generalRoutes.profile.profile}>Profile</Link>
+            </Menu.Item>
             <Menu.Item onClick={() => login()}>Login</Menu.Item>
             <Menu.Divider />
+            <Menu.Item color="red" onClick={() => logout()}>
+              Logout
+            </Menu.Item>
             <Menu.Item color="red" onClick={disconnect}>
               Disconnect
             </Menu.Item>

@@ -9,7 +9,7 @@ export const profileSchema = z.object({
   profile_links: z
     .object({
       label: z.string(),
-      target: z.string(),
+      target: z.string().url(),
     })
     .array(),
 });

@@ -4,6 +4,7 @@ import { FC } from 'react';
 type ButtonPropsExtended = ButtonProps & {
   onClick?: () => void;
   component?: any;
+  href?: string;
 };
 
 export const PrimaryButton: FC<ButtonPropsExtended> = (props) => {

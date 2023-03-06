@@ -2,6 +2,7 @@ const generalRoutes = {
   about: '/about',
   leaderboard: '/leaderboard',
   campaigns: '/campaigns',
+  profiles: '/profiles',
   profile: {
     profile: '/profile',
     campaigns: '/profile/campaigns',

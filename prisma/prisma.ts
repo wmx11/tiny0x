@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+const prisma = typeof window === 'undefined' ? new PrismaClient() : null;
 
 export default prisma;

@@ -1,11 +1,20 @@
 import { GlassCard } from '@/components/Cards/Cards';
-import ProfileCrud from '@/components/Profile/ProfileCrud';
-import styles from '@/styles/styles';
-import { Text, Title } from '@mantine/core';
+import ProfileForm from '@/components/Profile/ProfileForm';
+import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
+import { requestProfileByUser } from '@/services/profile';
+import { LoadingOverlay, Text, Title } from '@mantine/core';
+import { Profile } from '@prisma/client';
+import { useUser } from '@thirdweb-dev/react';
+import useSWR from 'swr';
 
 const CreateOrUpdateProfile = () => {
+  const { user } = useUser<UserSession, Session>();
+  const { data, error, isLoading } = useSWR(user ? '/profile' : null, () =>
+    requestProfileByUser(user?.session?.id as string)
+  );
+
   return (
-    <div className={styles.profileCardWidth}>
+    <div className="max-w-[720px]">
       <div className="mb-4 text-white">
         <Title>Create your new Tiny Profile!</Title>
         <Text>
@@ -14,7 +23,11 @@ const CreateOrUpdateProfile = () => {
         </Text>
       </div>
       <GlassCard>
-        <ProfileCrud />
+        {isLoading ? (
+          <LoadingOverlay visible={isLoading} />
+        ) : (
+          <ProfileForm isUpdate={!!data} profile={data as Profile} />
+        )}
       </GlassCard>
     </div>
   );

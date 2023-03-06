@@ -10,7 +10,7 @@ type ProfileLayoutTypes = PropsWithChildren;
 const ProfileLayout: FC<ProfileLayoutTypes> = ({ children }) => {
   return (
     <Section backdrop={<OrangeBackdrop />} className="min-h-screen">
-      <div className="grid grid-cols-[300px,1fr]">
+      <div className="grid grid-cols-[280px,1fr]">
         <div className="bg-gradient-to-b from-pink-600/10 to-violet-600/10 backdrop-filter backdrop-blur-lg min-h-screen p-5">
           <div className="flex flex-col gap-4">
             <ProfileLink

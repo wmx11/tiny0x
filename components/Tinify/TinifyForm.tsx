@@ -30,7 +30,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
     validate: zodResolver(tinifySchema),
     validateInputOnBlur: true,
     initialValues: {
-      slug: `0x${nanoid(8)}`,
+      slug: '',
       target: target || '',
       title: '',
       description: '',
@@ -116,20 +116,12 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
           />
           <TextInput
             size="md"
-            className=""
-            label="Slug"
+            label="Alias"
             description="This is the unique indentifying part of the new Tiny URL"
-            placeholder="tiny-slug"
+            placeholder="tiny-alias"
             {...form.getInputProps('slug')}
           />
         </div>
-
-        <Text align="center" size="sm" color="dimmed">
-          Your finalized Tiny URL will be:{' '}
-          <Text span underline color="pink">
-            {DEFAULT_URL}/{form.values.slug}
-          </Text>
-        </Text>
       </div>
 
       <TextInput

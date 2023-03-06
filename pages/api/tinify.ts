@@ -3,6 +3,7 @@ import prisma from '@/prisma/prisma';
 import { TinifySchema } from '@/schema/tinify';
 import request, { Auth } from '@/utils/api/request';
 import { response } from '@/utils/api/response';
+import { nanoid } from 'nanoid';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type Data = {
@@ -23,13 +24,11 @@ export default function handler(
 
     const body = req.body as TinifySchema;
 
-    if (!body?.slug) {
-      return responseHandler.badRequest('Missing Slug');
-    }
+    const slug = body?.slug ? body?.slug : `0x${nanoid(8)}`;
 
-    const existingSlug = await prisma.link.findUnique({
+    const existingSlug = await prisma?.link.findUnique({
       where: {
-        slug: body.slug,
+        slug,
       },
     });
 
@@ -39,20 +38,17 @@ export default function handler(
       );
     }
 
-    const newLink = await prisma.link.create({
+    const newLink = await prisma?.link.create({
       data: {
-        slug: body?.slug,
+        slug,
         target: body?.target,
         title: body?.title,
         description: body?.description,
         isPromoted: body?.isPromoted,
         doesAcceptAds: body?.doesAcceptAds,
         trackMetrics: body?.trackMetrics,
-        user: {
-          connect: {
-            id: auth.id,
-          },
-        },
+        userId: auth.id,
+        nftId: undefined,
       },
     });
 

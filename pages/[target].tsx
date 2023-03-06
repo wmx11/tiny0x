@@ -4,12 +4,24 @@ import prisma from '@/prisma/prisma';
 import { DEFAULT_URL } from '@/utils/config';
 import { Container } from '@mantine/core';
 import { GetServerSideProps } from 'next';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 const ProfilePageOrRedirect = () => {
+  const router = useRouter();
   return (
-    <div>
-      <Container
+    <div className="relative">
+      {/* <iframe
+        src="https://swych.finance"
+        width="100%"
+        height="100vh"
+        style={{
+          height: '100vh',
+        }}
+      />
+      <div className="fixed bottom-0 w-full p-10 bg-red-200"></div> */}
+
+      {/* <Container
         size="sm"
         className="py-10 flex flex-col justify-between items-center"
       >
@@ -19,7 +31,7 @@ const ProfilePageOrRedirect = () => {
             <a href={DEFAULT_URL}>Powered By Tiny0x</a>
           </div>
         </GlassCard>
-      </Container>
+      </Container> */}
     </div>
   );
 };
@@ -40,7 +52,7 @@ export const getServerSideProps: GetServerSideProps<{ test: string }> = async ({
     };
   }
 
-  const data = await prisma.link.findUnique({
+  const data = await prisma?.link.findUnique({
     where: {
       slug: target || '',
     },

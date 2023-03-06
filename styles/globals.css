@@ -6,3 +6,31 @@
   width: 100px;
   height: auto
 }
+
+@keyframes horizontalReel {
+  0% {
+    left: 0;
+  }
+
+  100% {
+    left: -100%;
+  }
+}
+
+@keyframes verticalReel {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: -105%;
+  }
+}
+
+.horizontalReel {
+  animation: horizontalReel 25s linear infinite;
+}
+
+.verticalReel {
+  animation: verticalReel 25s linear infinite;
+}
