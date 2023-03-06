@@ -1,36 +1,52 @@
-import { Rating, Title } from '@mantine/core';
+import Table from '@/components/Table';
+import apiRoutes from '@/routes/api';
+import { signedRequest } from '@/utils/api/signedRequest';
+import { formatDate } from '@/utils/formatDate';
+import { Rating, Text, Title } from '@mantine/core';
+import { Review } from '@prisma/client';
+import { FC } from 'react';
+import useSWR from 'swr';
 
-const Reviews = () => {
+type ReviewsTypes = {
+  isRecent?: boolean;
+  title?: string;
+  subtitle?: string;
+};
+
+const Reviews: FC<ReviewsTypes> = ({ isRecent, title, subtitle }) => {
+  const { data: reviews, isLoading } = useSWR<{ data: { data: Review[] } }>(
+    '/reviews',
+    () =>
+      signedRequest({
+        type: 'post',
+        url: apiRoutes.profile.reviews,
+        data: {
+          type: isRecent ? 'getRecentReviewsByProfile' : 'getReviewsByProfile',
+        },
+      })
+  );
   return (
     <div>
-      <Title className="mb-8" color="white">
-        My Reviews
-      </Title>
-      <div className="rounded-md bg-white/10 backdrop-blur mb-4 p-4 flex gap-4">
-        <div className="w-[380px]">Review</div>
-        <div className="w-[280px]">Rating</div>
-        <div className="w-[280px]">Reviewer</div>
+      <div className="mb-8">
+        <Title color="white">{title}</Title>
+        {subtitle ? <Text>{subtitle}</Text> : null}
       </div>
-      {[
-        'A good boi',
-        'He does a lot of stuff',
-        'Interesting man to work with',
-        'He provides a lot of cheese to the community',
-        'Never ever had I meowed so loud',
-      ].map((item, index) => (
-        <div
-          className="rounded-md bg-white/10 backdrop-blur mb-4 p-4 flex gap-4"
-          key={index}
-        >
-          <div className="w-[380px]">{item}</div>
-          <div className="w-[280px]">
-            <Rating defaultValue={5} value={5} />
-          </div>
-          <div className="w-[280px]">
-            0xcd...{Math.trunc(100 * 2 * Math.random())}e7
-          </div>
-        </div>
-      ))}
+      <Table
+        isLoading={isLoading}
+        empty={'You currently have no reviews on your profile'}
+        header={['No.', 'Review', 'Rating', 'Date Reviewed']}
+        rows={
+          reviews?.data &&
+          reviews?.data?.data?.map((item, index) => ({
+            row: [
+              index + 1,
+              item.review,
+              <Rating value={item.rating} readOnly />,
+              formatDate(item.date_created),
+            ],
+          }))
+        }
+      />
     </div>
   );
 };

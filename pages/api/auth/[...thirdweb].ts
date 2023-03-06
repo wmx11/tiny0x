@@ -24,39 +24,44 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
   },
   callbacks: {
     onLogin: async (address: string, req) => {
-      const ip = getIpAddress(req as NextApiRequest);
-      
-      const existingUser = await prisma?.user.findUnique({
-        where: {
-          address,
-        },
-        select: {
-          id: true,
-          address: true,
-          profile: {
-            select: {
-              id: true,
+      try {
+        const ip = getIpAddress(req as NextApiRequest);
+
+        const existingUser = await prisma?.user.findUnique({
+          where: {
+            address,
+          },
+          select: {
+            id: true,
+            address: true,
+            profile: {
+              select: {
+                id: true,
+              },
             },
           },
-        },
-      });
-
-      if (!existingUser) {
-        await prisma?.user.create({
-          data: {
-            address,
-            email: undefined,
-            ip,
-          },
         });
+
+        if (!existingUser) {
+          await prisma?.user.create({
+            data: {
+              address,
+              email: undefined,
+              ip,
+            },
+          });
+        }
+
+        const session: Session = {
+          id: existingUser?.id as string,
+          profileId: existingUser?.profile?.id as string,
+        };
+
+        return session;
+      } catch (error) {
+        console.log(error);
+        return undefined;
       }
-
-      const session: Session = {
-        id: existingUser?.id as string,
-        profileId: existingUser?.profile?.id as string,
-      };
-
-      return session;
     },
   },
 });

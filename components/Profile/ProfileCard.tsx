@@ -1,27 +1,64 @@
 import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
-import { requestProfileByUser } from '@/services/profile';
+import apiRoutes from '@/routes/api';
+import generalRoutes from '@/routes/general';
+import { ProfileLink } from '@/types/Profile';
+import { Rating } from '@mantine/core';
+import { Profile } from '@prisma/client';
 import { useUser } from '@thirdweb-dev/react';
+import axios from 'axios';
+import Link from 'next/link';
+import { FC } from 'react';
 import useSWR from 'swr';
-import { SecondaryButton } from '../Buttons/Buttons';
+import { PrimaryButton, SecondaryButton } from '../Buttons/Buttons';
+import LeaveReview from './LeaveReview';
 import ProfileHeader from './ProfileHeader';
 import ProfileImage from './ProfileImage';
 
-const ProfileCard = () => {
+type ProfileCardTypes = {
+  userId?: string;
+};
+
+const ProfileCard: FC<ProfileCardTypes> = ({ userId }) => {
   const { user } = useUser<UserSession, Session>();
-  const { data, error, isLoading } = useSWR('/profile', () =>
-    requestProfileByUser(user?.session?.id as string)
+
+  const { data, error, isLoading } = useSWR<{
+    data: { data: Profile & { profile_links: ProfileLink[] } };
+  }>('/profile', () =>
+    axios.post(apiRoutes.profile.profile, {
+      type: 'getProfileByUser',
+      userId,
+    })
   );
+
+  const profile = data?.data?.data;
 
   return (
     <div className="max-w-[720px]">
       <ProfileHeader />
-      <div className="translate-y-[-60px] ml-6">
-        <ProfileImage title={data?.name} subtitle={data?.subtitle as string} />
+      <div className="translate-y-[-60px] ml-6 flex items-end justify-between">
+        <ProfileImage
+          title={profile?.name}
+          subtitle={profile?.subtitle as string}
+        />
+        <div>
+          {user?.session?.profileId === profile?.id ? (
+            <Link href={generalRoutes.profile.edit} passHref>
+              <PrimaryButton>Edit Profile</PrimaryButton>
+            </Link>
+          ) : (
+            <div>
+              <LeaveReview profileId={profile?.id} />
+            </div>
+          )}
+          {/* <div>
+            <LeaveReview profileId={profile?.id} />
+          </div> */}
+        </div>
       </div>
-      <div className="mb-8">{data?.description}</div>
+      <div className="mb-8">{profile?.description}</div>
       <div className="flex flex-col gap-4">
-        {data?.profile_links &&
-          data?.profile_links?.map((item, index) => {
+        {profile?.profile_links &&
+          profile?.profile_links?.map((item, index) => {
             return (
               <SecondaryButton
                 size="lg"

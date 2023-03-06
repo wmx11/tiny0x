@@ -5,9 +5,13 @@ import { DEFAULT_URL } from '@/utils/config';
 import { Container } from '@mantine/core';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 
-const ProfilePageOrRedirect = () => {
+type ProfilePageOrRedirectTypes = {
+  userId?: string;
+};
+
+const ProfilePageOrRedirect: FC<ProfilePageOrRedirectTypes> = ({ userId }) => {
   const router = useRouter();
   return (
     <div className="relative">
@@ -21,17 +25,17 @@ const ProfilePageOrRedirect = () => {
       />
       <div className="fixed bottom-0 w-full p-10 bg-red-200"></div> */}
 
-      {/* <Container
+      <Container
         size="sm"
         className="py-10 flex flex-col justify-between items-center"
       >
         <GlassCard>
-          <ProfileCard />
+          <ProfileCard userId={userId} />
           <div className="text-center my-10">
             <a href={DEFAULT_URL}>Powered By Tiny0x</a>
           </div>
         </GlassCard>
-      </Container> */}
+      </Container>
     </div>
   );
 };
@@ -44,9 +48,19 @@ export const getServerSideProps: GetServerSideProps<{ test: string }> = async ({
   const { target } = params as { target: string };
 
   if (target.startsWith('@')) {
+    const profile = await prisma?.profile.findUnique({
+      where: {
+        username: target.substring(1),
+      },
+      select: {
+        userId: true,
+      },
+    });
+
     return {
       props: {
         isProfile: true,
+        userId: profile?.userId,
         test: 'yes',
       },
     };

@@ -6,8 +6,6 @@ const Profile = () => {
   const address = useAddress();
   const { user, isLoggedIn, isLoading } = useUser();
 
-  console.log(isLoading);
-
   return (
     <>
       {!isLoggedIn || !address ? (

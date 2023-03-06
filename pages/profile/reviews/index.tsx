@@ -3,7 +3,7 @@ import Reviews from '@/views/Profile/Reviews';
 import React, { ReactElement } from 'react';
 
 const ProfileReviewsPage = () => {
-  return <Reviews />;
+  return <Reviews title="My Profile Reviews" />;
 };
 
 ProfileReviewsPage.getLayout = (page: ReactElement) => {

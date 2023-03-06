@@ -1,15 +1,15 @@
 import { GlassCard, StatCard } from '@/components/Cards/Cards';
 import ProfileCard from '@/components/Profile/ProfileCard';
-import Table from '@/components/Table';
-import { DEFAULT_URL } from '@/utils/config';
-import { Rating, Title } from '@mantine/core';
-import { useAddress } from '@thirdweb-dev/react';
+import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
+import { useUser } from '@thirdweb-dev/react';
+import Links from './Links';
+import Reviews from './Reviews';
 
 const AuthenticatedProfile = () => {
-  const address = useAddress();
+  const { user } = useUser<UserSession, Session>();
   return (
     <div>
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="flex flex-wrap gap-6 mb-16">
           <StatCard value={172} label="Links" />
           <StatCard value="$152" label="Ad shares" />
@@ -18,94 +18,20 @@ const AuthenticatedProfile = () => {
           <StatCard value={186} label="Profile Reviews" />
         </div>
         <GlassCard>
-          <ProfileCard />
+          <ProfileCard userId={user?.session?.id} />
         </GlassCard>
-
         <GlassCard>
-          <Title className="mb-4">Recent reviews</Title>
-          <Table
-            header={['Review', 'Rating', 'Reviewer']}
-            rows={[
-              {
-                row: [
-                  'Good boi',
-                  <Rating defaultValue={5} value={5} />,
-                  <>0xcd...{Math.trunc(100 * 2 * Math.random())}e7</>,
-                ],
-              },
-              {
-                row: [
-                  'Good boi',
-                  <Rating defaultValue={5} value={5} />,
-                  <>0xcd...{Math.trunc(100 * 2 * Math.random())}e7</>,
-                ],
-              },
-              {
-                row: [
-                  'Good boi',
-                  <Rating defaultValue={5} value={5} />,
-                  <>0xcd...{Math.trunc(100 * 2 * Math.random())}e7</>,
-                ],
-              },
-              {
-                row: [
-                  'Good boi',
-                  <Rating defaultValue={5} value={5} />,
-                  <>0xcd...{Math.trunc(100 * 2 * Math.random())}e7</>,
-                ],
-              },
-            ]}
+          <Reviews
+            isRecent={true}
+            title="Recent Tiny Profile Reviews"
+            subtitle="Showing 10 most recent reviews"
           />
         </GlassCard>
         <GlassCard>
-          <Title className="mb-4">Recent Links</Title>
-          <Table
-            style={{
-              gridTemplateColumns: '250px repeat(3, 1fr)',
-            }}
-            header={['URL', 'NFT ID', 'Clicks', 'Running Ads']}
-            rows={[
-              {
-                row: [
-                  <>
-                    {DEFAULT_URL}/0x{678678}
-                  </>,
-                  <>#{Math.round(Math.random() * 10) + 1 + 1}</>,
-                  <>{Math.trunc(100 * 2 * Math.random())}</>,
-                  <>{[true, false][Math.round(Math.random())].toString()}</>,
-                ],
-              },
-              {
-                row: [
-                  <>
-                    {DEFAULT_URL}/0x{678678}
-                  </>,
-                  <>#{Math.round(Math.random() * 10) + 1 + 1}</>,
-                  <>{Math.trunc(100 * 2 * Math.random())}</>,
-                  <>{[true, false][Math.round(Math.random())].toString()}</>,
-                ],
-              },
-              {
-                row: [
-                  <>
-                    {DEFAULT_URL}/0x{678678}
-                  </>,
-                  <>#{Math.round(Math.random() * 10) + 1 + 1}</>,
-                  <>{Math.trunc(100 * 2 * Math.random())}</>,
-                  <>{[true, false][Math.round(Math.random())].toString()}</>,
-                ],
-              },
-              {
-                row: [
-                  <>
-                    {DEFAULT_URL}/0x{678678}
-                  </>,
-                  <>#{Math.round(Math.random() * 10) + 1 + 1}</>,
-                  <>{Math.trunc(100 * 2 * Math.random())}</>,
-                  <>{[true, false][Math.round(Math.random())].toString()}</>,
-                ],
-              },
-            ]}
+          <Links
+            isRecent={true}
+            title="Recently Tinyfied Links"
+            subtitle="Showing 10 most recent links"
           />
         </GlassCard>
       </div>

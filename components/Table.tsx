@@ -1,4 +1,4 @@
-import { CSSObject } from '@mantine/core';
+import { LoadingOverlay } from '@mantine/core';
 import React, { FC, ReactNode } from 'react';
 
 type TableTypes = {
@@ -7,13 +7,16 @@ type TableTypes = {
     row: string[] | number[] | ReactNode[];
   }[];
   style?: React.CSSProperties;
+  isLoading?: boolean;
+  empty?: string | number | ReactNode;
 };
 
-const Table: FC<TableTypes> = ({ header, rows, style }) => {
+const Table: FC<TableTypes> = ({ header, rows, style, isLoading, empty }) => {
   return (
-    <div>
+    <div className="relative">
+      <LoadingOverlay visible={isLoading as boolean} />
       <div
-        className="grid rounded-md bg-white/10 backdrop-blur mb-4 p-4 font-bold gap-4"
+        className="grid bg-white/10 backdrop-blur border-b-2 border-b-white/20 px-4 py-6 font-bold gap-6"
         style={{
           gridTemplateColumns: Array(header?.length).fill('1fr').join(' '),
           ...style,
@@ -25,12 +28,11 @@ const Table: FC<TableTypes> = ({ header, rows, style }) => {
             <div key={`header_${headerIndex}`}>{header}</div>
           ))}
       </div>
-      {rows &&
-        rows.length &&
+      {rows && rows.length ? (
         rows.map(({ row }, rowsIndex) => (
           <div
             key={`rows_item_${rowsIndex}`}
-            className="grid rounded-md bg-white/10 backdrop-blur mb-2 p-4 gap-4 hover:opacity-80"
+            className="grid bg-white/10 backdrop-blur border-b border-b-white/20 p-4 gap-6 items-center hover:opacity-80"
             style={{
               gridTemplateColumns: Array(row?.length).fill('1fr').join(' '),
               ...style,
@@ -41,7 +43,12 @@ const Table: FC<TableTypes> = ({ header, rows, style }) => {
                 <div key={`row_item_${rowItemIndex}`}>{rowItem}</div>
               ))}
           </div>
-        ))}
+        ))
+      ) : (
+        <div className="bg-white/10 px-4 py-6 flex items-center justify-center">
+          {empty}
+        </div>
+      )}
     </div>
   );
 };

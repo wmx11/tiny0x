@@ -18,6 +18,7 @@ import {
   useLogin,
   useLogout,
   useMetamask,
+  useNetworkMismatch,
   useUser,
   useWalletConnect,
 } from '@thirdweb-dev/react';
@@ -47,12 +48,13 @@ const WalletConnect = () => {
   const { login } = useLogin();
   const { logout } = useLogout();
   const { user, isLoggedIn } = useUser();
+  const isMismatched = useNetworkMismatch();
 
   useEffect(() => {
     if (address && !isLoggedIn) {
       login();
     }
-  }, [isLoggedIn]);
+  }, [address, isLoggedIn, user]);
 
   return (
     <>
@@ -60,7 +62,6 @@ const WalletConnect = () => {
         <Menu shadow="md" width={200} withinPortal={true} withArrow>
           <Menu.Target>
             <div className="relative">
-              {/* <div className="p-4 bg-red-200 absolute rounded-full z-10"></div> */}
               <Button
                 size="md"
                 rightIcon={<Icons.ChevronDown className="text-xs" />}

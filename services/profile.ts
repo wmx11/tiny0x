@@ -5,13 +5,18 @@ import { Profile } from '@prisma/client';
 import axios from 'axios';
 
 export const getProfileByUser = async (userId: string) => {
-  const profile = await prisma?.profile.findUnique({
-    where: {
-      userId,
-    },
-  });
+  try {
+    const profile = await prisma?.profile.findUnique({
+      where: {
+        userId,
+      },
+    });
 
-  return profile;
+    return profile;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 };
 
 export const requestProfileByUser = async (
@@ -31,6 +36,4 @@ export const requestProfileByUser = async (
 };
 
 export const createOrUpdateProfileByUser = async () => {};
-
-export const mintNFTForProfile = async () => {};
 export const deleteProfile = async () => {};

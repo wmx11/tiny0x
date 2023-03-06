@@ -175,7 +175,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
             )}
           </Droppable>
         </DragDropContext>
-        <div className="flex items-center justify-center w-full">
+        <div className="flex items-center justify-center w-full mb-4">
           <SecondaryButton
             rightIcon={<Icons.Add />}
             size="md"
@@ -192,7 +192,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
           </SecondaryButton>
         </div>
 
-        <PrimaryButton type="submit" size="md">
+        <PrimaryButton type="submit" size="lg">
           {isUpdate ? 'Update' : 'Create Profile'}
         </PrimaryButton>
       </form>
