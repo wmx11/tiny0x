@@ -1,5 +1,6 @@
 import generalRoutes from '@/routes/general';
 import Icons from '@/utils/icons';
+import { truncateAddress } from '@/utils/utils';
 import {
   Button,
   CSSObject,
@@ -69,8 +70,7 @@ const WalletConnect = () => {
                 variant="gradient"
                 gradient={{ from: 'pink', to: 'violet' }}
               >
-                {address.substring(0, 4)}...
-                {address.substring(address.length - 4)}
+                {truncateAddress(address)}
               </Button>
             </div>
           </Menu.Target>

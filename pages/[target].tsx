@@ -1,11 +1,11 @@
 import { GlassCard } from '@/components/Cards/Cards';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import prisma from '@/prisma/prisma';
-import { DEFAULT_URL } from '@/utils/config';
+import { DEFAULT_URL } from '@/utils/contstants';
 import { Container } from '@mantine/core';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect } from 'react';
+import { FC } from 'react';
 
 type ProfilePageOrRedirectTypes = {
   userId?: string;
@@ -30,7 +30,7 @@ const ProfilePageOrRedirect: FC<ProfilePageOrRedirectTypes> = ({ userId }) => {
         className="py-10 flex flex-col justify-between items-center"
       >
         <GlassCard>
-          <ProfileCard userId={userId} />
+          <ProfileCard userId={userId} canLeaveReview />
           <div className="text-center my-10">
             <a href={DEFAULT_URL}>Powered By Tiny0x</a>
           </div>

@@ -11,3 +11,13 @@ export const getIpAddress = (req: IncomingMessage | NextApiRequest) => {
       : req.socket.remoteAddress;
   return sanitizeIp(ip as string);
 };
+
+export const truncateAddress = (address: string, take = 4) => {
+  if (!address) {
+    return '...';
+  }
+
+  return `${address.substring(0, take)}...${address.substring(
+    address.length - take
+  )}`;
+};

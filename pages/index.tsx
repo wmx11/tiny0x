@@ -1,5 +1,5 @@
 import prisma from '@/prisma/prisma';
-import Home from '@/views/Home';
+import Home from '@/views/Home/Home';
 
 export default function HomePage() {
   return <Home />;

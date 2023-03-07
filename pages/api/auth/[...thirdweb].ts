@@ -21,6 +21,26 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
   authOptions: {
     statement:
       'Please ensure that the domain above matches the URL of the current website.',
+    chainId: '56',
+    validateNonce: async (nonce: string) => {
+      const existingNonce = await prisma?.nonce.findUnique({
+        where: {
+          nonce,
+        },
+      });
+
+      if (existingNonce) {
+        throw new Error(
+          'This nonce already exists. Please use a different one!'
+        );
+      }
+
+      await prisma?.nonce.create({
+        data: {
+          nonce,
+        },
+      });
+    },
   },
   callbacks: {
     onLogin: async (address: string, req) => {
@@ -54,7 +74,7 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
 
         const session: Session = {
           id: existingUser?.id as string,
-          profileId: existingUser?.profile?.id as string,
+          profileId: (existingUser?.profile?.id as string) || '',
         };
 
         return session;

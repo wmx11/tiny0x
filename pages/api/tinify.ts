@@ -44,11 +44,10 @@ export default function handler(
         target: body?.target,
         title: body?.title,
         description: body?.description,
-        isPromoted: body?.isPromoted,
         doesAcceptAds: body?.doesAcceptAds,
         trackMetrics: body?.trackMetrics,
         userId: auth.id,
-        nftId: undefined,
+        // nftId: undefined,
       },
     });
 

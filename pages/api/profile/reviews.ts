@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import prisma from '@/prisma/prisma';
 import {
+  getAverageRatingByprofile,
   getRecentReviewsByProfile,
   getReviewsByProfile,
   getTotalReviewsCountByProfile,
@@ -43,6 +44,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       case 'getTotalReviewsCountByProfile':
         const reviewsCount = await getTotalReviewsCountByProfile(profileId);
         return responseHandler.ok(reviewsCount);
+      case 'getAverageRatingByprofile':
+        const averageReviews = await getAverageRatingByprofile(profileId);
+        return responseHandler.ok(averageReviews);
       case 'leaveReviewForProfile':
         const newReview = await leaveReviewForProfile({
           userId: auth.id,

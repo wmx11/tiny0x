@@ -2,7 +2,7 @@ import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
 import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
 import { ProfileLink } from '@/types/Profile';
-import { Rating } from '@mantine/core';
+import { Text } from '@mantine/core';
 import { Profile } from '@prisma/client';
 import { useUser } from '@thirdweb-dev/react';
 import axios from 'axios';
@@ -16,9 +16,10 @@ import ProfileImage from './ProfileImage';
 
 type ProfileCardTypes = {
   userId?: string;
+  canLeaveReview?: boolean;
 };
 
-const ProfileCard: FC<ProfileCardTypes> = ({ userId }) => {
+const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
   const { user } = useUser<UserSession, Session>();
 
   const { data, error, isLoading } = useSWR<{
@@ -33,7 +34,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId }) => {
   const profile = data?.data?.data;
 
   return (
-    <div className="max-w-[720px]">
+    <div className="max-w-[720px] w-[100%]">
       <ProfileHeader />
       <div className="translate-y-[-60px] ml-6 flex items-end justify-between">
         <ProfileImage
@@ -41,36 +42,47 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId }) => {
           subtitle={profile?.subtitle as string}
         />
         <div>
-          {user?.session?.profileId === profile?.id ? (
+          {user && user?.session?.profileId === profile?.id ? (
             <Link href={generalRoutes.profile.edit} passHref>
               <PrimaryButton>Edit Profile</PrimaryButton>
             </Link>
-          ) : (
+          ) : canLeaveReview ? (
             <div>
-              <LeaveReview profileId={profile?.id} />
+              <LeaveReview profileId={profile?.id} name={profile?.name} />
             </div>
-          )}
-          {/* <div>
-            <LeaveReview profileId={profile?.id} />
-          </div> */}
+          ) : null}
         </div>
       </div>
-      <div className="mb-8">{profile?.description}</div>
-      <div className="flex flex-col gap-4">
-        {profile?.profile_links &&
-          profile?.profile_links?.map((item, index) => {
-            return (
-              <SecondaryButton
-                size="lg"
-                className="hover:-translate-y-1 hover:scale-105 transition"
-                href={item.target}
-                component="a"
-              >
-                {item.label}
-              </SecondaryButton>
-            );
-          })}
-      </div>
+      {user && !canLeaveReview && !user?.session?.profileId ? (
+        <div className="flex flex-col items-center gap-4">
+          <Text>
+            You don't have a Tiny Profile. Create one to share your unique, NFT
+            based profile with everyone!
+          </Text>
+          <Link href={generalRoutes.profile.edit} passHref>
+            <PrimaryButton size="lg">Create Profile</PrimaryButton>
+          </Link>
+        </div>
+      ) : (
+        <>
+          <div className="mb-8">{profile?.description}</div>
+          <div className="flex flex-col gap-4">
+            {profile?.profile_links &&
+              profile?.profile_links?.map((item, index) => {
+                return (
+                  <SecondaryButton
+                    size="lg"
+                    className="hover:-translate-y-1 hover:scale-105 transition"
+                    href={item.target}
+                    component="a"
+                  >
+                    {item.label}
+                  </SecondaryButton>
+                );
+              })}
+          </div>
+        </>
+      )}
     </div>
   );
 };

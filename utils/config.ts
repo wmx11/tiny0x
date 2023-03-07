@@ -1,5 +1,14 @@
-export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-export const DEFAULT_URL = IS_PRODUCTION
-  ? 'https://tiny0x.com'
-  : 'http://localhost:3000';
-export const AUTH_COOKIE = 'thirdweb_auth_token';
+const config = {
+  links: {
+    freeLinksPerIp: 5,
+    defaultLinkPrice: 0.06,
+    trackDataPrice: 0.04,
+    acceptAdsPrice: 0.02,
+    customAliasPrice: 0.06,
+  },
+  profile: {
+    profilePrice: 1,
+  },
+};
+
+export default config;

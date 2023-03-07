@@ -12,7 +12,6 @@ export const tinifySchema = z.object({
   target: z.string().url(),
   doesAcceptAds: z.boolean(),
   trackMetrics: z.boolean(),
-  isPromoted: z.boolean(),
   enabled: z.boolean(),
 });
 

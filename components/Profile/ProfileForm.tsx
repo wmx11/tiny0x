@@ -2,6 +2,7 @@ import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
 import { ProfileLink } from '@/types/Profile';
 import { signedRequest } from '@/utils/api/signedRequest';
+import { MAX_CHARACTERS } from '@/utils/contstants';
 import Icons from '@/utils/icons';
 import { ActionIcon, Checkbox, Text, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -148,13 +149,19 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
           size="md"
           {...form.getInputProps('subtitle')}
         />
-        <Textarea
-          label="Bio"
-          description="A small description about you and what you do."
-          size="md"
-          minRows={10}
-          {...form.getInputProps('description')}
-        />
+        <div>
+          <Textarea
+            label="Bio"
+            description="A small description about you and what you do."
+            size="md"
+            minRows={10}
+            className="mb-4"
+            {...form.getInputProps('description')}
+          />
+          <Text size="sm" color="dimmed">
+            Characters left: {form.values.description.length}/{MAX_CHARACTERS}
+          </Text>
+        </div>
         <Text weight={700} color="white">
           My Links
         </Text>

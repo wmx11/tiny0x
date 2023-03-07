@@ -4,12 +4,23 @@ import { Review } from '@prisma/client';
 
 export const getReviewsByProfile = async (profileId: string) => {
   try {
+    if (!profileId) {
+      return null;
+    }
+
     const reviews = await prisma?.review.findMany({
       where: {
         profileId,
       },
       orderBy: {
         date_created: 'desc',
+      },
+      include: {
+        reviewer: {
+          select: {
+            address: true,
+          },
+        },
       },
     });
 
@@ -22,12 +33,23 @@ export const getReviewsByProfile = async (profileId: string) => {
 
 export const getRecentReviewsByProfile = async (profileId: string) => {
   try {
+    if (!profileId) {
+      return null;
+    }
+
     const reviews = await prisma?.review.findMany({
       where: {
         profileId,
       },
       orderBy: {
         date_created: 'desc',
+      },
+      include: {
+        reviewer: {
+          select: {
+            address: true,
+          },
+        },
       },
       take: DEFAULT_TAKE,
     });
@@ -41,6 +63,10 @@ export const getRecentReviewsByProfile = async (profileId: string) => {
 
 export const getTotalReviewsCountByProfile = async (profileId: string) => {
   try {
+    if (!profileId) {
+      return null;
+    }
+
     const count = await prisma?.review.count({
       where: {
         profileId,
@@ -48,6 +74,28 @@ export const getTotalReviewsCountByProfile = async (profileId: string) => {
     });
 
     return count;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const getAverageRatingByprofile = async (profileId: string) => {
+  try {
+    if (!profileId) {
+      return null;
+    }
+
+    const avg = await prisma?.review.aggregate({
+      where: {
+        profileId,
+      },
+      _avg: {
+        rating: true,
+      },
+    });
+
+    return avg?._avg?.rating || 0;
   } catch (error) {
     console.log(error);
     return error;

@@ -40,13 +40,14 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
         }}
         empty={'You currently have no links'}
         header={['No.', 'Alias', 'Target', 'Date Created', 'Action']}
+        stickyCol={2}
         rows={
           links?.data &&
           links?.data?.data?.map((item, index) => ({
             row: [
-              index + 1,
+              `${index + 1}.`,
               item.slug,
-              <div className="max-w-[100px] truncate">
+              <div className="break-all">
                 <a href={item.target} target="_blank">
                   {item.target}
                 </a>

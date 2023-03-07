@@ -2,7 +2,7 @@ import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
 import { tinifySchema } from '@/schema/tinify';
 import { signedRequest } from '@/utils/api/signedRequest';
-import { DEFAULT_URL } from '@/utils/config';
+import { DEFAULT_URL } from '@/utils/contstants';
 import Icons from '@/utils/icons';
 import { Checkbox, Divider, Text, TextInput, Title } from '@mantine/core';
 import { zodResolver } from '@mantine/form';
@@ -36,7 +36,6 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
       description: '',
       doesAcceptAds: false,
       trackMetrics: false,
-      isPromoted: false,
       enabled: true,
     },
   });
