@@ -1,6 +1,7 @@
 import generalRoutes from '@/routes/general';
 import { Container } from '@mantine/core';
 import Link from 'next/link';
+import { NavLink } from '../Links/Links';
 import Logo from '../Logo';
 import WalletConnect from '../WalletConnect';
 
@@ -14,9 +15,9 @@ const Navigation = () => {
           </Link>
         </div>
         <nav className="flex items-center gap-10 text-white">
-          <Link href="/">Home</Link>
-          <Link href={generalRoutes.about}>About</Link>
-          <Link href={generalRoutes.profiles}>Discover Profiles</Link>
+          <NavLink href="/">Home</NavLink>
+          <NavLink href={generalRoutes.about}>About</NavLink>
+          <NavLink href={generalRoutes.profiles}>Discover Profiles</NavLink>
         </nav>
         <div>
           <WalletConnect />

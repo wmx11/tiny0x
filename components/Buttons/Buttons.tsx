@@ -5,6 +5,7 @@ type ButtonPropsExtended = ButtonProps & {
   onClick?: () => void;
   component?: any;
   href?: string;
+  target?: string;
 };
 
 export const PrimaryButton: FC<ButtonPropsExtended> = (props) => {

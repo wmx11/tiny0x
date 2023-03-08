@@ -1,5 +1,11 @@
-import { Code, Text, Title } from '@mantine/core';
+import { DEFAULT_URL } from '@/utils/contstants';
+import { formatDate } from '@/utils/formatDate';
+import Icons from '@/utils/icons';
+import { Code, Spoiler, Text, Title } from '@mantine/core';
+import { Profile } from '@prisma/client';
 import React, { FC, PropsWithChildren } from 'react';
+import { PrimaryButton, SecondaryButton } from '../Buttons/Buttons';
+import ProfileImage from '../Profile/ProfileImage';
 
 type NFTCardTypes = {
   code?: string;
@@ -48,6 +54,45 @@ export const StatCard: FC<
         <Text>{label}</Text>
         {children ? children : null}
       </div>
+    </GlassCard>
+  );
+};
+
+export const ProfileCard: FC<{ profile: Profile }> = ({ profile }) => {
+  return (
+    <GlassCard className="flex flex-col justify-between gap-4">
+      <div className="mb-4">
+        <ProfileImage
+          title={profile?.name || ''}
+          subtitle={profile?.subtitle || ''}
+          newLine
+        />
+        <Text size="sm" color="dimmed" className="mt-4">
+          Joined: {formatDate(profile?.date_created)}
+        </Text>
+      </div>
+      <Spoiler
+        maxHeight={100}
+        hideLabel="Hide"
+        showLabel="Show More"
+        className="min-h-[130px]"
+      >
+        <Text weight={700}>Description</Text>
+        <Text>
+          {profile.description
+            ? profile.description
+            : 'This profile has no description.'}
+        </Text>
+      </Spoiler>
+      <SecondaryButton
+        rightIcon={<Icons.External />}
+        size="md"
+        component="a"
+        href={`${DEFAULT_URL}/@${profile?.username}`}
+        target="__blank"
+      >
+        View Profile
+      </SecondaryButton>
     </GlassCard>
   );
 };

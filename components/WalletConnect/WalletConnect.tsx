@@ -49,7 +49,6 @@ const WalletConnect = () => {
   const { login } = useLogin();
   const { logout } = useLogout();
   const { user, isLoggedIn } = useUser();
-  const isMismatched = useNetworkMismatch();
 
   useEffect(() => {
     if (address && !isLoggedIn) {
@@ -76,16 +75,22 @@ const WalletConnect = () => {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Menu.Label>Profile</Menu.Label>
-            <Menu.Item>
-              <Link href={generalRoutes.profile.profile}>Profile</Link>
+            <Menu.Label>My Profile</Menu.Label>
+            <Link href={generalRoutes.profile.profile}>
+              <Menu.Item icon={<Icons.User />}>Profile</Menu.Item>
+            </Link>
+            <Menu.Item icon={<Icons.Login />} onClick={() => login()}>
+              Login
             </Menu.Item>
-            <Menu.Item onClick={() => login()}>Login</Menu.Item>
             <Menu.Divider />
-            <Menu.Item color="red" onClick={() => logout()}>
-              Logout
-            </Menu.Item>
-            <Menu.Item color="red" onClick={disconnect}>
+            <Menu.Item
+              icon={<Icons.Logout />}
+              color="red"
+              onClick={() => {
+                logout();
+                disconnect();
+              }}
+            >
               Disconnect
             </Menu.Item>
           </Menu.Dropdown>

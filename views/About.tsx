@@ -7,7 +7,7 @@ const About = () => {
   return (
     <Section backdrop={<OrangeBackdrop />} className="text-white">
       <Container className="py-10">
-        <Title className="mb-4">About Tiny0x</Title>
+        <Title className="mb-2">About Tiny0x</Title>
         <Text>About Text</Text>
       </Container>
     </Section>

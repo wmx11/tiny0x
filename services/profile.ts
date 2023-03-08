@@ -19,5 +19,20 @@ export const getProfileByUser = async (userId: string) => {
   }
 };
 
+export const getProfiles = async () => {
+  try {
+    const profiles = await prisma?.profile.findMany({
+      orderBy: {
+        date_created: 'desc',
+      },
+    });
+
+    return profiles;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 export const createOrUpdateProfileByUser = async () => {};
 export const deleteProfile = async () => {};

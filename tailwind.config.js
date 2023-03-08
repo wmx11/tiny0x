@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         darkPurple: '#140C2D',
+        activeLink: '#c2255c',
       },
     },
   },

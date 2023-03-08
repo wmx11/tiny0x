@@ -7,9 +7,12 @@ import {
   FaCogs,
   FaCopy,
   FaDiscord,
+  FaExternalLinkAlt,
   FaGripVertical,
   FaLink,
   FaPlus,
+  FaSignInAlt,
+  FaSignOutAlt,
   FaTelegramPlane,
   FaTrash,
   FaTwitter,
@@ -29,6 +32,7 @@ export default {
   ChevronDown: FaChevronDown,
   Camera: FaCamera,
   Check: FaCheck,
+  External: FaExternalLinkAlt,
   Wallet: FaWallet,
   Discord: FaDiscord,
   Twitter: FaTwitter,
@@ -39,4 +43,6 @@ export default {
   Link: FaLink,
   Review: MdReviews,
   Campaign: MdCampaign,
+  Login: FaSignInAlt,
+  Logout: FaSignOutAlt
 };

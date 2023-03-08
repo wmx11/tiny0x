@@ -5,11 +5,21 @@ type ProfileImageTypes = {
   src?: string;
   title?: string;
   subtitle?: string;
+  newLine?: boolean;
 };
 
-const ProfileImage: FC<ProfileImageTypes> = ({ src, title, subtitle }) => {
+const ProfileImage: FC<ProfileImageTypes> = ({
+  src,
+  title,
+  subtitle,
+  newLine,
+}) => {
   return (
-    <div className="flex items-end gap-4">
+    <div
+      className={`flex items-end gap-4 ${
+        newLine ? 'flex-col items-center text-center' : ''
+      }`}
+    >
       <div className="rounded-full bg-zinc-400 w-[150px] h-[150px] overflow-hidden relative border-4 border-white">
         {/* <div className="absolute bg-zinc-200/20 flex items-center justify-center gap-4 inset-0">
           <Icons.Camera className="text-2xl" />
