@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import prisma from '@/prisma/prisma';
 import { ProfileSchema } from '@/schema/profile';
+import { createOrUpdateProfileByUser } from '@/services/profile';
 import request, { Auth } from '@/utils/api/request';
 import { response } from '@/utils/api/response';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -10,50 +10,19 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const responseHandler = response(res);
 
   const CreateOrUpdateProfile = async (auth: Auth) => {
-    const {
-      username,
-      description,
-      isPromoted,
-      name,
-      profile_links,
-      subtitle,
-      isUpdate,
-    } = req.body as ProfileSchema & { isUpdate: boolean };
-
-    const existingProfile = await prisma?.profile.findUnique({
-      where: {
-        username,
-      },
+    const data = await createOrUpdateProfileByUser({
+      ...(req.body as ProfileSchema & {
+        isUpdate: boolean;
+        profileId?: string;
+      }),
+      userId: auth.id,
     });
 
-    if (!isUpdate && existingProfile) {
-      return responseHandler.badRequest('Username already exists');
+    if (!data.ok) {
+      return responseHandler.badRequest(data.errorMessage);
     }
 
-    const profile = await prisma?.profile.upsert({
-      where: {
-        userId: auth.id,
-      },
-      create: {
-        username,
-        description,
-        name,
-        profile_links,
-        subtitle,
-        isPromoted,
-        userId: auth.id,
-      },
-      update: {
-        username,
-        description,
-        name,
-        profile_links,
-        subtitle,
-        isPromoted,
-      },
-    });
-
-    return responseHandler.ok(profile);
+    return responseHandler.ok(data.results);
   };
 
   return requestHandler.signedPost(CreateOrUpdateProfile);

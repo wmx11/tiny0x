@@ -24,25 +24,29 @@ const CreateOrUpdateProfile = () => {
   const profile = data?.data?.data;
 
   return (
-    <div className="max-w-[720px]">
-      <div className="mb-4 text-white">
-        <Title>
-          {!!profile ? 'Update your profile' : 'Create your new Tiny Profile!'}
-        </Title>
-        {!!profile ? null : (
-          <Text>
-            You will mint a unique Tiny0x Profile NFT with your profile
-            metadata. Think Linktree but Web3!
-          </Text>
-        )}
+    <div>
+      <div className="max-w-[720px]">
+        <div className="mb-4 text-white">
+          <Title>
+            {!!profile
+              ? 'Update your profile'
+              : 'Create your new Tiny Profile!'}
+          </Title>
+          {!!profile ? null : (
+            <Text>
+              You will mint a unique Tiny0x Profile NFT with your profile
+              metadata. Think Linktree but Web3!
+            </Text>
+          )}
+        </div>
+        <GlassCard>
+          {isLoading ? (
+            <LoadingOverlay visible={isLoading} />
+          ) : (
+            <ProfileForm isUpdate={!!profile} profile={profile as Profile} />
+          )}
+        </GlassCard>
       </div>
-      <GlassCard>
-        {isLoading ? (
-          <LoadingOverlay visible={isLoading} />
-        ) : (
-          <ProfileForm isUpdate={!!profile} profile={profile as Profile} />
-        )}
-      </GlassCard>
     </div>
   );
 };

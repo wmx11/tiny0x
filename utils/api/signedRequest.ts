@@ -1,4 +1,5 @@
 import apiRoutes from '@/routes/api';
+import { ErrorMessage } from '@/types/Errors';
 import axios from 'axios';
 
 type SignedRequest<T> = {
@@ -9,16 +10,24 @@ type SignedRequest<T> = {
   headers?: Record<string, string>;
 };
 
+type SignedRequestReturnTypes<T> = {
+  data: {
+    data: T;
+  } & ErrorMessage & {
+      code: number;
+      message?: string;
+    };
+};
+
 export const signedRequest = async <T>({
   type,
   data,
   url,
   headers,
   isFormData,
-}: SignedRequest<T>) => {
-
+}: SignedRequest<T>): Promise<SignedRequestReturnTypes<T>> => {
   const auth = await axios.post(apiRoutes.token);
-  
+
   let authToken = '';
 
   if (auth.data) {

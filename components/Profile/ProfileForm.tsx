@@ -8,7 +8,7 @@ import { ActionIcon, Checkbox, Text, Textarea, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Profile } from '@prisma/client';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { PrimaryButton, SecondaryButton } from '../Buttons/Buttons';
 import { GlassCard } from '../Cards/Cards';
@@ -37,7 +37,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
     try {
       const data = await signedRequest({
         type: 'post',
-        data: { ...values, isUpdate },
+        data: { ...values, profileId: profile?.id, isUpdate },
         url: apiRoutes.profile.createOrUpdate,
       });
 

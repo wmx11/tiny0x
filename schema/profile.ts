@@ -16,6 +16,10 @@ export const profileSchema = z.object({
     .object({
       label: z.string(),
       target: z.string().url(),
+      alias: z.string(),
+      linkId: z.string(),
+      trackMetrics: z.boolean(),
+      doesAcceptAds: z.boolean(),
     })
     .array(),
 });

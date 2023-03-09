@@ -1,4 +1,5 @@
 import { IncomingMessage } from 'http';
+import { nanoid } from 'nanoid';
 import { NextApiRequest } from 'next';
 
 export const sanitizeIp = (ip: string) => ip?.trim().replace(/(::ffff:)/g, '');
@@ -20,4 +21,8 @@ export const truncateAddress = (address: string, take = 4) => {
   return `${address.substring(0, take)}...${address.substring(
     address.length - take
   )}`;
+};
+
+export const generateLinkAlias = () => {
+  return `0x${nanoid(8)}`;
 };

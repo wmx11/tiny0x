@@ -1,57 +1,27 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import prisma from '@/prisma/prisma';
 import { TinifySchema } from '@/schema/tinify';
+import { tinifyLink } from '@/services/link';
 import request, { Auth } from '@/utils/api/request';
 import { response } from '@/utils/api/response';
-import { nanoid } from 'nanoid';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-type Data = {
-  name: string;
-};
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const requestHandler = request(req, res);
   const responseHandler = response(res);
 
   const tinify = async (auth: Auth) => {
-    if (!auth.id) {
-      return responseHandler.forbidden();
-    }
-
     const body = req.body as TinifySchema;
 
-    const slug = body?.slug ? body?.slug : `0x${nanoid(8)}`;
-
-    const existingSlug = await prisma?.link.findUnique({
-      where: {
-        slug,
-      },
+    const data = await tinifyLink({
+      ...body,
+      userId: auth.id,
     });
 
-    if (existingSlug) {
-      return responseHandler.badRequest(
-        'A slug with the same name already exists.'
-      );
+    if (!data.ok) {
+      return responseHandler.badRequest(data?.errorMessage);
     }
 
-    const newLink = await prisma?.link.create({
-      data: {
-        slug,
-        target: body?.target,
-        title: body?.title,
-        description: body?.description,
-        doesAcceptAds: body?.doesAcceptAds,
-        trackMetrics: body?.trackMetrics,
-        userId: auth.id,
-        // nftId: undefined,
-      },
-    });
-
-    return responseHandler.ok(newLink);
+    return responseHandler.ok(data?.results);
   };
 
   return requestHandler.signedPost(tinify);

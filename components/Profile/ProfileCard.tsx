@@ -2,6 +2,8 @@ import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
 import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
 import { ProfileLink } from '@/types/Profile';
+import { DEFAULT_URL } from '@/utils/contstants';
+import Icons from '@/utils/icons';
 import { Text } from '@mantine/core';
 import { Profile } from '@prisma/client';
 import { useUser } from '@thirdweb-dev/react';
@@ -71,10 +73,17 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
               profile?.profile_links?.map((item, index) => {
                 return (
                   <SecondaryButton
+                    key={`profile_link_${index}`}
                     size="lg"
                     className="hover:-translate-y-1 hover:scale-105 transition"
-                    href={item.target}
+                    href={
+                      item.linkId && item.alias
+                        ? `${DEFAULT_URL}/${item.alias}`
+                        : item.target
+                    }
                     component="a"
+                    target="__blank"
+                    rightIcon={<Icons.External />}
                   >
                     {item.label}
                   </SecondaryButton>

@@ -1,6 +1,7 @@
 import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
 import { tinifySchema } from '@/schema/tinify';
+import axiosErrorHandler from '@/utils/api/axiosErrorHandler';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { DEFAULT_URL } from '@/utils/contstants';
 import Icons from '@/utils/icons';
@@ -8,11 +9,11 @@ import { Checkbox, Divider, Text, TextInput, Title } from '@mantine/core';
 import { zodResolver } from '@mantine/form';
 import { Link as LinkSchema } from '@prisma/client';
 import { useAddress, useUser } from '@thirdweb-dev/react';
-import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 import { PrimaryButton } from '../Buttons/Buttons';
 import ClipboardButton from '../ClipboardButton/ClipboardButton';
+import ErrorMessage from '../ErrorMessage';
 import WalletConnect from '../WalletConnect';
 import { useTinifyForm } from './tinifyFormContext';
 
@@ -25,6 +26,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
   const { isLoggedIn } = useUser();
   const [newLink, setNewLink] = useState<LinkSchema>();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const form = useTinifyForm({
     validate: zodResolver(tinifySchema),
@@ -42,20 +44,26 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
 
   const handleSubmit = async (values: typeof form.values) => {
     setIsLoading(true);
+    setError('');
     try {
       const { data } = await signedRequest<typeof values>({
         type: 'post',
         data: values,
         url: apiRoutes.tinify,
       });
-
-      setNewLink(data.data);
+      setNewLink(data.data as LinkSchema);
       setIsLoading(false);
       form.reset();
       form.setFieldValue('target', '');
+      if (data?.errorMessage) {
+        setError(data.errorMessage);
+      }
     } catch (error) {
-      console.log(error);
-      setIsLoading(false);
+      axiosErrorHandler(error, (error) => {
+        console.log(error);
+        setIsLoading(false);
+        setError(error as string);
+      });
     }
   };
 
@@ -96,6 +104,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
       onSubmit={form.onSubmit(handleSubmit)}
       className="flex flex-col gap-4 py-10"
     >
+      {error ? <ErrorMessage errorMessage={error} /> : null}
       <TextInput
         size="md"
         className="flex-1"

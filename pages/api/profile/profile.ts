@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { getProfileByUser } from '@/services/profile';
+import { getProfileByUser, getProfileStatsByUser } from '@/services/profile';
 import { getAverageRatingByprofile } from '@/services/review';
 import request from '@/utils/api/request';
 import { response } from '@/utils/api/response';
@@ -23,6 +23,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       case 'getAverageRatingByprofile':
         const averageRating = await getAverageRatingByprofile(profileId);
         return responseHandler.ok(averageRating);
+      case 'getProfileStatsByUser':
+        const profileStats = await getProfileStatsByUser(userId);
+        return responseHandler.ok(profileStats);
       default:
         return responseHandler.ok(null);
     }
