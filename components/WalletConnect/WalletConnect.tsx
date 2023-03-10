@@ -6,22 +6,19 @@ import {
   CSSObject,
   Divider,
   Grid,
-  Menu,
-  Modal,
-  Text,
+  Menu, Text,
   Title,
-  UnstyledButton,
+  UnstyledButton
 } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import {
   useAddress,
   useCoinbaseWallet,
   useDisconnect,
   useLogin,
   useLogout,
-  useMetamask,
-  useNetworkMismatch,
-  useUser,
-  useWalletConnect,
+  useMetamask, useUser,
+  useWalletConnect
 } from '@thirdweb-dev/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -40,6 +37,7 @@ const styledConnectButton: CSSObject = {
 };
 
 const WalletConnect = () => {
+  const MODAL_ID = 'wallet_connect';
   const connectWithMetamask = useMetamask();
   const connectWithWalletConnect = useWalletConnect();
   const connectWithCoinbaseWallet = useCoinbaseWallet();
@@ -53,6 +51,10 @@ const WalletConnect = () => {
   useEffect(() => {
     if (address && !isLoggedIn) {
       login();
+    }
+
+    if (address && isLoggedIn) {
+      modals.close(MODAL_ID);
     }
   }, [address, isLoggedIn, user]);
 
@@ -99,82 +101,83 @@ const WalletConnect = () => {
         <PrimaryButton
           size="md"
           rightIcon={<Icons.Wallet className="text-xs" />}
-          onClick={() => setIsOpen(true)}
+          onClick={() =>
+            modals.open({
+              centered: true,
+              withinPortal: false,
+              modalId: MODAL_ID,
+              title: (
+                <Title order={2} color="white">
+                  Connect your wallet
+                </Title>
+              ),
+              children: (
+                <>
+                  <Text size="sm" color="white">
+                    Start by connecting with one of the wallets below. Be sure
+                    to store your private keys or seed phrase securely. Never
+                    share them with anyone.
+                  </Text>
+
+                  <Divider size={1} my={20} color="dimmed" />
+
+                  <Grid gutter={30}>
+                    <Grid.Col span={3}>
+                      <UnstyledButton
+                        onClick={connectWithMetamask}
+                        sx={styledConnectButton}
+                      >
+                        <Image
+                          src={MetamaskLogo}
+                          alt="Metamask logo"
+                          width={90}
+                          height={90}
+                        />
+                      </UnstyledButton>
+                      <Text size="xs" align="center">
+                        Metamask
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <UnstyledButton
+                        onClick={connectWithWalletConnect}
+                        sx={styledConnectButton}
+                      >
+                        <Image
+                          src={WalletConnectLogo}
+                          alt="Walletconnect logo"
+                          width={90}
+                          height={90}
+                        />
+                      </UnstyledButton>
+                      <Text size="xs" align="center">
+                        Wallet Connect
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <UnstyledButton
+                        onClick={connectWithCoinbaseWallet}
+                        sx={styledConnectButton}
+                      >
+                        <Image
+                          src={CoinbaseLogo}
+                          alt="Coinbase logo"
+                          width={90}
+                          height={90}
+                        />
+                      </UnstyledButton>
+                      <Text size="xs" align="center">
+                        Coinbase
+                      </Text>
+                    </Grid.Col>
+                  </Grid>
+                </>
+              ),
+            })
+          }
         >
           Connect
         </PrimaryButton>
-      )}
-
-      {address ? null : (
-        <Modal
-          opened={isOpen}
-          onClose={() => setIsOpen(false)}
-          centered
-          title={
-            <Title order={2} color="white">
-              Connect your wallet
-            </Title>
-          }
-        >
-          <Text size="sm" color="white">
-            Start by connecting with one of the wallets below. Be sure to store
-            your private keys or seed phrase securely. Never share them with
-            anyone.
-          </Text>
-
-          <Divider size={1} my={20} color="dimmed" />
-
-          <Grid gutter={30}>
-            <Grid.Col span={3}>
-              <UnstyledButton
-                onClick={connectWithMetamask}
-                sx={styledConnectButton}
-              >
-                <Image
-                  src={MetamaskLogo}
-                  alt="Metamask logo"
-                  width={90}
-                  height={90}
-                />
-              </UnstyledButton>
-              <Text size="xs" align="center">
-                Metamask
-              </Text>
-            </Grid.Col>
-            <Grid.Col span={3}>
-              <UnstyledButton
-                onClick={connectWithWalletConnect}
-                sx={styledConnectButton}
-              >
-                <Image
-                  src={WalletConnectLogo}
-                  alt="Walletconnect logo"
-                  width={90}
-                  height={90}
-                />
-              </UnstyledButton>
-              <Text size="xs" align="center">
-                Wallet Connect
-              </Text>
-            </Grid.Col>
-            <Grid.Col span={3}>
-              <UnstyledButton
-                onClick={connectWithCoinbaseWallet}
-                sx={styledConnectButton}
-              >
-                <Image
-                  src={CoinbaseLogo}
-                  alt="Coinbase logo"
-                  width={90}
-                  height={90}
-                />
-              </UnstyledButton>
-              <Text size="xs" align="center">
-                Coinbase
-              </Text>
-            </Grid.Col>
-          </Grid>
-        </Modal>
       )}
     </>
   );

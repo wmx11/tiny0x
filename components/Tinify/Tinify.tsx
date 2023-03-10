@@ -1,12 +1,11 @@
 import Icons from '@/utils/icons';
-import { Divider, Modal, Text, TextInput, Title } from '@mantine/core';
-import { useState } from 'react';
+import { Divider, Text, TextInput, Title } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { SecondaryButton } from '../Buttons/Buttons';
 import TinifyForm from './TinifyForm';
 import { useTinifyForm } from './tinifyFormContext';
 
 const Tinify = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const form = useTinifyForm();
 
   return (
@@ -21,7 +20,32 @@ const Tinify = () => {
         <SecondaryButton
           size="lg"
           rightIcon={<Icons.ArrowRight />}
-          onClick={() => setIsOpen(true)}
+          onClick={() =>
+            modals.open({
+              title: (
+                <Title color="white" className="mb-4">
+                  Convert URL to Tiny NFT
+                </Title>
+              ),
+              withinPortal: false,
+              centered: true,
+              size: 'lg',
+              overlayBlur: 10,
+              children: (
+                <>
+                  <Text size="sm">
+                    Turn your long-form or other type of URLs into easily
+                    shareable links with NFTs. Each tinified link mints a unique
+                    Tiny NFT which proves your ownership of the newly generated
+                    link. You can use these NFTs to accept ads from other NFT
+                    holders and get a % of the total budget.
+                  </Text>
+                  <Divider my="lg" />
+                  <TinifyForm target={form.values.target} />
+                </>
+              ),
+            })
+          }
         >
           Tinify
         </SecondaryButton>
@@ -30,30 +54,6 @@ const Tinify = () => {
         By clicking TINIFY, you are agreeing to Tiny0x Terms of Service, Privacy
         Policy
       </Text>
-      <Modal
-        centered
-        opened={isOpen}
-        overlayBlur={10}
-        onClose={() => setIsOpen(false)}
-        withinPortal={false}
-        size="lg"
-        title={
-          <Title color="white" className="mb-4">
-            Convert URL to Tiny NFT
-          </Title>
-        }
-      >
-        <Text size="sm">
-          Turn your long-form or other type of URLs into easily shareable links
-          with NFTs. Each tinified link mints a unique Tiny NFT which proves
-          your ownership of the newly generated link. You can use these NFTs to
-          accept ads from other NFT holders and get a % of the total budget.
-        </Text>
-
-        <Divider my="lg" />
-
-        <TinifyForm target={form.values.target} />
-      </Modal>
     </>
   );
 };

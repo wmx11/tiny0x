@@ -4,6 +4,8 @@ import { ResultsOrError } from '@/types/Results';
 import { DEFAULT_TAKE } from '@/utils/contstants';
 import { generateLinkAlias } from '@/utils/utils';
 import { Link } from '@prisma/client';
+import { endOfMonth, startOfMonth } from 'date-fns';
+import slugify from 'slugify';
 
 export const getLinksByUser = async (userId: string) => {
   try {
@@ -56,11 +58,47 @@ export const getTotalLinksCountByUser = async (userId: string) => {
   }
 };
 
+export const getTotalLinksCountForThisMonthByUserIp = async (
+  userId: string
+) => {
+  try {
+    const user = await prisma?.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    // Nothing on localhost
+    if (user?.ip === '::1') {
+      return 0;
+    }
+
+    const count = await prisma?.link.count({
+      where: {
+        user: {
+          ip: user?.ip,
+        },
+        date_created: {
+          gte: startOfMonth(new Date()),
+          lte: endOfMonth(new Date()),
+        },
+      },
+    });
+
+    return count;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 export const tinifyLink = async (
   data: TinifySchema & { userId: string }
 ): Promise<ResultsOrError<Link>> => {
   try {
-    const slug = data?.slug ? data?.slug : generateLinkAlias();
+    const slug = data?.slug
+      ? slugify(data?.slug, { lower: true })
+      : generateLinkAlias();
 
     const existingSlug = await prisma?.link.findUnique({
       where: {

@@ -3,6 +3,7 @@ import {
   getLinksByUser,
   getRecentLinksByUser,
   getTotalLinksCountByUser,
+  getTotalLinksCountForThisMonthByUserIp,
 } from '@/services/link';
 import request, { Auth } from '@/utils/api/request';
 import { response } from '@/utils/api/response';
@@ -24,6 +25,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       case 'getTotalLinksCountByUser':
         const linksCount = await getTotalLinksCountByUser(auth.id);
         return responseHandler.ok(linksCount);
+      case 'getTotalLinksCountForThisMonthByUserIp':
+        const linksCountByIp = await getTotalLinksCountForThisMonthByUserIp(
+          auth.id
+        );
+        return responseHandler.ok(linksCountByIp);
       default:
         return responseHandler.ok(null);
     }

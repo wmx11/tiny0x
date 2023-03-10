@@ -37,8 +37,11 @@ const Profiles: FC<ProfilesTypes> = ({ profiles }) => {
           {profiles &&
             profiles.length &&
             [...profiles, ...profiles].map((item, index) => (
-              <div className="max-w-[355px] w-full">
-                <ProfileCard key={`profile_card_${index}`} profile={item} />
+              <div
+                className="max-w-[355px] w-full"
+                key={`profile_card_${index}`}
+              >
+                <ProfileCard profile={item} />
               </div>
             ))}
         </div>

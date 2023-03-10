@@ -1,10 +1,10 @@
 import { DEFAULT_URL } from '@/utils/contstants';
 import { formatDate } from '@/utils/formatDate';
 import Icons from '@/utils/icons';
-import { Code, Spoiler, Text, Title } from '@mantine/core';
+import { Code, Loader, Spoiler, Text, Title } from '@mantine/core';
 import { Profile } from '@prisma/client';
-import React, { FC, PropsWithChildren } from 'react';
-import { PrimaryButton, SecondaryButton } from '../Buttons/Buttons';
+import { FC, PropsWithChildren } from 'react';
+import { SecondaryButton } from '../Buttons/Buttons';
 import ProfileImage from '../Profile/ProfileImage';
 
 type NFTCardTypes = {
@@ -50,7 +50,9 @@ export const StatCard: FC<
   return (
     <GlassCard className="w-[300px] text-center hover:shadow-xl transition flex flex-col justify-center items-center">
       <div className="w-full">
-        <Title className="text-5xl mb-2">{value}</Title>
+        <Title className="text-5xl mb-2 flex items-center justify-center">
+          {value ? value : <Loader />}
+        </Title>
         <Text>{label}</Text>
         {children ? children : null}
       </div>

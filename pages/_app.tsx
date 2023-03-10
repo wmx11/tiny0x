@@ -2,6 +2,8 @@ import Layout from '@/components/Layout';
 import mantineCache from '@/mantineCache';
 import '@/styles/globals.css';
 import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
+
 import type { AppProps } from 'next/app';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
 import { NextPage } from 'next';
@@ -35,6 +37,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
               color: 'grape',
             },
           },
+          Loader: {
+            defaultProps: {
+              color: 'grape',
+            },
+          },
         },
         colorScheme: 'dark',
         defaultRadius: 8,
@@ -55,11 +62,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           authUrl: '/api/auth',
         }}
       >
-        {pageProps.isProfile ? (
-          <Component {...pageProps} />
-        ) : (
-          <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
-        )}
+        <ModalsProvider>
+          {pageProps.isProfile ? (
+            <Component {...pageProps} />
+          ) : (
+            <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
+          )}
+        </ModalsProvider>
       </ThirdwebProvider>
     </MantineProvider>
   );

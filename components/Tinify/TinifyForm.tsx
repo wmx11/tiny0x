@@ -3,6 +3,7 @@ import generalRoutes from '@/routes/general';
 import { tinifySchema } from '@/schema/tinify';
 import axiosErrorHandler from '@/utils/api/axiosErrorHandler';
 import { signedRequest } from '@/utils/api/signedRequest';
+import config, { LinkPrices } from '@/utils/config';
 import { DEFAULT_URL } from '@/utils/contstants';
 import Icons from '@/utils/icons';
 import { Checkbox, Divider, Text, TextInput, Title } from '@mantine/core';
@@ -11,7 +12,10 @@ import { Link as LinkSchema } from '@prisma/client';
 import { useAddress, useUser } from '@thirdweb-dev/react';
 import Link from 'next/link';
 import { FC, useState } from 'react';
+import slugify from 'slugify';
+import useSWR from 'swr';
 import { PrimaryButton } from '../Buttons/Buttons';
+import { NFTCard } from '../Cards/Cards';
 import ClipboardButton from '../ClipboardButton/ClipboardButton';
 import ErrorMessage from '../ErrorMessage';
 import WalletConnect from '../WalletConnect';
@@ -27,6 +31,20 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
   const [newLink, setNewLink] = useState<LinkSchema>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const { data: linksForThisMonthResponse } = useSWR<{
+    data: { data: number };
+  }>(address && isLoggedIn ? '/links_for_this_month' : null, () =>
+    signedRequest({
+      type: 'post',
+      url: apiRoutes.profile.links,
+      data: {
+        type: 'getTotalLinksCountForThisMonthByUserIp',
+      },
+    })
+  );
+
+  const linksForThisMonth = linksForThisMonthResponse?.data?.data || 0;
 
   const form = useTinifyForm({
     validate: zodResolver(tinifySchema),
@@ -82,7 +100,24 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
         </Link>{' '}
         page
       </Text>
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center justify-center">
+        <NFTCard
+          code={JSON.stringify(
+            (() => {
+              const code = {};
+              Object.keys(form.values).forEach((key) =>
+                Object.assign(code, {
+                  [key]: newLink[key as keyof LinkSchema],
+                })
+              );
+              return code;
+            })(),
+            null,
+            2
+          )}
+        />
+      </div>
+      <div className="flex items-center justify-center gap-2 mb-2">
         <a
           href={`${DEFAULT_URL}/${newLink.slug}`}
           target="__blank"
@@ -111,10 +146,12 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
         label="Your URL"
         description="This is the URL you would like to Tinify"
         placeholder="https://my-super-long-url.com/with-some-long-slug"
+        required
+        withAsterisk
         {...form.getInputProps('target')}
       />
       <div>
-        <div className="flex items-start gap-4 mb-4">
+        <div className="flex items-center gap-4 mb-4">
           <TextInput
             size="md"
             label="Domain"
@@ -124,17 +161,23 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
           />
           <TextInput
             size="md"
-            label="Alias"
-            description="This is the unique indentifying part of the new Tiny URL"
+            label="Alias (Optional)"
+            description="This is the unique indentifying part of the new Tiny URL."
             placeholder="tiny-alias"
             {...form.getInputProps('slug')}
+            onBlur={(e) =>
+              form.setFieldValue(
+                'slug',
+                slugify(e.currentTarget.value, { lower: true })
+              )
+            }
           />
         </div>
       </div>
 
       <TextInput
         size="md"
-        label="Title"
+        label="Title (Optional)"
         description="Title for your link. Used for easier link management and idendification."
         placeholder="A Twitter post that I want to share"
         {...form.getInputProps('title')}
@@ -142,7 +185,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
 
       <TextInput
         size="md"
-        label="Description"
+        label="Description (Optional)"
         description="Description for your link. Used for easier link management and idendification."
         placeholder="We are tracking clicks to this Twitter post"
         {...form.getInputProps('description')}
@@ -164,6 +207,32 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
         description="Do you allow other users or projects to display ads using your link? 80% of the ad's budget would be allocated to your account."
         {...form.getInputProps('doesAcceptAds', { type: 'checkbox' })}
       />
+      <div className="text-center">
+        <Text>
+          You can mint <strong>{config.links.freePerIp}</strong> simple Link
+          NFTs for free every month.
+        </Text>
+        <Text>
+          You have minted a total of <strong>{linksForThisMonth || 0}</strong>{' '}
+          Link NFTs this month.
+        </Text>
+        <Text underline>
+          You have{' '}
+          <strong>
+            {Math.max(0, config.links.freePerIp - linksForThisMonth)}
+          </strong>{' '}
+          free Link NFTs left.
+        </Text>
+      </div>
+      <div>
+        <Text align="center" weight={700} className="text-2xl mb-4">
+          Total cost of your Link NFT: $
+          {config.links.prices.calculatePrice(
+            form.values as unknown as LinkPrices,
+            linksForThisMonth || 0
+          )}
+        </Text>
+      </div>
       {address && isLoggedIn ? (
         <PrimaryButton
           size="md"
