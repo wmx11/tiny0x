@@ -1,4 +1,4 @@
-export type LinkPrices = {
+export type LinkPriceEntries = {
   default?: number;
   trackMetrics?: number;
   doesAcceptAds?: number;
@@ -19,12 +19,12 @@ const config = {
        * @param linksCountForMonth - The number of links the user has minted this month
        * @returns - Total price of the Link NFT
        */
-      calculatePrice(options: LinkPrices, linksCountForMonth?: number) {
+      calculatePrice(options: LinkPriceEntries, linksCountForMonth?: number) {
         return Object.entries(options)
           .filter((item) => item?.at(1) && this.hasOwnProperty(item[0]))
           .map((item) => (item ? item[0] : ''))
           .reduce(
-            (acc, curr) => acc + this[curr as keyof LinkPrices],
+            (acc, curr) => acc + this[curr as keyof LinkPriceEntries],
             linksCountForMonth && linksCountForMonth > config.links.freePerIp
               ? this.default
               : 0
@@ -35,6 +35,25 @@ const config = {
   profile: {
     prices: {
       default: 1,
+    },
+  },
+  images: {
+    supportedFormats: ['svg', 'png', 'jpg', 'jpeg'],
+    checkSupport(format: string) {
+      return this?.supportedFormats?.includes(format);
+    },
+    getImageData(image: Blob) {
+      return `data:image/png;base64,${image}`;
+    },
+    profile: {
+      header: {
+        width: 40,
+        height: 40,
+      },
+      avatar: {
+        width: 150,
+        height: 150,
+      },
     },
   },
 };

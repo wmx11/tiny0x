@@ -1,11 +1,13 @@
 import { Text, Title } from '@mantine/core';
 import { FC } from 'react';
+import ImageUpload from '../ImageUpload';
 
 type ProfileImageTypes = {
   src?: string;
   title?: string;
   subtitle?: string;
   newLine?: boolean;
+  isUpdate?: boolean;
 };
 
 const ProfileImage: FC<ProfileImageTypes> = ({
@@ -13,6 +15,7 @@ const ProfileImage: FC<ProfileImageTypes> = ({
   title,
   subtitle,
   newLine,
+  isUpdate,
 }) => {
   return (
     <div
@@ -21,11 +24,17 @@ const ProfileImage: FC<ProfileImageTypes> = ({
       }`}
     >
       <div className="rounded-full bg-zinc-400 w-[150px] h-[150px] overflow-hidden relative border-4 border-white">
-        {/* <div className="absolute bg-zinc-200/20 flex items-center justify-center gap-4 inset-0">
-          <Icons.Camera className="text-2xl" />
-          <Icons.Trash className="text-2xl" />
-        </div> */}
-        {src ? <img src={src} alt="Profile Image" /> : null}
+        <div className="h-full">
+          {src ? <img src={src} alt="Profile Image" /> : null}
+          {isUpdate ? (
+            <div className="absolute z-10 inset-0 h-full">
+              <ImageUpload
+                setImage={() => null}
+                handler="handleProfileAvatarImageUpload"
+              />
+            </div>
+          ) : null}
+        </div>
       </div>
       <div className="flex justify-between items-center flex-1">
         <div>

@@ -42,6 +42,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
         <ProfileImage
           title={profile?.name}
           subtitle={profile?.subtitle as string}
+          src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
         />
         <div>
           {user && user?.session?.profileId === profile?.id ? (

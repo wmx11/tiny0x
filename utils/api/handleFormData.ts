@@ -8,38 +8,28 @@ export type FileType = {
   size: number;
 };
 
-type Files = {
-  files: {
-    image: FileType[];
-    images: FileType & { [key: string]: any };
-    file: FileType[];
-  };
-};
-
-type FormData<Fields> = {
+type FormData<Fields, FileFields extends string | number | symbol> = {
   fields: Fields;
   files: {
-    image?: FileType;
-    images: FileType & { [key: string]: any };
-    file?: FileType;
+    [key in FileFields]: FileType[];
   };
 };
 
-export const handleFormData = async <Fields>(
+export const handleFormData = async <Fields, FileFields extends string | number | symbol>(
   req: NextApiRequest
-): Promise<FormData<Fields> | null> => {
+): Promise<FormData<Fields, FileFields> | null> => {
   try {
     const form = new multiparty.Form();
-    const data: FormData<{ [key: string]: any }> & Files = await new Promise(
-      (resolve, reject) => {
+
+    const data: FormData<{ [key: string]: any }, FileFields> =
+      await new Promise((resolve, reject) => {
         form.parse(req, function (err, fields, files) {
           if (err) {
             reject({ err });
           }
           resolve({ fields, files });
         });
-      }
-    );
+      });
 
     const fields = Object.keys(data.fields).reduce((obj, key) => {
       let value = JSON.parse(JSON.stringify(data.fields[key][0])).trim();
@@ -69,16 +59,9 @@ export const handleFormData = async <Fields>(
       return obj;
     }, {}) as Fields;
 
-    const image = data.files.image ? data.files.image[0] : undefined;
-    const file = data.files.file ? data.files.file[0] : undefined;
-
     return {
       fields,
-      files: {
-        image,
-        file,
-        images: data.files as unknown as FileType & { [key: string]: any },
-      },
+      files: data.files,
     };
   } catch (error) {
     console.log(error);
