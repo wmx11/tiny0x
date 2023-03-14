@@ -10,7 +10,7 @@ const Tinify = () => {
 
   return (
     <>
-      <div className="flex items-start gap-2 w-full mb-2">
+      <div className="flex flex-col md:flex-row flex-wrap md:items-start gap-2 w-full mb-2">
         <TextInput
           size="lg"
           className="flex-1"

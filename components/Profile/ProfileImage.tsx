@@ -19,8 +19,10 @@ const ProfileImage: FC<ProfileImageTypes> = ({
 }) => {
   return (
     <div
-      className={`flex items-end gap-4 ${
-        newLine ? 'flex-col items-center text-center' : ''
+      className={`flex flex-col items-center gap-4 flex-wrap ${
+        newLine
+          ? 'flex-col items-center text-center'
+          : 'md:flex-row md:items-end'
       }`}
     >
       <div className="rounded-full bg-zinc-400 w-[150px] h-[150px] overflow-hidden relative border-4 border-white">

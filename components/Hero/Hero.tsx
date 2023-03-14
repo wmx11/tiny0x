@@ -29,7 +29,7 @@ const Hero = () => {
             <Tinify />
           </div>
         </Container>
-        <div className="absolute flex flex-col gap-6 left-10 verticalReel h-[100%] bottom-0 opacity-30">
+        <div className="absolute flex flex-col gap-6 md:left-10 h-[100%] bottom-0 items-center w-full opacity-10 md:opacity-30 verticalReel">
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
@@ -37,7 +37,7 @@ const Hero = () => {
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
         </div>
-        <div className="hidden md:flex absolute flex-col gap-6 right-10 verticalReel h-[100%] bottom-0 opacity-30">
+        <div className="hidden md:flex absolute flex-col gap-6 right-10 h-[100%] bottom-0 opacity-30 verticalReel">
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />

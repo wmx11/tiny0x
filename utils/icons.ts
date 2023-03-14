@@ -9,6 +9,8 @@ import {
   FaDiscord,
   FaExternalLinkAlt,
   FaGripVertical,
+  FaHome,
+  FaInfoCircle,
   FaLink,
   FaPlus,
   FaSignInAlt,
@@ -21,6 +23,7 @@ import {
   FaWallet,
 } from 'react-icons/fa';
 import { MdCampaign, MdReviews } from 'react-icons/md';
+import { HiMagnifyingGlass } from 'react-icons/hi2';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -44,5 +47,8 @@ export default {
   Review: MdReviews,
   Campaign: MdCampaign,
   Login: FaSignInAlt,
-  Logout: FaSignOutAlt
+  Logout: FaSignOutAlt,
+  Home: FaHome,
+  MagnifyingGlass: HiMagnifyingGlass,
+  Info: FaInfoCircle
 };

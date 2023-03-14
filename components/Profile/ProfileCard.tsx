@@ -36,15 +36,15 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
   const profile = data?.data?.data;
 
   return (
-    <div className="max-w-[720px] w-[100%]">
+    <div className="max-w-[720px] w-full">
       <ProfileHeader />
-      <div className="translate-y-[-60px] ml-6 flex items-end justify-between">
+      <div className="translate-y-[-60px] md:ml-6 flex flex-col md:flex-row items-center md:items-end justify-between flex-wrap text-center md:text-left">
         <ProfileImage
           title={profile?.name}
           subtitle={profile?.subtitle as string}
           src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
         />
-        <div>
+        <div className='mt-4'>
           {user && user?.session?.profileId === profile?.id ? (
             <Link href={generalRoutes.profile.edit} passHref>
               <PrimaryButton>Edit Profile</PrimaryButton>

@@ -1,4 +1,5 @@
 import Icons from '@/utils/icons';
+import { footerNavigation } from '@/utils/navigation';
 import { Container, Text } from '@mantine/core';
 import Link from 'next/link';
 import React from 'react';
@@ -9,7 +10,7 @@ const Footer = () => {
   return (
     <footer className="overflow-hidden">
       <div className="bg-darkPurple backdrop-blur-xl py-24 z-10">
-        <Container className="flex gap-24 z-10 relative">
+        <Container className="flex flex-col md:flex-row gap-24 z-10 relative">
           <div>
             <div className="mb-4">
               <div className="mb-2">
@@ -33,23 +34,20 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          <div className="flex flex-col gap-4">
-            <Text weight={700} size="lg" color="yellow">
-              Tiny0x
-            </Text>
-            <Link href="#">About</Link>
-            <Link href="#">Leaderboard</Link>
-            <Link href="#">Tiny Profile</Link>
-          </div>
-          <div className="flex flex-col gap-4">
-            <Text weight={700} size="lg" color="yellow">
-              Legal
-            </Text>
-            <Link href="#">Privacy Policy</Link>
-            <Link href="#">Terms of Service</Link>
-            <Link href="#">Cookie Policy</Link>
-            <Link href="#">Disclaimer</Link>
-          </div>
+          {footerNavigation &&
+            footerNavigation.map((item, index) => {
+              return (
+                <div className="flex flex-col gap-4">
+                  <Text weight={700} size="lg" color="yellow">
+                    {item.label}
+                  </Text>
+                  {item.items &&
+                    item.items.map((_item, _index) => {
+                      return <Link href={_item.href}>{_item.label}</Link>;
+                    })}
+                </div>
+              );
+            })}
         </Container>
         <div className="opacity-10">
           <YellowBackdrop />

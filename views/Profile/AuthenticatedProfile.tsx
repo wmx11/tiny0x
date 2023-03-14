@@ -33,12 +33,12 @@ const AuthenticatedProfile = () => {
         <div className="flex flex-wrap gap-6 mb-16">
           <StatCard value={stats?.linksCount} label="Total Links" />
           <StatCard
-            value={stats?.profileImpressionsCount}
-            label="Total Profile Impressions"
-          />
-          <StatCard
             value={stats?.totalLinkClicksCount}
             label="Total Link Clicks"
+          />
+          <StatCard
+            value={stats?.profileImpressionsCount}
+            label="Total Profile Impressions"
           />
           <StatCard
             value={stats?.profileReviewsCount}

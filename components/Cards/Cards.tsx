@@ -48,7 +48,7 @@ export const StatCard: FC<
   PropsWithChildren & { value?: string | number; label?: string }
 > = ({ value, label, children }) => {
   return (
-    <GlassCard className="w-[300px] text-center hover:shadow-xl transition flex flex-col justify-center items-center">
+    <GlassCard className="md:max-w-[300px] w-full text-center hover:shadow-xl transition flex flex-col justify-center items-center">
       <div className="w-full">
         <Title className="text-5xl mb-2 flex items-center justify-center">
           {value ?? <Loader />}

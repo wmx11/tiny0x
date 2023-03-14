@@ -1,14 +1,15 @@
-import generalRoutes from '@/routes/general';
 import Icons from '@/utils/icons';
+import { profileNavigation } from '@/utils/navigation';
 import { truncateAddress } from '@/utils/utils';
 import {
   Button,
   CSSObject,
   Divider,
   Grid,
-  Menu, Text,
+  Menu,
+  Text,
   Title,
-  UnstyledButton
+  UnstyledButton,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import {
@@ -17,8 +18,12 @@ import {
   useDisconnect,
   useLogin,
   useLogout,
-  useMetamask, useUser,
-  useWalletConnect
+  useMetamask,
+  useNetworkMismatch,
+  useUser,
+  useNetwork,
+  ChainId,
+  useWalletConnect,
 } from '@thirdweb-dev/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,10 +48,11 @@ const WalletConnect = () => {
   const connectWithCoinbaseWallet = useCoinbaseWallet();
   const disconnect = useDisconnect();
   const address = useAddress();
-  const [isOpen, setIsOpen] = useState(false);
   const { login } = useLogin();
   const { logout } = useLogout();
   const { user, isLoggedIn } = useUser();
+  const isNetworkMismatched = useNetworkMismatch();
+  const [{}, switchNetwork] = useNetwork();
 
   useEffect(() => {
     if (address && !isLoggedIn) {
@@ -56,7 +62,11 @@ const WalletConnect = () => {
     if (address && isLoggedIn) {
       modals.close(MODAL_ID);
     }
-  }, [address, isLoggedIn, user]);
+
+    if (isNetworkMismatched) {
+      switchNetwork?.(ChainId.BinanceSmartChainMainnet);
+    }
+  }, [address, isLoggedIn, user, isNetworkMismatched]);
 
   return (
     <>
@@ -78,9 +88,17 @@ const WalletConnect = () => {
 
           <Menu.Dropdown>
             <Menu.Label>My Profile</Menu.Label>
-            <Link href={generalRoutes.profile.profile}>
-              <Menu.Item icon={<Icons.User />}>Profile</Menu.Item>
-            </Link>
+            {profileNavigation &&
+              profileNavigation.map((item, index) => {
+                return (
+                  <Link
+                    key={`profile_navigation_menu_${index}`}
+                    href={item.href}
+                  >
+                    <Menu.Item icon={<item.icon />}>{item.label}</Menu.Item>
+                  </Link>
+                );
+              })}
             <Menu.Item icon={<Icons.Login />} onClick={() => login()}>
               Login
             </Menu.Item>

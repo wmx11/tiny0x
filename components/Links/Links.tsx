@@ -6,6 +6,7 @@ type LinkTypes = {
   href: string;
   label?: string;
   icon?: React.ReactElement;
+  mobileLabel?: string;
 } & PropsWithChildren;
 
 export const NavLink: FC<LinkTypes> = ({ href, icon, children }) => {
@@ -13,6 +14,7 @@ export const NavLink: FC<LinkTypes> = ({ href, icon, children }) => {
 
   return (
     <Link href={href} className={`${isActive ? 'border-activeLink' : ''}`}>
+      {icon}
       {children}
     </Link>
   );

@@ -1,11 +1,15 @@
 // --data-table-library_grid-template-columns: 140px repeat(6, 1fr); max-width: 90vw; width: 100%;
 
 const mainTheme = (theme: 'light' | 'dark') => ({
-  Table: ` display: grid !important;`,
+  Table: ` 
+  display: grid !important;
+  border-radius: 8px;
+  border: 1px solid #475569;
+  `,
   Header: ``,
   Body: ``,
   BaseRow: `
-    // background-color: red;
+    // background-color: #140C2D;
     // &.row-select-selected, &.row-select-single-selected {
     //   background-color: var(--theme-ui-colors-background-secondary);
     //   color: var(--theme-ui-colors-text);
@@ -14,14 +18,13 @@ const mainTheme = (theme: 'light' | 'dark') => ({
   HeaderRow: `
     font-size: 12px;
     .th {
-      border-bottom: 1px solid #6f3fd392 !important;
+      border-bottom: 1px solid #94a3b8 !important;
     }
   `,
   Row: `
-    font-size: 12px;
-  
+    font-size: 12px;  
     &:not(:last-of-type) .td {
-        border-bottom: 1px solid #6f3fd352;
+        border-bottom: 1px solid #475569;
     }
     &:hover {
       td {
@@ -30,7 +33,8 @@ const mainTheme = (theme: 'light' | 'dark') => ({
     }
   `,
   BaseCell: `
-  background-color: '';
+  background-color: #1e293b;
+  color: #ffffff;
     // border-bottom: 1px solid transparent;
     // border-right: 1px solid transparent;
     &:nth-of-type(1) {
@@ -38,14 +42,14 @@ const mainTheme = (theme: 'light' | 'dark') => ({
     }
   `,
   HeaderCell: ` 
-  color: '';
+  color: #ffffff;
   > div { 
     text-overflow: unset;
     white-space: unset;
   }`,
   Cell: `
   font-weight: 600; 
-  color: '';`,
+  color: #ffffff;`,
 });
 
 export const responsiveStylesForLayoutWithSideMenu = `          

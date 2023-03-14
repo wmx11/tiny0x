@@ -60,9 +60,9 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
               <Icons.GripVertical />
             </div>
             <GlassCard className="w-full">
-              <div className="flex items-start gap-2 justify-between w-full mb-4">
+              <div className="flex flex-col md:flex-row flex-wrap items-start gap-2 justify-between w-full mb-4">
                 <TextInput
-                  className="flex-1"
+                  className="flex-1 w-full"
                   label="Label"
                   description="Label of your link button"
                   placeholder="Twitter"
@@ -70,7 +70,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
                   {...form.getInputProps(`profile_links.${index}.label`)}
                 />
                 <TextInput
-                  className="flex-1"
+                  className="flex-1 w-full"
                   label="Link"
                   description="Link of your button"
                   placeholder="https://..."
@@ -78,7 +78,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
                   {...form.getInputProps(`profile_links.${index}.target`)}
                 />
               </div>
-              <div className="flex gap-4">
+              <div className="flex flex-col md:flex-row flex-wrap gap-4">
                 <Checkbox
                   size="md"
                   label="Track Clicks and Traffic"
