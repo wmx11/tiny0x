@@ -45,21 +45,21 @@ const AuthenticatedProfile = () => {
             label="Total Profile Reviews"
           />
         </div>
-        <GlassCard>
+        <GlassCard className="flex justify-center">
           <ProfileCard userId={user?.session?.id} />
-        </GlassCard>
-        <GlassCard>
-          <Reviews
-            isRecent={true}
-            title="Recent Tiny Profile Reviews"
-            subtitle="Showing 10 most recent reviews"
-          />
         </GlassCard>
         <GlassCard>
           <Links
             isRecent={true}
             title="Recently Tinyfied Links"
             subtitle="Showing 10 most recent links"
+          />
+        </GlassCard>
+        <GlassCard>
+          <Reviews
+            isRecent={true}
+            title="Recent Tiny Profile Reviews"
+            subtitle="Showing 10 most recent reviews"
           />
         </GlassCard>
       </div>

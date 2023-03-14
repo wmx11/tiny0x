@@ -4,15 +4,23 @@ import { Section } from '@/components/Section';
 import generalRoutes from '@/routes/general';
 import Icons from '@/utils/icons';
 import React, { FC, PropsWithChildren } from 'react';
+import { useDisclosure } from '@mantine/hooks';
+import { Burger } from '@mantine/core';
 
 type ProfileLayoutTypes = PropsWithChildren;
 
 const ProfileLayout: FC<ProfileLayoutTypes> = ({ children }) => {
+  const [opened, { toggle }] = useDisclosure(false);
+
   return (
     <Section backdrop={<OrangeBackdrop />} className="min-h-screen">
-      <div className="grid grid-cols-[280px,1fr]">
-        <div className="bg-gradient-to-b from-pink-600/10 to-violet-600/10 backdrop-filter backdrop-blur-lg min-h-screen p-5">
-          <div className="flex flex-col gap-4">
+      <div className={`grid grid-cols-[280px,1fr]`}>
+        <div
+          className={`bg-gradient-to-b from-pink-600/10 to-violet-600/10 backdrop-filter backdrop-blur-lg min-h-screen p-5`}
+        >
+          <Burger opened={opened} onClick={toggle} />
+
+          <div className="flex flex-col gap-4 ">
             <ProfileLink
               href={generalRoutes.profile.profile}
               icon={<Icons.User />}

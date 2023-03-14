@@ -1,10 +1,12 @@
-import { PrimaryButton, SecondaryButton } from '@/components/Buttons/Buttons';
+import { SecondaryButton } from '@/components/Buttons/Buttons';
 import Table from '@/components/Table';
 import apiRoutes from '@/routes/api';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { formatDate } from '@/utils/formatDate';
-import { Button, Text, Title } from '@mantine/core';
+import { Text, Title } from '@mantine/core';
 import { Link } from '@prisma/client';
+import { Column } from '@table-library/react-table-library/types/compact';
+import { TableNode } from '@table-library/react-table-library/types/table';
 import { FC } from 'react';
 import useSWR from 'swr';
 
@@ -27,6 +29,51 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
       })
   );
 
+  const theme = {
+    Table: `--data-table-library_grid-template-columns: 150px repeat(3, 1fr);`,
+    BaseCell: `
+    > div {
+      white-space: normal;
+    }
+    &:nth-of-type(1) {
+      left: 0px;
+      box-shadow: 2px 0px 2px rgba(0,0,0,0.1);
+    }`,
+  };
+
+  const columns: Column[] = [
+    {
+      label: 'Alias',
+      pinLeft: true,
+      renderCell: (item) => <>{item.slug}</>,
+    },
+    {
+      label: 'Target',
+      renderCell: (item) => (
+        <>
+          <div className="break-all">
+            <a href={item.target as string} target="_blank" rel="noreferrer">
+              {item.target}
+            </a>
+          </div>
+        </>
+      ),
+    },
+    {
+      label: 'Date Created',
+      renderCell: (item) => <>{formatDate(item.date_created)}</>,
+    },
+    {
+      label: 'Action',
+      renderCell: (item) => (
+        <>
+          {' '}
+          <SecondaryButton>Burn</SecondaryButton>
+        </>
+      ),
+    },
+  ];
+
   return (
     <div>
       <div className="mb-8">
@@ -34,31 +81,11 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
         {subtitle ? <Text>{subtitle}</Text> : null}
       </div>
       <Table
+        customTheme={theme}
+        columns={columns}
+        data={links?.data?.data as TableNode[]}
         isLoading={isLoading}
-        style={{
-          gridTemplateColumns: '50px 150px repeat(3, 1fr)',
-        }}
         empty={'You currently have no links'}
-        header={['No.', 'Alias', 'Target', 'Date Created', 'Action']}
-        stickyCol={2}
-        rows={
-          links?.data &&
-          links?.data?.data?.map((item, index) => ({
-            row: [
-              `${index + 1}.`,
-              item.slug,
-              <div className="break-all">
-                <a href={item.target} target="_blank">
-                  {item.target}
-                </a>
-              </div>,
-              formatDate(item.date_created),
-              <>
-                <SecondaryButton>Burn</SecondaryButton>
-              </>,
-            ],
-          }))
-        }
       />
     </div>
   );

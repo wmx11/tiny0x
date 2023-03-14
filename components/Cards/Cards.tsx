@@ -51,7 +51,7 @@ export const StatCard: FC<
     <GlassCard className="w-[300px] text-center hover:shadow-xl transition flex flex-col justify-center items-center">
       <div className="w-full">
         <Title className="text-5xl mb-2 flex items-center justify-center">
-          {value ? value : <Loader />}
+          {value ?? <Loader />}
         </Title>
         <Text>{label}</Text>
         {children ? children : null}

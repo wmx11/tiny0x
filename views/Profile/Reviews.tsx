@@ -5,6 +5,10 @@ import { formatDate } from '@/utils/formatDate';
 import { truncateAddress } from '@/utils/utils';
 import { Rating, Text, Title } from '@mantine/core';
 import { Review } from '@prisma/client';
+import { Column } from '@table-library/react-table-library/types/compact';
+import {
+  TableNode
+} from '@table-library/react-table-library/types/table';
 import { FC } from 'react';
 import useSWR from 'swr';
 
@@ -26,6 +30,43 @@ const Reviews: FC<ReviewsTypes> = ({ isRecent, title, subtitle }) => {
       },
     })
   );
+
+  const theme = {
+    Table: `--data-table-library_grid-template-columns: 250px repeat(3, 1fr);`,
+    BaseCell: `
+    > div {
+      white-space: normal;
+    }
+    &:nth-of-type(1) {
+      left: 0px;
+      box-shadow: 2px 0px 2px rgba(0,0,0,0.1);
+    }`,
+  };
+
+  const columns: Column[] = [
+    {
+      label: 'Review',
+      pinLeft: true,
+      renderCell: (item) => <>{item.review}</>,
+    },
+    {
+      label: 'Rating',
+      renderCell: (item) => (
+        <>
+          <Rating value={item.rating} readOnly />
+        </>
+      ),
+    },
+    {
+      label: 'Reviewer',
+      renderCell: (item) => <>{truncateAddress(item?.reviewer?.address, 6)}</>,
+    },
+    {
+      label: 'Date Reviewed',
+      renderCell: (item) => <>{formatDate(item.date_created)}</>,
+    },
+  ];
+
   return (
     <div>
       <div className="mb-8">
@@ -33,25 +74,11 @@ const Reviews: FC<ReviewsTypes> = ({ isRecent, title, subtitle }) => {
         {subtitle ? <Text>{subtitle}</Text> : null}
       </div>
       <Table
+        columns={columns}
+        data={reviews?.data?.data as TableNode[]}
         isLoading={isLoading}
         empty={'You currently have no reviews on your profile'}
-        header={['No.', 'Review', 'Rating', 'Reviewer', 'Date Reviewed']}
-        style={{
-          gridTemplateColumns: '50px 250px repeat(3, 1fr)',
-        }}
-        stickyCol={2}
-        rows={
-          reviews?.data &&
-          reviews?.data?.data?.map((item, index) => ({
-            row: [
-              `${index + 1}.`,
-              item.review,
-              <Rating value={item.rating} readOnly />,
-              truncateAddress(item?.reviewer?.address, 6),
-              formatDate(item.date_created),
-            ],
-          }))
-        }
+        customTheme={theme}
       />
     </div>
   );

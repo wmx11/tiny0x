@@ -19,6 +19,7 @@
     "@mantine/next": "^5.10.3",
     "@next/font": "13.1.6",
     "@prisma/client": "4.10.1",
+    "@table-library/react-table-library": "^4.0.29",
     "@thirdweb-dev/auth": "^3.0.5",
     "@thirdweb-dev/react": "^3.9.1",
     "@thirdweb-dev/sdk": "^3.9.1",

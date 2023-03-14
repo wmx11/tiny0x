@@ -18,16 +18,18 @@ const Hero = () => {
   return (
     <div className="overflow-hidden relative">
       <div className="text-white bg-darkPurple/80 min-h-screen relative backdrop-blur-xl z-10 flex items-center">
-        <Container size="md">
+        <Container size="md" className="z-10">
           <div>
-            <Title align="center" className="text-6xl mb-4"></Title>
+            <Title align="center" className="text-6xl mb-4">
+              Turn your links into Tiny NFTs!
+            </Title>
             <Text align="center" className="text-xl mb-4">
-              Turn your links into NFTs!
+              Your links, your NFTs, your revenue
             </Text>
             <Tinify />
           </div>
         </Container>
-        <div className="absolute flex flex-col gap-6 z-10 left-10 verticalReel h-[100%] bottom-0 opacity-30">
+        <div className="absolute flex flex-col gap-6 left-10 verticalReel h-[100%] bottom-0 opacity-30">
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
@@ -35,7 +37,7 @@ const Hero = () => {
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
         </div>
-        <div className="absolute flex flex-col gap-6 z-10 right-10 verticalReel h-[100%] bottom-0 opacity-30">
+        <div className="hidden md:flex absolute flex-col gap-6 right-10 verticalReel h-[100%] bottom-0 opacity-30">
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
