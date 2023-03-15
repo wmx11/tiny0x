@@ -5,6 +5,8 @@ export type LinkPriceEntries = {
   slug?: number;
 };
 
+type ConfigType = typeof config;
+
 const config = {
   links: {
     freePerIp: 5,
@@ -38,17 +40,21 @@ const config = {
     },
   },
   images: {
-    supportedFormats: ['svg', 'png', 'jpg', 'jpeg'],
+    supportedFormats: ['svg', 'png', 'jpg', 'jpeg', 'gif'],
     checkSupport(format: string) {
       return this?.supportedFormats?.includes(format);
     },
     getImageData(image: Blob) {
       return `data:image/png;base64,${image}`;
     },
+    setImageUrl(path: string) {
+      return `${process.env.BUCKET_ENDPOINT_CDN}/${path}`;
+    },
     profile: {
+      path: 'images/profile',
       header: {
-        width: 40,
-        height: 40,
+        width: 720,
+        height: 200,
       },
       avatar: {
         width: 150,

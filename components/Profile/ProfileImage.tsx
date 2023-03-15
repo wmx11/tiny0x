@@ -1,3 +1,4 @@
+import { SetImage } from '@/types/Files';
 import { Text, Title } from '@mantine/core';
 import { FC } from 'react';
 import ImageUpload from '../ImageUpload';
@@ -8,7 +9,7 @@ type ProfileImageTypes = {
   subtitle?: string;
   newLine?: boolean;
   isUpdate?: boolean;
-};
+} & SetImage;
 
 const ProfileImage: FC<ProfileImageTypes> = ({
   src,
@@ -16,6 +17,7 @@ const ProfileImage: FC<ProfileImageTypes> = ({
   subtitle,
   newLine,
   isUpdate,
+  setImage,
 }) => {
   return (
     <div
@@ -31,7 +33,7 @@ const ProfileImage: FC<ProfileImageTypes> = ({
           {isUpdate ? (
             <div className="absolute z-10 inset-0 h-full">
               <ImageUpload
-                setImage={() => null}
+                setImage={setImage}
                 handler="handleProfileAvatarImageUpload"
               />
             </div>

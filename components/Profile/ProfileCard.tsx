@@ -59,7 +59,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
       {user && !canLeaveReview && !user?.session?.profileId ? (
         <div className="flex flex-col items-center gap-4">
           <Text>
-            You don't have a Tiny Profile. Create one to share your unique, NFT
+            You do not have a Tiny Profile. Create one to share your unique, NFT
             based profile with everyone!
           </Text>
           <Link href={generalRoutes.profile.edit} passHref>

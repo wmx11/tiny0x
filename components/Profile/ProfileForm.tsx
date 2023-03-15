@@ -1,17 +1,29 @@
 import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
+import { uploadImageToBucket } from '@/services/images';
 import { ProfileLink } from '@/types/Profile';
 import { signedRequest } from '@/utils/api/signedRequest';
+import config from '@/utils/config';
 import { MAX_CHARACTERS } from '@/utils/contstants';
 import Icons from '@/utils/icons';
-import { ActionIcon, Checkbox, Text, Textarea, TextInput } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  Checkbox,
+  Text,
+  Textarea,
+  TextInput,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { Profile } from '@prisma/client';
+import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { PrimaryButton, SecondaryButton } from '../Buttons/Buttons';
 import { GlassCard } from '../Cards/Cards';
+import ProfileHeader from './ProfileHeader';
+import ProfileImage from './ProfileImage';
 
 type ProfileFormTypes = {
   isUpdate?: boolean;
@@ -123,12 +135,40 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
     </GlassCard>
   );
 
+  const [image, setImage] = useState<Blob | null>(null);
+
+  const testUpload = async () => {
+    const fs = new FormData();
+    fs.append('type', 'uploadImageToBucket');
+    fs.append('image', image as Blob);
+    fs.append('filename', `${config.images.profile.path}/${nanoid()}.png`);
+    fs.append('acl', 'public-read');
+
+    // const data = await signedRequest({
+    //   type: 'post',
+    //   url: apiRoutes.image,
+    //   data: fs,
+    //   isFormData: true,
+    // });
+
+    console.log(image);
+  };
+
   return (
     <div>
+      <div>
+        <Text>Test image Upload</Text>
+        <ProfileImage isUpdate={true} setImage={setImage} />
+        <Button onClick={testUpload}>Upload</Button>
+      </div>
       <form
         onSubmit={form.onSubmit(handleSubmit)}
         className="flex flex-col gap-4"
       >
+        <ProfileHeader isUpdate={true} />
+        <div className="mt-[-60px] md:ml-6 flex flex-col md:flex-row items-center md:items-end flex-wrap">
+          <ProfileImage isUpdate={true} />
+        </div>
         <TextInput
           label="Username"
           description="Your username which will be used to find your profile online"

@@ -1,4 +1,5 @@
 import apiRoutes from '@/routes/api';
+import { SetImage } from '@/types/Files';
 import { signedRequest } from '@/utils/api/signedRequest';
 import config from '@/utils/config';
 import Icons from '@/utils/icons';
@@ -10,10 +11,9 @@ type ImageUploadTypes = {
   label?: string;
   description?: string;
   placeholder?: string;
-  setImage: (image: Blob | null) => void;
   initialImage?: string;
   handler: 'handleProfileAvatarImageUpload' | 'handleProfileHeaderImageUpload';
-};
+} & SetImage;
 
 const ImageUpload: FC<ImageUploadTypes> = ({
   initialImage,
@@ -83,6 +83,9 @@ const ImageUpload: FC<ImageUploadTypes> = ({
         placeholder={placeholder}
         onChange={handleSubmit}
         ref={ref}
+        accept={config.images.supportedFormats
+          .map((item) => `image/${item}`)
+          .join(',')}
         styles={{ input: { display: 'none' } }}
       />
       <div className="flex gap-4 items-center justify-center">
@@ -94,11 +97,11 @@ const ImageUpload: FC<ImageUploadTypes> = ({
           />
         ) : null}
         <div className="text-6xl flex gap-4 ">
-          <ActionIcon onClick={handleClick}>
+          <ActionIcon onClick={handleClick} color="grape" variant="light">
             <Icons.Camera />
           </ActionIcon>
           {imageUrl ? (
-            <ActionIcon onClick={handleDelete}>
+            <ActionIcon onClick={handleDelete} color="red" variant="light">
               <Icons.Trash />
             </ActionIcon>
           ) : null}
