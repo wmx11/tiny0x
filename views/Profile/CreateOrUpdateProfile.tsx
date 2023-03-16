@@ -2,6 +2,7 @@ import { GlassCard } from '@/components/Cards/Cards';
 import ProfileForm from '@/components/Profile/ProfileForm';
 import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
 import apiRoutes from '@/routes/api';
+import { GET_PROFILE_BY_USER } from '@/services/profile';
 import { ProfileLink } from '@/types/Profile';
 import { LoadingOverlay, Text, Title } from '@mantine/core';
 import { Profile } from '@prisma/client';
@@ -16,7 +17,7 @@ const CreateOrUpdateProfile = () => {
     data: { data: Profile & { profile_links: ProfileLink[] } };
   }>(user ? '/profile' : null, () =>
     axios.post(apiRoutes.profile.profile, {
-      type: 'getProfileByUser',
+      type: GET_PROFILE_BY_USER,
       userId: user?.session?.id,
     })
   );

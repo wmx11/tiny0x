@@ -5,7 +5,12 @@ import {
   getRecentReviewsByProfile,
   getReviewsByProfile,
   getTotalReviewsCountByProfile,
+  GET_AVERAGE_RATING_BY_PROFILE,
+  GET_RECENT_REVIEWS_BY_PROFILE,
+  GET_REVIEWS_BY_PROFILE,
+  GET_TOTAL_REVIEWS_COUNT_BY_PROFILE,
   leaveReviewForProfile,
+  LEAVE_REVIEW_FOR_PROFILE,
 } from '@/services/review';
 import request, { Auth } from '@/utils/api/request';
 import { response } from '@/utils/api/response';
@@ -35,19 +40,19 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const profileId = profile?.profile?.id || '';
 
     switch (type) {
-      case 'getReviewsByProfile':
+      case GET_REVIEWS_BY_PROFILE:
         const reviews = await getReviewsByProfile(profileId);
         return responseHandler.ok(reviews);
-      case 'getRecentReviewsByProfile':
+      case GET_RECENT_REVIEWS_BY_PROFILE:
         const recentReviews = await getRecentReviewsByProfile(profileId);
         return responseHandler.ok(recentReviews);
-      case 'getTotalReviewsCountByProfile':
+      case GET_TOTAL_REVIEWS_COUNT_BY_PROFILE:
         const reviewsCount = await getTotalReviewsCountByProfile(profileId);
         return responseHandler.ok(reviewsCount);
-      case 'getAverageRatingByprofile':
+      case GET_AVERAGE_RATING_BY_PROFILE:
         const averageReviews = await getAverageRatingByprofile(profileId);
         return responseHandler.ok(averageReviews);
-      case 'leaveReviewForProfile':
+      case LEAVE_REVIEW_FOR_PROFILE:
         const newReview = await leaveReviewForProfile({
           userId: auth.id,
           ...data,

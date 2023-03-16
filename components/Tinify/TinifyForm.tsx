@@ -1,9 +1,10 @@
 import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
 import { tinifySchema } from '@/schema/tinify';
+import { GET_TOTAL_LINKS_COUNT_FOR_THIS_MONTH_BY_USER_IP } from '@/services/link';
 import axiosErrorHandler from '@/utils/api/axiosErrorHandler';
 import { signedRequest } from '@/utils/api/signedRequest';
-import config, { LinkPrices } from '@/utils/config';
+import config, { LinkPriceEntries } from '@/utils/config';
 import { DEFAULT_URL } from '@/utils/contstants';
 import Icons from '@/utils/icons';
 import { Checkbox, Divider, Text, TextInput, Title } from '@mantine/core';
@@ -39,7 +40,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
       type: 'post',
       url: apiRoutes.profile.links,
       data: {
-        type: 'getTotalLinksCountForThisMonthByUserIp',
+        type: GET_TOTAL_LINKS_COUNT_FOR_THIS_MONTH_BY_USER_IP,
       },
     })
   );
@@ -228,7 +229,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
         <Text align="center" weight={700} className="text-2xl mb-4">
           Total cost of your Link NFT: $
           {config.links.prices.calculatePrice(
-            form.values as unknown as LinkPrices,
+            form.values as unknown as LinkPriceEntries,
             linksForThisMonth || 0
           )}
         </Text>

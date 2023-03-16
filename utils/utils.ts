@@ -1,6 +1,11 @@
+import apiRoutes from '@/routes/api';
+import { ImageUploadReturnTypes } from '@/types/Files';
+import { ResultsOrError } from '@/types/Results';
 import { IncomingMessage } from 'http';
 import { nanoid } from 'nanoid';
 import { NextApiRequest } from 'next';
+import { signedRequest } from './api/signedRequest';
+import config from './config';
 
 export const sanitizeIp = (ip: string) => ip?.trim().replace(/(::ffff:)/g, '');
 
@@ -35,4 +40,28 @@ export const truncateAddress = (address: string, take = 4) => {
  */
 export const generateLinkAlias = () => {
   return `0x${nanoid(8)}`;
+};
+
+export const uploadProfileImage = async (
+  image: Blob | null
+): Promise<ResultsOrError<ImageUploadReturnTypes>> => {
+  try {
+    const fd = new FormData();
+    fd.append('type', 'uploadImageToBucket');
+    fd.append('image', image as Blob);
+    fd.append('filename', `${config.images.profile.path}/${nanoid()}.png`);
+    fd.append('acl', 'public-read');
+
+    const { data } = await signedRequest<ImageUploadReturnTypes>({
+      type: 'post',
+      url: apiRoutes.image,
+      data: fd,
+      isFormData: true,
+    });
+
+    return { ok: true, results: data.data };
+  } catch (error) {
+    console.log(error);
+    return { ok: false, errorMessage: error as string };
+  }
 };

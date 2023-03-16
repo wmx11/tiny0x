@@ -37,13 +37,23 @@ const Footer = () => {
           {footerNavigation &&
             footerNavigation.map((item, index) => {
               return (
-                <div className="flex flex-col gap-4">
+                <div
+                  key={`footer_navigation_wrapper_${index}`}
+                  className="flex flex-col gap-4"
+                >
                   <Text weight={700} size="lg" color="yellow">
                     {item.label}
                   </Text>
                   {item.items &&
                     item.items.map((_item, _index) => {
-                      return <Link href={_item.href}>{_item.label}</Link>;
+                      return (
+                        <Link
+                          key={`footer_navigation_link_${_index}`}
+                          href={_item.href}
+                        >
+                          {_item.label}
+                        </Link>
+                      );
                     })}
                 </div>
               );

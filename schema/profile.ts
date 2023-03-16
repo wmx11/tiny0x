@@ -12,6 +12,8 @@ export const profileSchema = z.object({
       `Bio description cannot be longer than ${MAX_CHARACTERS} characters`
     ),
   isPromoted: z.boolean(),
+  profile_image_url: z.string().url().or(z.literal('')),
+  header_image_url: z.string().url().or(z.literal('')),
   profile_links: z
     .object({
       label: z.string(),

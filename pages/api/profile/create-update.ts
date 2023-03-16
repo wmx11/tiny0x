@@ -9,7 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const requestHandler = request(req, res);
   const responseHandler = response(res);
 
-  const CreateOrUpdateProfile = async (auth: Auth) => {
+  const createOrUpdateProfile = async (auth: Auth) => {
     const data = await createOrUpdateProfileByUser({
       ...(req.body as ProfileSchema & {
         isUpdate: boolean;
@@ -25,5 +25,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return responseHandler.ok(data.results);
   };
 
-  return requestHandler.signedPost(CreateOrUpdateProfile);
+  return requestHandler.signedPost(createOrUpdateProfile);
 }

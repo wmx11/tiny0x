@@ -1,6 +1,7 @@
 import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
 import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
+import { GET_PROFILE_BY_USER } from '@/services/profile';
 import { ProfileLink } from '@/types/Profile';
 import { DEFAULT_URL } from '@/utils/contstants';
 import Icons from '@/utils/icons';
@@ -28,7 +29,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
     data: { data: Profile & { profile_links: ProfileLink[] } };
   }>('/profile', () =>
     axios.post(apiRoutes.profile.profile, {
-      type: 'getProfileByUser',
+      type: GET_PROFILE_BY_USER,
       userId,
     })
   );
@@ -37,14 +38,14 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
 
   return (
     <div className="max-w-[720px] w-full">
-      <ProfileHeader />
+      <ProfileHeader src={profile?.header_image_url as string} />
       <div className="translate-y-[-60px] md:ml-6 flex flex-col md:flex-row items-center md:items-end justify-between flex-wrap text-center md:text-left">
         <ProfileImage
           title={profile?.name}
           subtitle={profile?.subtitle as string}
-          src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+          src={profile?.profile_image_url as string}
         />
-        <div className='mt-4'>
+        <div className="mt-4">
           {user && user?.session?.profileId === profile?.id ? (
             <Link href={generalRoutes.profile.edit} passHref>
               <PrimaryButton>Edit Profile</PrimaryButton>

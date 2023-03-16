@@ -2,8 +2,11 @@
 import {
   handleProfileAvatarImageUpload,
   handleProfileHeaderImageUpload,
+  HANDLE_PROFILE_AVATAR_IMAGE_UPLOAD,
+  HANDLE_PROFILE_HEADER_IMAGE_UPLOAD,
   uploadImageToBucket,
   UploadImageToBucketOptions,
+  UPLOAD_IMAGE_TO_BUCKET,
 } from '@/services/images';
 import { formDataConfig, handleFormData } from '@/utils/api/handleFormData';
 import request, { Auth } from '@/utils/api/request';
@@ -33,23 +36,24 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     switch (type) {
-      case 'handleProfileAvatarImageUpload':
+      case HANDLE_PROFILE_AVATAR_IMAGE_UPLOAD:
         const profileAvatarImage = await handleProfileAvatarImageUpload(image);
         if (!profileAvatarImage.ok) {
           return responseHandler.badRequest(profileAvatarImage.errorMessage);
         }
         return responseHandler.ok(profileAvatarImage.results);
-      case 'handleProfileHeaderImageUpload':
+      case HANDLE_PROFILE_HEADER_IMAGE_UPLOAD:
         const profileHeaderImage = await handleProfileHeaderImageUpload(image);
         if (!profileHeaderImage.ok) {
           return responseHandler.badRequest(profileHeaderImage.errorMessage);
         }
         return responseHandler.ok(profileHeaderImage.results);
-      case 'uploadImageToBucket':
+      case UPLOAD_IMAGE_TO_BUCKET:
         const uploadedImage = await uploadImageToBucket({
           file: readFileSync(image.path),
           filename: data?.fields?.filename,
           acl: data?.fields?.acl,
+          contentType: 'image/png',
         });
         if (!uploadedImage.ok) {
           return responseHandler.badRequest(uploadedImage.errorMessage);

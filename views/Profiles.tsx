@@ -24,7 +24,7 @@ const Profiles: FC<ProfilesTypes> = ({ profiles }) => {
             person? Feel free to leave a positive review!
           </Text>
           <Text>
-            Don't have your own, personal Tiny0x NFT Profile?{' '}
+            {"Don't"} have your own, personal Tiny0x NFT Profile?{' '}
             <Link
               href={`${DEFAULT_URL}${generalRoutes.profile.edit}`}
               className="underline underline-offset-2"

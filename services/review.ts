@@ -2,6 +2,7 @@ import prisma from '@/prisma/prisma';
 import { DEFAULT_TAKE } from '@/utils/contstants';
 import { Review } from '@prisma/client';
 
+export const GET_REVIEWS_BY_PROFILE = 'getReviewsByProfile';
 export const getReviewsByProfile = async (profileId: string) => {
   try {
     if (!profileId) {
@@ -31,6 +32,7 @@ export const getReviewsByProfile = async (profileId: string) => {
   }
 };
 
+export const GET_RECENT_REVIEWS_BY_PROFILE = 'getRecentReviewsByProfile';
 export const getRecentReviewsByProfile = async (profileId: string) => {
   try {
     if (!profileId) {
@@ -61,6 +63,8 @@ export const getRecentReviewsByProfile = async (profileId: string) => {
   }
 };
 
+export const GET_TOTAL_REVIEWS_COUNT_BY_PROFILE =
+  'getTotalReviewsCountByProfile';
 export const getTotalReviewsCountByProfile = async (profileId: string) => {
   try {
     if (!profileId) {
@@ -80,6 +84,7 @@ export const getTotalReviewsCountByProfile = async (profileId: string) => {
   }
 };
 
+export const GET_AVERAGE_RATING_BY_PROFILE = 'getAverageRatingByprofile';
 export const getAverageRatingByprofile = async (profileId: string) => {
   try {
     if (!profileId) {
@@ -102,6 +107,7 @@ export const getAverageRatingByprofile = async (profileId: string) => {
   }
 };
 
+export const LEAVE_REVIEW_FOR_PROFILE = 'leaveReviewForProfile';
 export const leaveReviewForProfile = async ({
   rating,
   review,

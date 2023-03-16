@@ -7,6 +7,7 @@ import { Link } from '@prisma/client';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import slugify from 'slugify';
 
+export const GET_LINKS_BY_USER = 'getLinksByUser';
 export const getLinksByUser = async (userId: string) => {
   try {
     const links = await prisma?.link.findMany({
@@ -15,6 +16,13 @@ export const getLinksByUser = async (userId: string) => {
       },
       orderBy: {
         date_created: 'desc',
+      },
+      include: {
+        _count: {
+          select: {
+            actions: true,
+          },
+        },
       },
     });
 
@@ -25,6 +33,7 @@ export const getLinksByUser = async (userId: string) => {
   }
 };
 
+export const GET_RECENT_LINKS_BY_USER = 'getRecentLinksByUser';
 export const getRecentLinksByUser = async (userId: string) => {
   try {
     const links = await prisma?.link.findMany({
@@ -35,6 +44,13 @@ export const getRecentLinksByUser = async (userId: string) => {
         date_created: 'desc',
       },
       take: DEFAULT_TAKE,
+      include: {
+        _count: {
+          select: {
+            actions: true,
+          },
+        },
+      },
     });
     return links;
   } catch (error) {
@@ -43,6 +59,7 @@ export const getRecentLinksByUser = async (userId: string) => {
   }
 };
 
+export const GET_TOTAL_LINKS_COUNT_BY_USER = 'getTotalLinksCountByUser';
 export const getTotalLinksCountByUser = async (userId: string) => {
   try {
     const count = await prisma?.link.count({
@@ -58,6 +75,8 @@ export const getTotalLinksCountByUser = async (userId: string) => {
   }
 };
 
+export const GET_TOTAL_LINKS_COUNT_FOR_THIS_MONTH_BY_USER_IP =
+  'getTotalLinksCountForThisMonthByUserIp';
 export const getTotalLinksCountForThisMonthByUserIp = async (
   userId: string
 ) => {
@@ -92,6 +111,7 @@ export const getTotalLinksCountForThisMonthByUserIp = async (
   }
 };
 
+export const TINIFY_LINK = 'tinifyLink';
 export const tinifyLink = async (
   data: TinifySchema & { userId: string }
 ): Promise<ResultsOrError<Link>> => {
@@ -121,6 +141,7 @@ export const tinifyLink = async (
   }
 };
 
+export const UPDATE_TINY_LINK = 'updateTinyLink';
 export const updateTinyLink = async (
   data: TinifySchema & { userId: string; linkId?: string }
 ): Promise<ResultsOrError<Link>> => {

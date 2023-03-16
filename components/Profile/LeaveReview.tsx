@@ -1,4 +1,8 @@
 import apiRoutes from '@/routes/api';
+import {
+  GET_AVERAGE_RATING_BY_PROFILE,
+  LEAVE_REVIEW_FOR_PROFILE,
+} from '@/services/review';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { MAX_CHARACTERS } from '@/utils/contstants';
 import {
@@ -36,7 +40,7 @@ const LeaveReview: FC<LeaveReviewTypes> = ({ profileId, name }) => {
     data: { data: number | null };
   }>('/averageRating', () =>
     axios.post(apiRoutes.profile.profile, {
-      type: 'getAverageRatingByprofile',
+      type: GET_AVERAGE_RATING_BY_PROFILE,
       profileId,
     })
   );
@@ -65,7 +69,7 @@ const LeaveReview: FC<LeaveReviewTypes> = ({ profileId, name }) => {
           ...values,
           profileId,
         },
-        type: 'leaveReviewForProfile',
+        type: LEAVE_REVIEW_FOR_PROFILE,
       },
     });
     setIsLoading(false);

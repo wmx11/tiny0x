@@ -14,3 +14,5 @@ export type ImageRequest = {
 };
 
 export type SetImage = { setImage?: (image: Blob | null) => void };
+
+export type ImageUploadReturnTypes = { filename: string; url: string };

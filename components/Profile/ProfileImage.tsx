@@ -1,24 +1,29 @@
 import { SetImage } from '@/types/Files';
 import { Text, Title } from '@mantine/core';
+import { UseFormReturnType } from '@mantine/form';
 import { FC } from 'react';
 import ImageUpload from '../ImageUpload';
 
-type ProfileImageTypes = {
+type ProfileImageTypes<T> = {
   src?: string;
   title?: string;
   subtitle?: string;
   newLine?: boolean;
   isUpdate?: boolean;
+  form?: UseFormReturnType<T>;
+  formPath?: string;
 } & SetImage;
 
-const ProfileImage: FC<ProfileImageTypes> = ({
+const ProfileImage = <T,>({
   src,
   title,
   subtitle,
   newLine,
   isUpdate,
   setImage,
-}) => {
+  form,
+  formPath,
+}: ProfileImageTypes<T>) => {
   return (
     <div
       className={`flex flex-col items-center gap-4 flex-wrap ${
@@ -33,8 +38,11 @@ const ProfileImage: FC<ProfileImageTypes> = ({
           {isUpdate ? (
             <div className="absolute z-10 inset-0 h-full">
               <ImageUpload
+                initialImage={src}
                 setImage={setImage}
                 handler="handleProfileAvatarImageUpload"
+                form={form}
+                formPath={formPath}
               />
             </div>
           ) : null}

@@ -13,6 +13,7 @@ type ActionTypes = {
   linkId?: string;
 };
 
+export const SET_IMPRESSION_ACTION = 'setImpressionAction';
 export const setImpressionAction = async (data: ActionTypes) => {
   try {
     const impression = await prisma?.action.create({
@@ -29,6 +30,7 @@ export const setImpressionAction = async (data: ActionTypes) => {
   }
 };
 
+export const SET_CLICK_ACTION = 'setClickAction';
 export const setClickAction = async (data: ActionTypes) => {
   try {
     const click = await prisma?.action.create({

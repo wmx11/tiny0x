@@ -1,14 +1,16 @@
 import Table from '@/components/Table';
 import apiRoutes from '@/routes/api';
+import {
+  GET_RECENT_REVIEWS_BY_PROFILE,
+  GET_REVIEWS_BY_PROFILE,
+} from '@/services/review';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { formatDate } from '@/utils/formatDate';
 import { truncateAddress } from '@/utils/utils';
-import { Rating, Text, Title } from '@mantine/core';
+import { Rating, Text, Title, Tooltip } from '@mantine/core';
 import { Review } from '@prisma/client';
 import { Column } from '@table-library/react-table-library/types/compact';
-import {
-  TableNode
-} from '@table-library/react-table-library/types/table';
+import { TableNode } from '@table-library/react-table-library/types/table';
 import { FC } from 'react';
 import useSWR from 'swr';
 
@@ -26,7 +28,7 @@ const Reviews: FC<ReviewsTypes> = ({ isRecent, title, subtitle }) => {
       type: 'post',
       url: apiRoutes.profile.reviews,
       data: {
-        type: isRecent ? 'getRecentReviewsByProfile' : 'getReviewsByProfile',
+        type: isRecent ? GET_RECENT_REVIEWS_BY_PROFILE : GET_REVIEWS_BY_PROFILE,
       },
     })
   );
@@ -59,7 +61,19 @@ const Reviews: FC<ReviewsTypes> = ({ isRecent, title, subtitle }) => {
     },
     {
       label: 'Reviewer',
-      renderCell: (item) => <>{truncateAddress(item?.reviewer?.address, 6)}</>,
+      renderCell: (item) => (
+        <>
+          <Tooltip
+            label={item?.reviewer?.address}
+            withArrow
+            color="grape"
+            position="top-start"
+            multiline
+          >
+            <Text>{truncateAddress(item?.reviewer?.address, 6)}</Text>
+          </Tooltip>
+        </>
+      ),
     },
     {
       label: 'Date Reviewed',

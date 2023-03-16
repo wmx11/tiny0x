@@ -2,9 +2,10 @@ import prisma from '@/prisma/prisma';
 import { ProfileSchema } from '@/schema/profile';
 import { ProfileLink } from '@/types/Profile';
 import { ResultsOrError } from '@/types/Results';
-import { Link, Profile } from '@prisma/client';
+import { Profile } from '@prisma/client';
 import { tinifyLink, updateTinyLink } from './link';
 
+export const GET_PROFILE_BY_USER = 'getProfileByUser';
 export const getProfileByUser = async (userId: string) => {
   try {
     if (!userId) {
@@ -24,6 +25,7 @@ export const getProfileByUser = async (userId: string) => {
   }
 };
 
+export const GET_PROFILES = 'getProfiles';
 export const getProfiles = async () => {
   try {
     const profiles = await prisma?.profile.findMany({
@@ -46,6 +48,7 @@ export type ProfileStats = {
   totalLinkClicksCount: number | undefined;
 };
 
+export const GET_PROFILE_STATS_BY_USER = 'getProfileStatsByUser';
 export const getProfileStatsByUser = async (
   userId: string
 ): Promise<ProfileStats | undefined> => {
@@ -96,6 +99,7 @@ export const getProfileStatsByUser = async (
   }
 };
 
+export const CREATE_OR_UPDATE_PROFILE_BY_USER = 'createOrUpdateProfileByUser';
 export const createOrUpdateProfileByUser = async (
   data: ProfileSchema & {
     isUpdate?: boolean;

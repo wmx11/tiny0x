@@ -67,6 +67,7 @@ export const ProfileCard: FC<{ profile: Profile }> = ({ profile }) => {
         <ProfileImage
           title={profile?.name || ''}
           subtitle={profile?.subtitle || ''}
+          src={profile?.profile_image_url || ''}
           newLine
         />
         <Text size="sm" color="dimmed" className="mt-4">

@@ -1,28 +1,39 @@
 import apiRoutes from '@/routes/api';
+import {
+  HANDLE_PROFILE_AVATAR_IMAGE_UPLOAD,
+  HANDLE_PROFILE_HEADER_IMAGE_UPLOAD,
+} from '@/services/images';
 import { SetImage } from '@/types/Files';
 import { signedRequest } from '@/utils/api/signedRequest';
 import config from '@/utils/config';
 import Icons from '@/utils/icons';
 import { ActionIcon, FileInput, LoadingOverlay } from '@mantine/core';
+import { UseFormReturnType } from '@mantine/form';
 import React, { FC, useRef, useState } from 'react';
 import ErrorMessage from './ErrorMessage';
 
-type ImageUploadTypes = {
+type ImageUploadTypes<T> = {
   label?: string;
   description?: string;
   placeholder?: string;
   initialImage?: string;
-  handler: 'handleProfileAvatarImageUpload' | 'handleProfileHeaderImageUpload';
+  form?: UseFormReturnType<T>;
+  formPath?: string;
+  handler:
+    | typeof HANDLE_PROFILE_AVATAR_IMAGE_UPLOAD
+    | typeof HANDLE_PROFILE_HEADER_IMAGE_UPLOAD;
 } & SetImage;
 
-const ImageUpload: FC<ImageUploadTypes> = ({
+const ImageUpload = <T,>({
   initialImage,
   setImage,
   description,
   label,
   placeholder,
   handler,
-}) => {
+  form,
+  formPath,
+}: ImageUploadTypes<T>) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(initialImage);
   const [errorMessage, setErrorMessage] = useState('');
@@ -36,6 +47,7 @@ const ImageUpload: FC<ImageUploadTypes> = ({
   const handleDelete = () => {
     setImageUrl(undefined);
     setImage && setImage(null);
+    form?.setFieldValue(formPath as string, '' as any);
   };
 
   const handleSubmit = async (image: File) => {

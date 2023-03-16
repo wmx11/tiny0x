@@ -1,8 +1,11 @@
 import { SecondaryButton } from '@/components/Buttons/Buttons';
 import Table from '@/components/Table';
 import apiRoutes from '@/routes/api';
+import { GET_LINKS_BY_USER, GET_RECENT_LINKS_BY_USER } from '@/services/link';
 import { signedRequest } from '@/utils/api/signedRequest';
+import { DEFAULT_URL } from '@/utils/contstants';
 import { formatDate } from '@/utils/formatDate';
+import Icons from '@/utils/icons';
 import { Text, Title } from '@mantine/core';
 import { Link } from '@prisma/client';
 import { Column } from '@table-library/react-table-library/types/compact';
@@ -24,13 +27,13 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
         type: 'post',
         url: apiRoutes.profile.links,
         data: {
-          type: isRecent ? 'getRecentLinksByUser' : 'getLinksByUser',
+          type: isRecent ? GET_RECENT_LINKS_BY_USER : GET_LINKS_BY_USER,
         },
       })
   );
 
   const theme = {
-    Table: `--data-table-library_grid-template-columns: 150px repeat(3, 1fr);`,
+    Table: `--data-table-library_grid-template-columns: 120px repeat(6, 1fr);`,
     BaseCell: `
     > div {
       white-space: normal;
@@ -60,16 +63,52 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
       ),
     },
     {
+      label: 'Track Metrics',
+      renderCell: (item) => (
+        <>
+          {item?.trackMetrics ? (
+            <Icons.Check className="text-green-500" />
+          ) : (
+            <Icons.Times className="text-red-500" />
+          )}
+        </>
+      ),
+    },
+    {
+      label: 'Accepting Ads',
+      renderCell: (item) => (
+        <>
+          {item?.doesAcceptAds ? (
+            <Icons.Check className="text-green-500" />
+          ) : (
+            <Icons.Times className="text-red-500" />
+          )}
+        </>
+      ),
+    },
+    {
+      label: 'Clicks',
+      renderCell: (item) => <>{item?._count?.actions || 0}</>,
+    },
+    {
       label: 'Date Created',
       renderCell: (item) => <>{formatDate(item.date_created)}</>,
     },
     {
       label: 'Action',
       renderCell: (item) => (
-        <>
-          {' '}
-          <SecondaryButton>Burn</SecondaryButton>
-        </>
+        <div className="flex gap-2">
+          <SecondaryButton
+            size="xs"
+            rightIcon={<Icons.External />}
+            component="a"
+            href={`${DEFAULT_URL}/${item?.slug}`}
+            target="__blank"
+          >
+            Go To
+          </SecondaryButton>
+          <SecondaryButton size="xs">Burn</SecondaryButton>
+        </div>
       ),
     },
   ];

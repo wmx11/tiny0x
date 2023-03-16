@@ -1,13 +1,13 @@
 import { GlassCard, StatCard } from '@/components/Cards/Cards';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
+import apiRoutes from '@/routes/api';
+import { GET_PROFILE_STATS_BY_USER, ProfileStats } from '@/services/profile';
+import { signedRequest } from '@/utils/api/signedRequest';
 import { useUser } from '@thirdweb-dev/react';
+import useSWR from 'swr';
 import Links from './Links';
 import Reviews from './Reviews';
-import useSWR from 'swr';
-import { signedRequest } from '@/utils/api/signedRequest';
-import apiRoutes from '@/routes/api';
-import { ProfileStats } from '@/services/profile';
 
 const AuthenticatedProfile = () => {
   const { user } = useUser<UserSession, Session>();
@@ -19,7 +19,7 @@ const AuthenticatedProfile = () => {
         type: 'post',
         url: apiRoutes.profile.profile,
         data: {
-          type: 'getProfileStatsByUser',
+          type: GET_PROFILE_STATS_BY_USER,
           userId: user?.session?.id,
         },
       })

@@ -1,8 +1,6 @@
-import { Code, Container, Text, Title } from '@mantine/core';
-import Image from 'next/image';
-import React from 'react';
+import { Container, Text, Title } from '@mantine/core';
 import { OrangeBackdrop } from '../Backdrop';
-import { GlassCard, NFTCard } from '../Cards/Cards';
+import { NFTCard } from '../Cards/Cards';
 import Tinify from '../Tinify/Tinify';
 
 const Hero = () => {
@@ -29,7 +27,7 @@ const Hero = () => {
             <Tinify />
           </div>
         </Container>
-        <div className="absolute flex flex-col gap-6 md:left-10 h-[100%] bottom-0 items-center w-full opacity-10 md:opacity-30 verticalReel">
+        <div className="absolute flex flex-col gap-6 md:left-10 h-[100%] bottom-0 items-center w-full md:w-auto opacity-10 md:opacity-30 verticalReel">
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />
           <NFTCard code={codeBlock} />

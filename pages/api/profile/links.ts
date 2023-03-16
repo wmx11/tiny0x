@@ -4,6 +4,10 @@ import {
   getRecentLinksByUser,
   getTotalLinksCountByUser,
   getTotalLinksCountForThisMonthByUserIp,
+  GET_LINKS_BY_USER,
+  GET_RECENT_LINKS_BY_USER,
+  GET_TOTAL_LINKS_COUNT_BY_USER,
+  GET_TOTAL_LINKS_COUNT_FOR_THIS_MONTH_BY_USER_IP,
 } from '@/services/link';
 import request, { Auth } from '@/utils/api/request';
 import { response } from '@/utils/api/response';
@@ -16,16 +20,16 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const linksController = async (auth: Auth) => {
     const { type } = req.body;
     switch (type) {
-      case 'getLinksByUser':
+      case GET_LINKS_BY_USER:
         const links = await getLinksByUser(auth.id);
         return responseHandler.ok(links);
-      case 'getRecentLinksByUser':
+      case GET_RECENT_LINKS_BY_USER:
         const recentLinks = await getRecentLinksByUser(auth.id);
         return responseHandler.ok(recentLinks);
-      case 'getTotalLinksCountByUser':
+      case GET_TOTAL_LINKS_COUNT_BY_USER:
         const linksCount = await getTotalLinksCountByUser(auth.id);
         return responseHandler.ok(linksCount);
-      case 'getTotalLinksCountForThisMonthByUserIp':
+      case GET_TOTAL_LINKS_COUNT_FOR_THIS_MONTH_BY_USER_IP:
         const linksCountByIp = await getTotalLinksCountForThisMonthByUserIp(
           auth.id
         );

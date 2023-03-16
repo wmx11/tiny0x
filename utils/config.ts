@@ -5,8 +5,6 @@ export type LinkPriceEntries = {
   slug?: number;
 };
 
-type ConfigType = typeof config;
-
 const config = {
   links: {
     freePerIp: 5,
@@ -47,7 +45,7 @@ const config = {
     getImageData(image: Blob) {
       return `data:image/png;base64,${image}`;
     },
-    setImageUrl(path: string) {
+    getImageUrl(path: string) {
       return `${process.env.BUCKET_ENDPOINT_CDN}/${path}`;
     },
     profile: {

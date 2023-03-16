@@ -1,29 +1,21 @@
 import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
-import { uploadImageToBucket } from '@/services/images';
+import { ProfileSchema, profileSchema } from '@/schema/profile';
 import { ProfileLink } from '@/types/Profile';
 import { signedRequest } from '@/utils/api/signedRequest';
-import config from '@/utils/config';
 import { MAX_CHARACTERS } from '@/utils/contstants';
 import Icons from '@/utils/icons';
-import {
-  ActionIcon,
-  Button,
-  Checkbox,
-  Text,
-  Textarea,
-  TextInput,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { uploadProfileImage } from '@/utils/utils';
+import { Text, Textarea, TextInput } from '@mantine/core';
+import { useForm, zodResolver } from '@mantine/form';
 import { Profile } from '@prisma/client';
-import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { FC, useState } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { PrimaryButton, SecondaryButton } from '../Buttons/Buttons';
-import { GlassCard } from '../Cards/Cards';
 import ProfileHeader from './ProfileHeader';
 import ProfileImage from './ProfileImage';
+import ProfileLinkFields from './ProfileLinkFields';
 
 type ProfileFormTypes = {
   isUpdate?: boolean;
@@ -31,25 +23,46 @@ type ProfileFormTypes = {
 };
 
 const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
+  const [avatarImage, setAvatarImage] = useState<Blob | null>(null);
+  const [headerImage, setHeaderImage] = useState<Blob | null>(null);
   const router = useRouter();
 
-  const form = useForm({
+  const form = useForm<ProfileSchema>({
+    validate: zodResolver(profileSchema),
     initialValues: {
       username: profile?.username || '',
       name: profile?.name || '',
       subtitle: profile?.subtitle || '',
       description: profile?.description || '',
       isPromoted: profile?.isPromoted ?? false,
+      profile_image_url: profile?.profile_image_url ?? '',
+      header_image_url: profile?.header_image_url ?? '',
       profile_links:
         (profile?.profile_links as ProfileLink[]) || ([] as ProfileLink[]),
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    const valuesCopy = { ...values };
+
     try {
+      if (avatarImage) {
+        const data = await uploadProfileImage(avatarImage);
+        if (data.ok) {
+          valuesCopy.profile_image_url = data.results.url;
+        }
+      }
+
+      if (headerImage) {
+        const data = await uploadProfileImage(headerImage);
+        if (data.ok) {
+          valuesCopy.header_image_url = data.results.url;
+        }
+      }
+
       const data = await signedRequest({
         type: 'post',
-        data: { ...values, profileId: profile?.id, isUpdate },
+        data: { ...valuesCopy, profileId: profile?.id, isUpdate },
         url: apiRoutes.profile.createOrUpdate,
       });
 
@@ -59,115 +72,27 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
     }
   };
 
-  const linkFields = form.values.profile_links.length ? (
-    form.values.profile_links.map((_, index) => (
-      <Draggable key={index} index={index} draggableId={index.toString()}>
-        {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            className="flex items-center gap-2 mb-4"
-          >
-            <div {...provided.dragHandleProps} className="text-2xl">
-              <Icons.GripVertical />
-            </div>
-            <GlassCard className="w-full">
-              <div className="flex flex-col md:flex-row flex-wrap items-start gap-2 justify-between w-full mb-4">
-                <TextInput
-                  className="flex-1 w-full"
-                  label="Label"
-                  description="Label of your link button"
-                  placeholder="Twitter"
-                  size="md"
-                  {...form.getInputProps(`profile_links.${index}.label`)}
-                />
-                <TextInput
-                  className="flex-1 w-full"
-                  label="Link"
-                  description="Link of your button"
-                  placeholder="https://..."
-                  size="md"
-                  {...form.getInputProps(`profile_links.${index}.target`)}
-                />
-              </div>
-              <div className="flex flex-col md:flex-row flex-wrap gap-4">
-                <Checkbox
-                  size="md"
-                  label="Track Clicks and Traffic"
-                  description="Do you want to track the click through rate going to the new Tiny link?"
-                  className="flex-1"
-                  {...form.getInputProps(
-                    `profile_links.${index}.trackMetrics`,
-                    {
-                      type: 'checkbox',
-                    }
-                  )}
-                />
-                <Checkbox
-                  size="md"
-                  label="Accept Advertising"
-                  description="Do you allow other users or projects to display ads using your link? 80% of the ad's budget would be allocated to your account."
-                  className="flex-1"
-                  {...form.getInputProps(
-                    `profile_links.${index}.doesAcceptAds`,
-                    {
-                      type: 'checkbox',
-                    }
-                  )}
-                />
-              </div>
-            </GlassCard>
-            <ActionIcon
-              className=""
-              variant="light"
-              color="red"
-              onClick={() => form.removeListItem('profile_links', index)}
-            >
-              <Icons.Trash />
-            </ActionIcon>
-          </div>
-        )}
-      </Draggable>
-    ))
-  ) : (
-    <GlassCard>
-      <Text>You currently have no links</Text>
-    </GlassCard>
-  );
-
-  const [image, setImage] = useState<Blob | null>(null);
-
-  const testUpload = async () => {
-    const fs = new FormData();
-    fs.append('type', 'uploadImageToBucket');
-    fs.append('image', image as Blob);
-    fs.append('filename', `${config.images.profile.path}/${nanoid()}.png`);
-    fs.append('acl', 'public-read');
-
-    // const data = await signedRequest({
-    //   type: 'post',
-    //   url: apiRoutes.image,
-    //   data: fs,
-    //   isFormData: true,
-    // });
-
-    console.log(image);
-  };
-
   return (
     <div>
-      <div>
-        <Text>Test image Upload</Text>
-        <ProfileImage isUpdate={true} setImage={setImage} />
-        <Button onClick={testUpload}>Upload</Button>
-      </div>
       <form
         onSubmit={form.onSubmit(handleSubmit)}
         className="flex flex-col gap-4"
       >
-        <ProfileHeader isUpdate={true} />
+        <ProfileHeader
+          isUpdate={true}
+          src={form?.values?.header_image_url as string}
+          setImage={setHeaderImage}
+          form={form}
+          formPath="header_image_url"
+        />
         <div className="mt-[-60px] md:ml-6 flex flex-col md:flex-row items-center md:items-end flex-wrap">
-          <ProfileImage isUpdate={true} />
+          <ProfileImage
+            isUpdate={true}
+            src={form?.values?.profile_image_url as string}
+            setImage={setAvatarImage}
+            form={form}
+            formPath="profile_image_url"
+          />
         </div>
         <TextInput
           label="Username"
@@ -196,6 +121,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
             size="md"
             minRows={10}
             className="mb-4"
+            maxLength={MAX_CHARACTERS}
             {...form.getInputProps('description')}
           />
           <Text size="sm" color="dimmed">
@@ -216,7 +142,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
           <Droppable droppableId="dnd-list" direction="vertical">
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
-                {linkFields}
+                <ProfileLinkFields form={form} />
                 {provided.placeholder}
               </div>
             )}

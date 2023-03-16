@@ -1,3 +1,4 @@
+import { ImageUploadReturnTypes } from '@/types/Files';
 import { ResultsOrError } from '@/types/Results';
 import { FileType } from '@/utils/api/handleFormData';
 import config from '@/utils/config';
@@ -11,6 +12,7 @@ type ImageUploadOptions = {
   fit?: keyof sharp.FitEnum;
 };
 
+export const HANDLE_IMAGE_UPLOAD = 'handleImageUpload';
 export const handleImageUpload = async (
   image: FileType,
   options: ImageUploadOptions
@@ -41,6 +43,8 @@ export const handleImageUpload = async (
   }
 };
 
+export const HANDLE_PROFILE_HEADER_IMAGE_UPLOAD =
+  'handleProfileHeaderImageUpload';
 export const handleProfileHeaderImageUpload = async (
   image: FileType
 ): Promise<ResultsOrError<string>> => {
@@ -50,12 +54,14 @@ export const handleProfileHeaderImageUpload = async (
       width: config.images.profile.header.width,
       fit: 'cover',
     });
-    return { ok: true, results: data.results as string };
+    return { ok: true, results: data?.results as string };
   } catch (error) {
     return { ok: false, errorMessage: error as string };
   }
 };
 
+export const HANDLE_PROFILE_AVATAR_IMAGE_UPLOAD =
+  'handleProfileAvatarImageUpload';
 export const handleProfileAvatarImageUpload = async (
   image: FileType
 ): Promise<ResultsOrError<string>> => {
@@ -65,7 +71,7 @@ export const handleProfileAvatarImageUpload = async (
       width: config.images.profile.avatar.width,
       fit: 'cover',
     });
-    return { ok: true, results: data.results as string };
+    return { ok: true, results: data?.results as string };
   } catch (error) {
     return { ok: false, errorMessage: error as string };
   }
@@ -73,22 +79,28 @@ export const handleProfileAvatarImageUpload = async (
 
 export type UploadImageToBucketOptions = {
   filename: string;
+  contentType: string;
   file: Blob | Buffer | string;
   acl?: 'public-read' | 'private';
 };
 
+export const UPLOAD_IMAGE_TO_BUCKET = 'uploadImageToBucket';
 export const uploadImageToBucket = async ({
   filename,
   file,
   acl,
-}: UploadImageToBucketOptions): Promise<ResultsOrError<{}>> => {
+  contentType,
+}: UploadImageToBucketOptions): Promise<
+  ResultsOrError<ImageUploadReturnTypes>
+> => {
   try {
-    const data = await s3Client.send(
+    await s3Client.send(
       new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME as string,
         Key: filename,
         Body: file,
         ACL: (acl = 'public-read'),
+        ContentType: contentType,
       })
     );
 
@@ -96,6 +108,7 @@ export const uploadImageToBucket = async ({
       ok: true,
       results: {
         filename,
+        url: config.images.getImageUrl(filename),
       },
     };
   } catch (error) {
