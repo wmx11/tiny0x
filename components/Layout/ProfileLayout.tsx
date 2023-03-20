@@ -30,7 +30,7 @@ const ProfileLayout: FC<ProfileLayoutTypes> = ({ children }) => {
               })}
           </div>
         </div>
-        <div className="p-5 md:p-10 flex-grow">{children}</div>
+        <div className="p-5 md:p-10 relative flex-grow">{children}</div>
       </div>
     </Section>
   );

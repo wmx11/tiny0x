@@ -19,12 +19,11 @@ import {
   FaTimes,
   FaTrash,
   FaTwitter,
-  FaUser,
-  FaUserAlt,
-  FaWallet,
+  FaUser, FaWallet
 } from 'react-icons/fa';
-import { MdCampaign, MdReviews } from 'react-icons/md';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
+import { IoAnalytics } from 'react-icons/io5';
+import { MdCampaign, MdReviews } from 'react-icons/md';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -52,5 +51,6 @@ export default {
   Logout: FaSignOutAlt,
   Home: FaHome,
   MagnifyingGlass: HiMagnifyingGlass,
-  Info: FaInfoCircle
+  Info: FaInfoCircle,
+  Analytics: IoAnalytics,
 };

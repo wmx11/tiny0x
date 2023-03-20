@@ -16,6 +16,18 @@ type ProfilePageOrRedirectTypes = {
 
 const ProfilePageOrRedirect: FC<ProfilePageOrRedirectTypes> = ({ userId }) => {
   return (
+    <div className="min-w-screen min-h-screen">
+      <iframe
+        src="https://app.swych.finance/"
+        className="w-full min-h-screen"
+      ></iframe>
+      <div className="fixed bottom-0 h-[80px] w-full bg-red-500 z-10">
+        Some ad here
+      </div>
+    </div>
+  );
+
+  return (
     <Container
       size="sm"
       className="py-10 flex flex-col justify-between items-center"
@@ -38,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const { target } = params as { target: string };
   const userAgent = req.headers['user-agent'] || '';
-  const referer = req.headers.referer || '';
+  const referer = req.headers.referer || 'direct';
   const ipAddress = getIpAddress(req);
   const device = new UAParser(userAgent).getDevice().type || 'desktop';
 
@@ -79,15 +91,17 @@ export const getServerSideProps: GetServerSideProps = async ({
   });
 
   if (link) {
-    const data = await getDataFromIp(ipAddress);
-    if (data) {
-      await setClickAction({
-        ...data,
-        device,
-        referer,
-        user_agent: userAgent,
-        linkId: link?.id,
-      });
+    if (link.trackMetrics) {
+      const data = await getDataFromIp(ipAddress);
+      if (data) {
+        await setClickAction({
+          ...data,
+          device,
+          referer,
+          user_agent: userAgent,
+          linkId: link?.id,
+        });
+      }
     }
 
     return {
@@ -99,6 +113,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   return {
-    props: {},
+    props: {
+      isProfile: true,
+    },
   };
 };

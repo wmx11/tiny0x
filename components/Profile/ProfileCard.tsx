@@ -26,7 +26,9 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
   const { user } = useUser<UserSession, Session>();
 
   const { data, error, isLoading } = useSWR<{
-    data: { data: Profile & { profile_links: ProfileLink[] } };
+    data: {
+      data: Profile & { profile_links: ProfileLink[] }
+    };
   }>('/profile', () =>
     axios.post(apiRoutes.profile.profile, {
       type: GET_PROFILE_BY_USER,

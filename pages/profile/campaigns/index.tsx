@@ -1,8 +1,9 @@
 import ProfileLayout from '@/components/Layout/ProfileLayout';
+import Campaigns from '@/views/Profile/Campaigns';
 import React, { ReactElement } from 'react';
 
 const ProfileCampaignsPage = () => {
-  return <div>ProfileCampaignsPage</div>;
+  return <Campaigns />;
 };
 
 ProfileCampaignsPage.getLayout = (page: ReactElement) => {

@@ -1,4 +1,5 @@
 import { GlassCard } from '@/components/Cards/Cards';
+import GoBack from '@/components/GoBack';
 import ProfileForm from '@/components/Profile/ProfileForm';
 import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
 import apiRoutes from '@/routes/api';
@@ -26,6 +27,7 @@ const CreateOrUpdateProfile = () => {
 
   return (
     <div>
+      <GoBack />
       <div className="max-w-[720px]">
         <div className="mb-4 text-white">
           <Title>

@@ -1,15 +1,17 @@
 import { SecondaryButton } from '@/components/Buttons/Buttons';
 import Table from '@/components/Table';
 import apiRoutes from '@/routes/api';
+import generalRoutes from '@/routes/general';
 import { GET_LINKS_BY_USER, GET_RECENT_LINKS_BY_USER } from '@/services/link';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { DEFAULT_URL } from '@/utils/contstants';
 import { formatDate } from '@/utils/formatDate';
 import Icons from '@/utils/icons';
 import { Text, Title } from '@mantine/core';
-import { Link } from '@prisma/client';
+import { Link as LinkSchema } from '@prisma/client';
 import { Column } from '@table-library/react-table-library/types/compact';
 import { TableNode } from '@table-library/react-table-library/types/table';
+import Link from 'next/link';
 import { FC } from 'react';
 import useSWR from 'swr';
 
@@ -20,7 +22,7 @@ type LinksTypes = {
 };
 
 const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
-  const { data: links, isLoading } = useSWR<{ data: { data: Link[] } }>(
+  const { data: links, isLoading } = useSWR<{ data: { data: LinkSchema[] } }>(
     '/links',
     () =>
       signedRequest({
@@ -33,7 +35,7 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
   );
 
   const theme = {
-    Table: `--data-table-library_grid-template-columns: 120px repeat(6, 1fr);`,
+    Table: `--data-table-library_grid-template-columns: 130px repeat(6, 1fr);`,
     BaseCell: `
     > div {
       white-space: normal;
@@ -48,7 +50,24 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
     {
       label: 'Alias',
       pinLeft: true,
-      renderCell: (item) => <>{item.slug}</>,
+      renderCell: (item) => (
+        <>
+          {item?.trackMetrics ? (
+            <Link
+              href={`${generalRoutes.analytics.alias.replace(
+                '${alias}',
+                item.slug
+              )}`}
+              className="flex items-center gap-2"
+            >
+              <Icons.Analytics />
+              {item.slug}
+            </Link>
+          ) : (
+            item.slug
+          )}
+        </>
+      ),
     },
     {
       label: 'Target',
@@ -88,7 +107,9 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
     },
     {
       label: 'Clicks',
-      renderCell: (item) => <>{item?._count?.actions || 0}</>,
+      renderCell: (item) => (
+        <>{item?.trackMetrics ? item?._count?.actions || 0 : '...'}</>
+      ),
     },
     {
       label: 'Date Created',
@@ -105,7 +126,7 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
             href={`${DEFAULT_URL}/${item?.slug}`}
             target="__blank"
           >
-            Go To
+            Visit
           </SecondaryButton>
           <SecondaryButton size="xs">Burn</SecondaryButton>
         </div>

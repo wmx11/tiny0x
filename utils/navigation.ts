@@ -15,6 +15,12 @@ export const navigation = [
     icon: icons.Info,
   },
   {
+    label: 'Campaigns',
+    mobileLabel: '',
+    href: generalRoutes.campaigns,
+    icon: icons.Campaign,
+  },
+  {
     label: 'Discover Profiles',
     mobileLabel: 'Discover',
     href: generalRoutes.profiles,

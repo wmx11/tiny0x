@@ -10,6 +10,9 @@ const generalRoutes = {
     reviews: '/profile/reviews',
     edit: '/profile/edit',
   },
+  analytics: {
+    alias: '/analytics/${alias}',
+  },
 };
 
 export default generalRoutes;

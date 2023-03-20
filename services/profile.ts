@@ -1,5 +1,6 @@
 import prisma from '@/prisma/prisma';
 import { ProfileSchema } from '@/schema/profile';
+import { Actions } from '@/types/Actions';
 import { ProfileLink } from '@/types/Profile';
 import { ResultsOrError } from '@/types/Results';
 import { Profile } from '@prisma/client';
@@ -68,7 +69,7 @@ export const getProfileStatsByUser = async (
     const profileImpressionsCount = await prisma?.action.count({
       where: {
         profileId: profile?.id,
-        type: 0,
+        type: Actions.Impression,
       },
     });
 
@@ -83,7 +84,7 @@ export const getProfileStatsByUser = async (
         link: {
           userId,
         },
-        type: 1,
+        type: Actions.Click,
       },
     });
 
@@ -118,11 +119,15 @@ export const createOrUpdateProfileByUser = async (
       },
     });
 
-    if (!data?.isUpdate && existingProfile) {
+    if (
+      (!data?.isUpdate && existingProfile) ||
+      (data?.isUpdate &&
+        existingProfile?.id &&
+        existingProfile?.id !== data?.profileId)
+    ) {
       return {
         ok: false,
-        errorMessage:
-          'Profile with this username already exists. Please choose another one.',
+        errorMessage: `Profile with the username ${data?.username} already exists. Please choose another one.`,
       };
     }
 

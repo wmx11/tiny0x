@@ -19,7 +19,7 @@ const ProfileHeader = <T,>({
   formPath,
 }: ProfileHeaderTypes<T>) => {
   return (
-    <div className="h-[200px] bg-zinc-400 overflow-hidden rounded-md relative">
+    <div className="h-full max-h-[200px] bg-zinc-400 overflow-hidden rounded-md relative">
       <div className="absolute right-5 top-5">
         <Text weight={700} color="dimmed">
           #114

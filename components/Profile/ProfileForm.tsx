@@ -2,6 +2,7 @@ import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
 import { ProfileSchema, profileSchema } from '@/schema/profile';
 import { ProfileLink } from '@/types/Profile';
+import axiosErrorHandler from '@/utils/api/axiosErrorHandler';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { MAX_CHARACTERS } from '@/utils/contstants';
 import Icons from '@/utils/icons';
@@ -13,6 +14,7 @@ import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { PrimaryButton, SecondaryButton } from '../Buttons/Buttons';
+import ErrorMessage from '../ErrorMessage';
 import ProfileHeader from './ProfileHeader';
 import ProfileImage from './ProfileImage';
 import ProfileLinkFields from './ProfileLinkFields';
@@ -25,6 +27,8 @@ type ProfileFormTypes = {
 const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
   const [avatarImage, setAvatarImage] = useState<Blob | null>(null);
   const [headerImage, setHeaderImage] = useState<Blob | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<ProfileSchema>({
@@ -44,7 +48,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
 
   const handleSubmit = async (values: typeof form.values) => {
     const valuesCopy = { ...values };
-
+    setLoading(true);
     try {
       if (avatarImage) {
         const data = await uploadProfileImage(avatarImage);
@@ -60,7 +64,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
         }
       }
 
-      const data = await signedRequest({
+      await signedRequest({
         type: 'post',
         data: { ...valuesCopy, profileId: profile?.id, isUpdate },
         url: apiRoutes.profile.createOrUpdate,
@@ -68,7 +72,11 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
 
       router.push(generalRoutes.profile.profile);
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      return axiosErrorHandler(error, (err) => {
+        console.log(err);
+        setErrorMessage(err as string);
+      });
     }
   };
 
@@ -94,6 +102,9 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
             formPath="profile_image_url"
           />
         </div>
+        {errorMessage ? (
+          <ErrorMessage errorMessage={errorMessage as string} />
+        ) : null}
         <TextInput
           label="Username"
           description="Your username which will be used to find your profile online"
@@ -165,7 +176,7 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
           </SecondaryButton>
         </div>
 
-        <PrimaryButton type="submit" size="lg">
+        <PrimaryButton type="submit" size="lg" loading={loading}>
           {isUpdate ? 'Update' : 'Create Profile'}
         </PrimaryButton>
       </form>

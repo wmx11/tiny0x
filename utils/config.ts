@@ -52,11 +52,18 @@ const config = {
       path: 'images/profile',
       header: {
         width: 720,
-        height: 200,
+        height: 220,
       },
       avatar: {
         width: 150,
         height: 150,
+      },
+    },
+    campaign: {
+      path: '',
+      header: {
+        width: 375,
+        height: 125,
       },
     },
   },

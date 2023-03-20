@@ -28,7 +28,7 @@ const mainTheme = (theme: 'light' | 'dark') => ({
     }
     &:hover {
       td {
-        background-color: '';
+        background-color: #47556950;
       }
     }
   `,

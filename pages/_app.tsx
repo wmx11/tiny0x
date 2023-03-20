@@ -4,11 +4,10 @@ import '@/styles/globals.css';
 import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 
-import type { AppProps } from 'next/app';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
 import { NextPage } from 'next';
+import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
-import { web3Config } from '../web3/config';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -41,6 +40,16 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           Loader: {
             defaultProps: {
               color: 'grape',
+            },
+          },
+          Text: {
+            defaultProps: {
+              color: 'white',
+            },
+          },
+          Title: {
+            defaultProps: {
+              color: 'white',
             },
           },
         },

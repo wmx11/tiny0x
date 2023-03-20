@@ -1,5 +1,6 @@
 import prisma from '@/prisma/prisma';
 import { TinifySchema } from '@/schema/tinify';
+import { Actions } from '@/types/Actions';
 import { ResultsOrError } from '@/types/Results';
 import { DEFAULT_TAKE } from '@/utils/contstants';
 import { generateLinkAlias } from '@/utils/utils';
@@ -163,6 +164,72 @@ export const updateTinyLink = async (
     });
 
     return { ok: true, results: updatedLink as Link };
+  } catch (error) {
+    return { ok: false, errorMessage: error as string };
+  }
+};
+
+export type GetLinkStatsByAliasReturnTypes = {
+  link: Link | null | undefined;
+  clicks: number | undefined;
+  groups: {
+    device: string;
+    country: string;
+    referer: string;
+    ip: string;
+    country_code: string;
+    _count: number;
+  }[];
+};
+
+export const GET_LINK_STATS_BY_ALIAS = 'getLinkStatsByAlias';
+export const getLinkStatsByAlias = async (
+  userId: string,
+  alias: string
+): Promise<ResultsOrError<GetLinkStatsByAliasReturnTypes>> => {
+  try {
+    const link = await prisma?.link.findUnique({
+      where: {
+        slug: alias,
+      },
+    });
+
+    if (link?.userId !== userId) {
+      return {
+        ok: false,
+        errorMessage: 'You cannot access information about this link.',
+      };
+    }
+
+    const clicks = await prisma?.action.count({
+      where: {
+        link: {
+          slug: alias,
+          userId,
+        },
+        type: Actions.Click,
+      },
+    });
+
+    const groups = await prisma?.action.groupBy({
+      by: ['device', 'country', 'referer', 'ip', 'country_code'],
+      _count: true,
+      where: {
+        link: {
+          slug: alias,
+          userId,
+        },
+      },
+    });
+
+    return {
+      ok: true,
+      results: {
+        link,
+        clicks,
+        groups: groups as GetLinkStatsByAliasReturnTypes['groups'],
+      },
+    };
   } catch (error) {
     return { ok: false, errorMessage: error as string };
   }
