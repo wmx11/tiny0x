@@ -16,18 +16,6 @@ type ProfilePageOrRedirectTypes = {
 
 const ProfilePageOrRedirect: FC<ProfilePageOrRedirectTypes> = ({ userId }) => {
   return (
-    <div className="min-w-screen min-h-screen">
-      <iframe
-        src="https://app.swych.finance/"
-        className="w-full min-h-screen"
-      ></iframe>
-      <div className="fixed bottom-0 h-[80px] w-full bg-red-500 z-10">
-        Some ad here
-      </div>
-    </div>
-  );
-
-  return (
     <Container
       size="sm"
       className="py-10 flex flex-col justify-between items-center"

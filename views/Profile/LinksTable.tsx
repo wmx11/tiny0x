@@ -21,7 +21,7 @@ type LinksTypes = {
   subtitle?: string;
 };
 
-const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
+const LinksTable: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
   const { data: links, isLoading } = useSWR<{ data: { data: LinkSchema[] } }>(
     '/links',
     () =>
@@ -128,7 +128,9 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
           >
             Visit
           </SecondaryButton>
-          <SecondaryButton size="xs">Burn</SecondaryButton>
+          <SecondaryButton size="xs" rightIcon={<Icons.Trash />}>
+            Burn
+          </SecondaryButton>
         </div>
       ),
     },
@@ -151,4 +153,4 @@ const Links: FC<LinksTypes> = ({ isRecent, title, subtitle }) => {
   );
 };
 
-export default Links;
+export default LinksTable;

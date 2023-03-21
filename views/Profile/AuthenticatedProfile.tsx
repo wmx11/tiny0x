@@ -6,8 +6,8 @@ import { GET_PROFILE_STATS_BY_USER, ProfileStats } from '@/services/profile';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { useUser } from '@thirdweb-dev/react';
 import useSWR from 'swr';
-import Links from './Links';
-import Reviews from './Reviews';
+import Links from './LinksTable';
+import Reviews from './ReviewsTable';
 
 const AuthenticatedProfile = () => {
   const { user } = useUser<UserSession, Session>();

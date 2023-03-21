@@ -5,6 +5,7 @@ import {
 } from '@/services/review';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { MAX_CHARACTERS } from '@/utils/contstants';
+import Icons from '@/utils/icons';
 import {
   Modal,
   Rating,
@@ -89,7 +90,11 @@ const LeaveReview: FC<LeaveReviewTypes> = ({ profileId, name }) => {
         />
       )}
 
-      <SecondaryButton onClick={() => setIsOpen(true)}>
+      <SecondaryButton
+        size="xs"
+        onClick={() => setIsOpen(true)}
+        rightIcon={<Icons.Review />}
+      >
         Leave a review
       </SecondaryButton>
       <Modal

@@ -3,6 +3,7 @@ const generalRoutes = {
   leaderboard: '/leaderboard',
   campaigns: '/campaigns',
   profiles: '/profiles',
+  reviews: '/reviews/${profile}',
   profile: {
     profile: '/profile',
     campaigns: '/profile/campaigns',

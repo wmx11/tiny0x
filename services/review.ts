@@ -22,6 +22,11 @@ export const getReviewsByProfile = async (profileId: string) => {
             address: true,
           },
         },
+        Profile: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
 

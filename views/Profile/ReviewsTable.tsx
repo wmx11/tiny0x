@@ -18,12 +18,18 @@ type ReviewsTypes = {
   isRecent?: boolean;
   title?: string;
   subtitle?: string;
+  data?: Review[];
 };
 
-const Reviews: FC<ReviewsTypes> = ({ isRecent, title, subtitle }) => {
+const ReviewsTable: FC<ReviewsTypes> = ({
+  isRecent,
+  title,
+  subtitle,
+  data,
+}) => {
   const { data: reviews, isLoading } = useSWR<{
     data: { data: (Review & { reviewer: { address: string } })[] };
-  }>('/reviews', () =>
+  }>(!data ? '/reviews' : null, () =>
     signedRequest({
       type: 'post',
       url: apiRoutes.profile.reviews,
@@ -84,12 +90,12 @@ const Reviews: FC<ReviewsTypes> = ({ isRecent, title, subtitle }) => {
   return (
     <div>
       <div className="mb-8">
-        <Title color="white">{title}</Title>
+        <Title>{title}</Title>
         {subtitle ? <Text>{subtitle}</Text> : null}
       </div>
       <Table
         columns={columns}
-        data={reviews?.data?.data as TableNode[]}
+        data={data || (reviews?.data?.data as TableNode[])}
         isLoading={isLoading}
         empty={'You currently have no reviews on your profile'}
         customTheme={theme}
@@ -98,4 +104,4 @@ const Reviews: FC<ReviewsTypes> = ({ isRecent, title, subtitle }) => {
   );
 };
 
-export default Reviews;
+export default ReviewsTable;

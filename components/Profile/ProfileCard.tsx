@@ -27,7 +27,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
 
   const { data, error, isLoading } = useSWR<{
     data: {
-      data: Profile & { profile_links: ProfileLink[] }
+      data: Profile & { profile_links: ProfileLink[] };
     };
   }>('/profile', () =>
     axios.post(apiRoutes.profile.profile, {
@@ -71,6 +71,15 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
         </div>
       ) : (
         <>
+          <Link
+            target="_blank"
+            href={generalRoutes.reviews.replace(
+              '${profile}',
+              profile?.id as string
+            )}
+          >
+            Read Reviews
+          </Link>
           <div className="mb-8">{profile?.description}</div>
           <div className="flex flex-col gap-4">
             {profile?.profile_links &&
