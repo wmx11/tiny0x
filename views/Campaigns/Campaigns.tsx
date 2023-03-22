@@ -1,7 +1,9 @@
 import { YellowBackdrop } from '@/components/Backdrop';
-import { GlassCard } from '@/components/Cards/Cards';
+import { CampaignCard, GlassCard } from '@/components/Cards/Cards';
 import { Section } from '@/components/Section';
 import { Container, Text, Title } from '@mantine/core';
+import LiveCampaigns from './LiveCampaigns';
+import PendingCampaigns from './PendingCampaigns';
 
 const Campaigns = () => {
   return (
@@ -15,21 +17,11 @@ const Campaigns = () => {
             person? Feel free to leave a positive review!
           </Text>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <GlassCard className="w-full">
-            <div className="rounded-md bg-zinc-500 h-[125px] mb-2"></div>
-            <div>
-              <Text align="right" weight={600} className="text-xl">
-                Some Project Campaign
-              </Text>
-              <Text>
-                <Text span size="xs" color="dimmed">
-                  Volume{' '}
-                </Text>
-                Tesxt
-              </Text>
-            </div>
-          </GlassCard>
+        <div className="mb-16">
+          <PendingCampaigns />
+        </div>
+        <div className="mb-16">
+          <LiveCampaigns />
         </div>
       </Container>
     </Section>

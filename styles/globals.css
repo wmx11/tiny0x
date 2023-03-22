@@ -7,7 +7,7 @@ a {
   transition: 0.2s ease;
 }
 
-a:hover {
+a:not(.no-hover):hover {
   border-color:#c2255c;
 }
 

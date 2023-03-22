@@ -1,15 +1,11 @@
 import apiRoutes from '@/routes/api';
-import {
-  HANDLE_PROFILE_AVATAR_IMAGE_UPLOAD,
-  HANDLE_PROFILE_HEADER_IMAGE_UPLOAD,
-} from '@/services/images';
-import { SetImage } from '@/types/Files';
+import { ImageHandlers, SetImage } from '@/types/Files';
 import { signedRequest } from '@/utils/api/signedRequest';
 import config from '@/utils/config';
 import Icons from '@/utils/icons';
 import { ActionIcon, FileInput, LoadingOverlay } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import React, { FC, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import ErrorMessage from './ErrorMessage';
 
 type ImageUploadTypes<T> = {
@@ -19,9 +15,7 @@ type ImageUploadTypes<T> = {
   initialImage?: string;
   form?: UseFormReturnType<T>;
   formPath?: string;
-  handler:
-    | typeof HANDLE_PROFILE_AVATAR_IMAGE_UPLOAD
-    | typeof HANDLE_PROFILE_HEADER_IMAGE_UPLOAD;
+  handler: ImageHandlers;
 } & SetImage;
 
 const ImageUpload = <T,>({
@@ -109,11 +103,11 @@ const ImageUpload = <T,>({
           />
         ) : null}
         <div className="text-6xl flex gap-4 ">
-          <ActionIcon onClick={handleClick} color="grape" variant="light">
+          <ActionIcon onClick={handleClick} color="grape" variant="filled">
             <Icons.Camera />
           </ActionIcon>
           {imageUrl ? (
-            <ActionIcon onClick={handleDelete} color="red" variant="light">
+            <ActionIcon onClick={handleDelete} color="red" variant="filled">
               <Icons.Trash />
             </ActionIcon>
           ) : null}

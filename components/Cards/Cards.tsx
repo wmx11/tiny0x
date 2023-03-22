@@ -1,8 +1,10 @@
+import generalRoutes from '@/routes/general';
 import { DEFAULT_URL } from '@/utils/contstants';
 import { formatDate } from '@/utils/formatDate';
 import Icons from '@/utils/icons';
 import { Code, Loader, Spoiler, Text, Title } from '@mantine/core';
 import { Profile } from '@prisma/client';
+import Link from 'next/link';
 import { FC, PropsWithChildren } from 'react';
 import { SecondaryButton } from '../Buttons/Buttons';
 import ProfileImage from '../Profile/ProfileImage';
@@ -97,5 +99,51 @@ export const ProfileCard: FC<{ profile: Profile }> = ({ profile }) => {
         View Profile
       </SecondaryButton>
     </GlassCard>
+  );
+};
+
+export const CampaignCard = ({
+  image,
+  title,
+  href,
+  id,
+}: {
+  image: string;
+  title: string;
+  href: string;
+  id?: string;
+}) => {
+  const component = (
+    <GlassCard className="w-full hover:scale-[1.02] transition">
+      <div className="rounded-md bg-zinc-500 h-[125px] mb-2 overflow-hidden">
+        <img src={image} alt="" />
+      </div>
+      <div>
+        <Text align="right" weight={600} className="text-xl">
+          {title}
+        </Text>
+      </div>
+      {id ? (
+        <div className="flex justify-end mt-4">
+          <Link
+            href={generalRoutes.profile.editCampaign.replace('${id}', id)}
+            className="no-hover"
+            passHref
+          >
+            <SecondaryButton component="a">Edit</SecondaryButton>
+          </Link>
+        </div>
+      ) : null}
+    </GlassCard>
+  );
+
+  if (id) {
+    return <>{component}</>;
+  }
+
+  return (
+    <Link href={href || ''} className="no-hover">
+      {component}
+    </Link>
   );
 };

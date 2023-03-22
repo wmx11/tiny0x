@@ -60,17 +60,17 @@ model Stats {
 }
 
 model Review {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   review       String?
-  rating       Int      @default(0)
-  profile      Profile? @relation(fields: [profileId], references: [id])
-  profileId    String?  @db.ObjectId
-  campaign     Campaign @relation(fields: [campaignId], references: [id])
-  campaignId   String   @db.ObjectId
-  reviewer     User     @relation(fields: [userId], references: [id])
-  userId       String   @db.ObjectId
-  date_created DateTime @default(now())
-  date_updated DateTime @updatedAt
+  rating       Int       @default(0)
+  profile      Profile?  @relation(fields: [profileId], references: [id])
+  profileId    String?   @db.ObjectId
+  campaign     Campaign? @relation(fields: [campaignId], references: [id])
+  campaignId   String?   @db.ObjectId
+  reviewer     User      @relation(fields: [userId], references: [id])
+  userId       String    @db.ObjectId
+  date_created DateTime  @default(now())
+  date_updated DateTime  @updatedAt
 }
 
 model Profile {
@@ -123,13 +123,15 @@ model Campaign {
   title              String
   description        String?
   campaign_image_url String?
+  budget             Int       @default(0)
+  duration           Int       @default(1)
   user               User      @relation(fields: [userId], references: [id])
   userId             String    @db.ObjectId
   votes              Votes[]
+  reviews            Review[]
   voting_deadline    DateTime?
   date_created       DateTime  @default(now())
   date_updated       DateTime  @updatedAt
-  Review             Review[]
 }
 
 model Votes {

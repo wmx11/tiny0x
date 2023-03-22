@@ -1,9 +1,9 @@
 import ProfileLayout from '@/components/Layout/ProfileLayout';
-import Reviews from '@/views/Profile/Reviews';
+import ReviewsTable from '@/views/Profile/ReviewsTable';
 import React, { ReactElement } from 'react';
 
 const ProfileReviewsPage = () => {
-  return <Reviews title="My Profile Reviews" />;
+  return <ReviewsTable title="My Profile Reviews" />;
 };
 
 ProfileReviewsPage.getLayout = (page: ReactElement) => {
