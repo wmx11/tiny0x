@@ -72,9 +72,20 @@ export const ProfileCard: FC<{ profile: Profile }> = ({ profile }) => {
           src={profile?.profile_image_url || ''}
           newLine
         />
-        <Text size="sm" color="dimmed" className="mt-4">
-          Joined: {formatDate(profile?.date_created)}
-        </Text>
+        <div className="flex justify-between flex-wrap gap-4 mt-4">
+          <Link
+            target="_blank"
+            href={generalRoutes.reviews.replace(
+              '${profile}',
+              profile?.id as string
+            )}
+          >
+            Read Reviews
+          </Link>
+          <Text size="sm" color="dimmed">
+            Joined: {formatDate(profile?.date_created)}
+          </Text>
+        </div>
       </div>
       <Spoiler
         maxHeight={100}

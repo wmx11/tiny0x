@@ -3,7 +3,7 @@ import GoBack from '@/components/GoBack';
 import NotFound from '@/components/NotFound';
 import {
   GetLinkStatsByAliasReturnTypes,
-  GET_LINK_STATS_BY_ALIAS
+  GET_LINK_STATS_BY_ALIAS,
 } from '@/services/link';
 import { signedRequest } from '@/utils/api/signedRequest';
 import { formatDate } from '@/utils/formatDate';
@@ -64,7 +64,7 @@ const AliasStats = () => {
           <NFTCard />
         </div>
         <div className="mb-4 flex flex-col gap-4">
-          <Title>{alias} link information</Title>
+          <Title>{alias} information</Title>
           <Text>
             <strong>Target: </strong>
             <a href={results?.link?.target} target="_blank">

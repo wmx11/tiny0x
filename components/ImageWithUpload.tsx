@@ -23,13 +23,17 @@ const ImageWithUpload = <T,>({
   return (
     <div
       className={`${className} h-full bg-zinc-400 overflow-hidden relative`}
-      style={{ maxHeight }}
+      style={{ maxHeight, height: '100%' }}
     >
-      <div className="h-full" style={{ height: maxHeight }}>
+      <div className="h-full" style={{ maxHeight, height: '100%' }}>
         {src ? (
-          <img src={src} alt={alt} style={{ maxHeight }} />
+          <img
+            src={src}
+            alt={alt}
+            style={{ maxHeight, height: '100%', width: '100%' }}
+          />
         ) : (
-          <div style={{ maxHeight }}></div>
+          <div style={{ maxHeight, height: maxHeight }}></div>
         )}
         {isUpdate ? (
           <div className="absolute inset-0 h-full">

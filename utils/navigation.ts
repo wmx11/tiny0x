@@ -14,12 +14,12 @@ export const navigation = [
     href: generalRoutes.about,
     icon: icons.Info,
   },
-  {
-    label: 'Campaigns',
-    mobileLabel: '',
-    href: generalRoutes.campaigns,
-    icon: icons.Campaign,
-  },
+  // {
+  //   label: 'Campaigns',
+  //   mobileLabel: '',
+  //   href: generalRoutes.campaigns,
+  //   icon: icons.Campaign,
+  // },
   {
     label: 'Discover Profiles',
     mobileLabel: 'Discover',
@@ -47,12 +47,12 @@ export const profileNavigation = [
     href: generalRoutes.profile.reviews,
     icon: icons.Review,
   },
-  {
-    label: 'Campaigns',
-    mobileLabel: '',
-    href: generalRoutes.profile.campaigns,
-    icon: icons.Campaign,
-  },
+  // {
+  //   label: 'Campaigns',
+  //   mobileLabel: '',
+  //   href: generalRoutes.profile.campaigns,
+  //   icon: icons.Campaign,
+  // },
 ];
 
 export const footerNavigation = [

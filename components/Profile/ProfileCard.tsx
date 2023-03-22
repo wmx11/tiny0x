@@ -37,6 +37,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
   );
 
   const profile = data?.data?.data;
+  const isProfileOwner = user && user?.session?.profileId === profile?.id;
 
   return (
     <div className="max-w-[720px] w-full">
@@ -48,7 +49,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
           src={profile?.profile_image_url as string}
         />
         <div className="mt-4">
-          {user && user?.session?.profileId === profile?.id ? (
+          {isProfileOwner ? (
             <Link href={generalRoutes.profile.edit} passHref>
               <PrimaryButton>Edit Profile</PrimaryButton>
             </Link>
@@ -71,15 +72,17 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
         </div>
       ) : (
         <>
-          <Link
-            target="_blank"
-            href={generalRoutes.reviews.replace(
-              '${profile}',
-              profile?.id as string
-            )}
-          >
-            Read Reviews
-          </Link>
+          {!isProfileOwner ? (
+            <Link
+              target="_blank"
+              href={generalRoutes.reviews.replace(
+                '${profile}',
+                profile?.id as string
+              )}
+            >
+              Read Reviews
+            </Link>
+          ) : null}
           <div className="mb-8">{profile?.description}</div>
           <div className="flex flex-col gap-4">
             {profile?.profile_links &&

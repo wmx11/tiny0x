@@ -10,6 +10,8 @@ const Roadmap = () => {
         <Title align="center" color="white">
           Tiny Roadmap
         </Title>
+
+        <div></div>
       </Container>
     </Section>
   );
