@@ -52,6 +52,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
               color: 'white',
             },
           },
+          Progress: {
+            defaultProps: {
+              color: 'grape',
+            },
+          },
         },
         colorScheme: 'dark',
         defaultRadius: 8,

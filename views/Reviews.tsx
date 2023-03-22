@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 import ReviewsTable from './Profile/ReviewsTable';
 
 type ReviewsTypes = {
-  reviews: (Review & { Profile: { name: string } })[];
+  reviews: (Review & { profile: { name: string } })[];
 };
 
 const Reviews: FC<ReviewsTypes> = ({ reviews }) => {
@@ -15,7 +15,7 @@ const Reviews: FC<ReviewsTypes> = ({ reviews }) => {
       <Container className="py-10">
         <ReviewsTable
           data={reviews}
-          title={`Read reviews about ${reviews[0]?.Profile?.name || '...'}`}
+          title={`Reviews about ${reviews[0]?.profile?.name || '...'}`}
         />
       </Container>
     </Section>

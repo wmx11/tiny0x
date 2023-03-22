@@ -60,10 +60,10 @@ const config = {
       },
     },
     campaign: {
-      path: '',
+      path: 'images/campaign',
       header: {
-        width: 375,
-        height: 125,
+        width: 1120,
+        height: 256,
       },
     },
   },

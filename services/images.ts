@@ -77,6 +77,22 @@ export const handleProfileAvatarImageUpload = async (
   }
 };
 
+export const HANDLE_CAMPAIGN_IMAGE_UPLOAD = 'handleCampaignImageUpload';
+export const handleCampaignImageUpload = async (
+  image: FileType
+): Promise<ResultsOrError<string>> => {
+  try {
+    const data = await handleImageUpload(image, {
+      height: config.images.campaign.header.height,
+      width: config.images.campaign.header.width,
+      fit: 'cover',
+    });
+    return { ok: true, results: data?.results as string };
+  } catch (error) {
+    return { ok: false, errorMessage: error as string };
+  }
+};
+
 export type UploadImageToBucketOptions = {
   filename: string;
   contentType: string;

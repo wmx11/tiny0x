@@ -1,7 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {
+  handleCampaignImageUpload,
   handleProfileAvatarImageUpload,
   handleProfileHeaderImageUpload,
+  HANDLE_CAMPAIGN_IMAGE_UPLOAD,
   HANDLE_PROFILE_AVATAR_IMAGE_UPLOAD,
   HANDLE_PROFILE_HEADER_IMAGE_UPLOAD,
   uploadImageToBucket,
@@ -48,6 +50,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           return responseHandler.badRequest(profileHeaderImage.errorMessage);
         }
         return responseHandler.ok(profileHeaderImage.results);
+      case HANDLE_CAMPAIGN_IMAGE_UPLOAD:
+        const campaignImage = await handleCampaignImageUpload(image);
+        if (!campaignImage.ok) {
+          return responseHandler.badRequest(campaignImage.errorMessage);
+        }
+        return responseHandler.ok(campaignImage.results);
       case UPLOAD_IMAGE_TO_BUCKET:
         const uploadedImage = await uploadImageToBucket({
           file: readFileSync(image.path),

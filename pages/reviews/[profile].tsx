@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next';
 import React, { FC } from 'react';
 
 type ReviewsPageTypes = {
-  reviews: (Review & { Profile: { name: string } })[];
+  reviews: (Review & { profile: { name: string } })[];
 };
 
 const ReviewsPage: FC<ReviewsPageTypes> = ({ reviews }) => {

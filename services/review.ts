@@ -1,5 +1,5 @@
 import prisma from '@/prisma/prisma';
-import { DEFAULT_TAKE } from '@/utils/contstants';
+import { DEFAULT_TAKE, MAX_CHARACTERS } from '@/utils/contstants';
 import { Review } from '@prisma/client';
 
 export const GET_REVIEWS_BY_PROFILE = 'getReviewsByProfile';
@@ -22,7 +22,7 @@ export const getReviewsByProfile = async (profileId: string) => {
             address: true,
           },
         },
-        Profile: {
+        profile: {
           select: {
             name: true,
           },
@@ -120,8 +120,8 @@ export const leaveReviewForProfile = async ({
   profileId,
 }: Review) => {
   try {
-    if (review && review.length > 250) {
-      return { errorMessage: 'Review cannot be longer than 250 characters.' };
+    if (review && review.length > MAX_CHARACTERS) {
+      return { errorMessage: `Review cannot be longer than ${MAX_CHARACTERS} characters.` };
     }
 
     const newReview = await prisma?.review.create({
