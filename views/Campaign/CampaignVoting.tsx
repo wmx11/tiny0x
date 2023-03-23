@@ -2,9 +2,10 @@ import { MAX_CHARACTERS } from '@/utils/contstants';
 import Icons from '@/utils/icons';
 import { Button, Progress, Text, Textarea, Title } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { Campaign } from '@prisma/client';
 import React from 'react';
 
-const CampaignVoting = () => {
+const CampaignVoting = ({ campaign }: { campaign: Campaign }) => {
   return (
     <>
       <div className="flex flex-col gap-4">

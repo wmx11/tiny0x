@@ -42,14 +42,15 @@ export const generateLinkAlias = () => {
   return `0x${nanoid(8)}`;
 };
 
-export const uploadProfileImage = async (
-  image: Blob | null
+export const uploadImageRequest = async (
+  image: Blob | null,
+  path: string
 ): Promise<ResultsOrError<ImageUploadReturnTypes>> => {
   try {
     const fd = new FormData();
     fd.append('type', 'uploadImageToBucket');
     fd.append('image', image as Blob);
-    fd.append('filename', `${config.images.profile.path}/${nanoid()}.png`);
+    fd.append('filename', `${path}/${nanoid()}.png`);
     fd.append('acl', 'public-read');
 
     const { data } = await signedRequest<ImageUploadReturnTypes>({

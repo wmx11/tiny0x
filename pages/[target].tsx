@@ -1,5 +1,7 @@
+import { OrangeBackdrop, YellowBackdrop } from '@/components/Backdrop';
 import { GlassCard } from '@/components/Cards/Cards';
 import ProfileCard from '@/components/Profile/ProfileCard';
+import { Section } from '@/components/Section';
 import prisma from '@/prisma/prisma';
 import { setClickAction, setImpressionAction } from '@/services/action';
 import getDataFromIp from '@/utils/api/getDataFromIp';
@@ -16,17 +18,16 @@ type ProfilePageOrRedirectTypes = {
 
 const ProfilePageOrRedirect: FC<ProfilePageOrRedirectTypes> = ({ userId }) => {
   return (
-    <Container
-      size="sm"
-      className="py-10 flex flex-col justify-between items-center"
-    >
-      <GlassCard>
-        <ProfileCard userId={userId} canLeaveReview />
-        <div className="text-center my-10">
-          <a href={DEFAULT_URL}>Powered By Tiny0x</a>
-        </div>
-      </GlassCard>
-    </Container>
+    <Section className="" backdrop={<YellowBackdrop />}>
+      <Container size="sm" className="flex items-center min-h-screen">
+        <GlassCard className="">
+          <ProfileCard userId={userId} canLeaveReview />
+          <div className="text-center my-10">
+            <a href={DEFAULT_URL}>Powered By Tiny0x</a>
+          </div>
+        </GlassCard>
+      </Container>
+    </Section>
   );
 };
 

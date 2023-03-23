@@ -1,5 +1,4 @@
 import { YellowBackdrop } from '@/components/Backdrop';
-import { CampaignCard, GlassCard } from '@/components/Cards/Cards';
 import { Section } from '@/components/Section';
 import { Container, Text, Title } from '@mantine/core';
 import LiveCampaigns from './LiveCampaigns';
@@ -7,7 +6,7 @@ import PendingCampaigns from './PendingCampaigns';
 
 const Campaigns = () => {
   return (
-    <Section backdrop={<YellowBackdrop />}>
+    <Section backdrop={<YellowBackdrop />} className="min-h-screen">
       <Container className="py-10">
         <div className="mb-16">
           <Title className="mb-2">Discover Tiny0x Campaigns!</Title>

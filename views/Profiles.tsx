@@ -14,7 +14,7 @@ type ProfilesTypes = {
 
 const Profiles: FC<ProfilesTypes> = ({ profiles }) => {
   return (
-    <Section backdrop={<OrangeBackdrop />}>
+    <Section backdrop={<OrangeBackdrop />} className="min-h-screen">
       <Container className="py-10">
         <div className="mb-16 text-white">
           <Title className="mb-2">Discover Tiny0x profiles!</Title>
@@ -38,7 +38,7 @@ const Profiles: FC<ProfilesTypes> = ({ profiles }) => {
             profiles.length &&
             [...profiles, ...profiles].map((item, index) => (
               <div
-                className="max-w-[355px] w-full"
+                className="md:max-w-[355px] w-full"
                 key={`profile_card_${index}`}
               >
                 <ProfileCard profile={item} />

@@ -5,7 +5,7 @@ import React from 'react';
 
 const About = () => {
   return (
-    <Section backdrop={<OrangeBackdrop />} className="text-white">
+    <Section backdrop={<OrangeBackdrop />} className="min-h-screen">
       <Container className="py-10">
         <Title className="mb-2">About Tiny0x</Title>
         <Text>About Text</Text>

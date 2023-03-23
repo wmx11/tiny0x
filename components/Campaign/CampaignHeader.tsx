@@ -10,7 +10,7 @@ const CampaignHeader = <T,>(props: CampaignHeaderTypes<T>) => {
       alt="Campaign Header"
       handler="handleCampaignImageUpload"
       className="rounded-md"
-      maxHeight={200}
+      maxHeight={256}
     />
   );
 };

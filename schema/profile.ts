@@ -18,8 +18,8 @@ export const profileSchema = z.object({
     .object({
       label: z.string(),
       target: z.string().url(),
-      alias: z.string(),
-      linkId: z.string(),
+      alias: z.string().optional(),
+      linkId: z.string().optional(),
       trackMetrics: z.boolean(),
       doesAcceptAds: z.boolean(),
     })

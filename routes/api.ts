@@ -1,14 +1,21 @@
 const API_ENDPOINT = '/api';
+const PROFILE = `${API_ENDPOINT}/profile`;
+const CAMPAIGN = `${API_ENDPOINT}/campaign`;
 
 const apiRoutes = {
   tinify: `${API_ENDPOINT}/tinify`,
   token: `${API_ENDPOINT}/token`,
   image: `${API_ENDPOINT}/image`,
   profile: {
-    profile: `${API_ENDPOINT}/profile/profile`,
-    createOrUpdate: `${API_ENDPOINT}/profile/create-update`,
-    links: `${API_ENDPOINT}/profile/links`,
-    reviews: `${API_ENDPOINT}/profile/reviews`,
+    profile: `${PROFILE}/profile`,
+    createOrUpdate: `${PROFILE}/create-update`,
+    links: `${PROFILE}/links`,
+    reviews: `${PROFILE}/reviews`,
+    campaigns: `${PROFILE}/campaigns`,
+  },
+  campaign: {
+    createOrUpdate: `${CAMPAIGN}/create-update`,
+    campaigns: `${CAMPAIGN}/campaigns`,
   },
 };
 

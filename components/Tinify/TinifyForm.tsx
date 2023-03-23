@@ -205,7 +205,7 @@ const TinifyForm: FC<TinifyFormTypes> = ({ target }) => {
       <Checkbox
         size="md"
         label="Accept Advertising"
-        description="Do you allow other users or projects to display ads using your link? 80% of the ad's budget would be allocated to your account."
+        description="Do you allow other users display ads on your link? This would allow you to redeem rewards for ad impressions and clicks."
         {...form.getInputProps('doesAcceptAds', { type: 'checkbox' })}
       />
       <div className="text-center">

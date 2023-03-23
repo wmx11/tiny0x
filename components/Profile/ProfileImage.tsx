@@ -38,12 +38,12 @@ const ProfileImage = <T,>({
         src={src}
         setImage={setImage}
       />
-      <div className="flex justify-between items-center flex-1">
+      {/* <div className="flex justify-between items-center flex-1">
         <div>
           <Title color="white">{title}</Title>
           <Text>{subtitle}</Text>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -11,7 +11,7 @@ type ReviewsTypes = {
 
 const Reviews: FC<ReviewsTypes> = ({ reviews }) => {
   return (
-    <Section backdrop={<OrangeBackdrop />}>
+    <Section backdrop={<OrangeBackdrop />} className="min-h-screen">
       <Container className="py-10">
         <ReviewsTable
           data={reviews}

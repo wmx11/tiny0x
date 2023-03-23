@@ -9,28 +9,28 @@ type CampaignPageTypes = {
 };
 
 const CampaignPage: FC<CampaignPageTypes> = ({ campaign }) => {
-  return <Campaign />;
+  return <Campaign campaign={campaign} />;
 };
 
 export default CampaignPage;
 
-// export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-//   const id = params?.id;
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const id = params?.id;
 
-//   const campaign = await getCampaignByCampaignId(id as string);
+  const campaign = await getCampaignByCampaignId(id as string);
 
-//   if (!campaign.ok) {
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (!campaign.ok) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
-//   return {
-//     props: {
-//       campaign: campaign.results,
-//     },
-//   };
-// };
+  return {
+    props: {
+      campaign: JSON.parse(JSON.stringify(campaign.results)),
+    },
+  };
+};

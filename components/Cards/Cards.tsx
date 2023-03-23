@@ -2,11 +2,11 @@ import generalRoutes from '@/routes/general';
 import { DEFAULT_URL } from '@/utils/contstants';
 import { formatDate } from '@/utils/formatDate';
 import Icons from '@/utils/icons';
-import { Code, Loader, Spoiler, Text, Title } from '@mantine/core';
-import { Profile } from '@prisma/client';
+import { Code, Loader, Progress, Spoiler, Text, Title } from '@mantine/core';
+import { Campaign, Profile } from '@prisma/client';
 import Link from 'next/link';
 import { FC, PropsWithChildren } from 'react';
-import { SecondaryButton } from '../Buttons/Buttons';
+import { PrimaryButton, SecondaryButton } from '../Buttons/Buttons';
 import ProfileImage from '../Profile/ProfileImage';
 
 type NFTCardTypes = {
@@ -72,6 +72,12 @@ export const ProfileCard: FC<{ profile: Profile }> = ({ profile }) => {
           src={profile?.profile_image_url || ''}
           newLine
         />
+
+        <div className="mb-8 text-center">
+          <Title color="white">{profile?.name || ''}</Title>
+          <Text>{profile?.subtitle || ''}</Text>
+        </div>
+
         <div className="flex justify-between flex-wrap gap-4 mt-4">
           <Link
             target="_blank"
@@ -114,46 +120,73 @@ export const ProfileCard: FC<{ profile: Profile }> = ({ profile }) => {
 };
 
 export const CampaignCard = ({
-  image,
-  title,
-  href,
-  id,
+  campaign,
+  isUpdate,
 }: {
-  image: string;
-  title: string;
-  href: string;
-  id?: string;
+  campaign: Campaign;
+  isUpdate?: boolean;
 }) => {
   const component = (
     <GlassCard className="w-full hover:scale-[1.02] transition">
-      <div className="rounded-md bg-zinc-500 h-[125px] mb-2 overflow-hidden">
-        <img src={image} alt="" />
+      <div className="rounded-md bg-zinc-500 max-h-[256px] mb-2 overflow-hidden">
+        <img
+          src={campaign?.campaign_image_url || ''}
+          alt={campaign?.title}
+          className="w-full h-full"
+        />
       </div>
-      <div>
+      <div className="mb-4">
         <Text align="right" weight={600} className="text-xl">
-          {title}
+          {campaign?.title}
         </Text>
       </div>
-      {id ? (
-        <div className="flex justify-end mt-4">
+      {campaign?.isLive ? null : (
+        <div>
+          <Progress
+            sections={[
+              { value: 50, color: 'teal' },
+              { value: 50, color: 'red' },
+            ]}
+          />
+        </div>
+      )}
+      {isUpdate ? (
+        <div className="flex flex-wrap justify-between gap-4 mt-4">
           <Link
-            href={generalRoutes.profile.editCampaign.replace('${id}', id)}
+            href={generalRoutes.campaign.replace('${id}', campaign?.id)}
             className="no-hover"
             passHref
           >
-            <SecondaryButton component="a">Edit</SecondaryButton>
+            <PrimaryButton component="a" rightIcon={<Icons.ArrowRight />}>
+              View
+            </PrimaryButton>
+          </Link>
+          <Link
+            href={generalRoutes.profile.editCampaign.replace(
+              '${id}',
+              campaign?.id
+            )}
+            className="no-hover"
+            passHref
+          >
+            <SecondaryButton component="a" rightIcon={<Icons.Cogs />}>
+              Edit campaign
+            </SecondaryButton>
           </Link>
         </div>
       ) : null}
     </GlassCard>
   );
 
-  if (id) {
+  if (isUpdate) {
     return <>{component}</>;
   }
 
   return (
-    <Link href={href || ''} className="no-hover">
+    <Link
+      href={generalRoutes.campaign.replace('${id}', campaign?.id) || ''}
+      className="no-hover"
+    >
       {component}
     </Link>
   );

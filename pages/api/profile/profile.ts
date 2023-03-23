@@ -1,5 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {
+  getCampaignsByUserId,
+  GET_CAMPAIGNS_BY_USER_ID,
+} from '@/services/campaign';
+import {
   getProfileByUser,
   getProfileStatsByUser,
   GET_PROFILE_BY_USER,
@@ -34,6 +38,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       case GET_PROFILE_STATS_BY_USER:
         const profileStats = await getProfileStatsByUser(userId);
         return responseHandler.ok(profileStats);
+      case GET_CAMPAIGNS_BY_USER_ID:
+        const campaigns = await getCampaignsByUserId(userId);
+        return responseHandler.ok(campaigns);
       default:
         return responseHandler.ok(null);
     }

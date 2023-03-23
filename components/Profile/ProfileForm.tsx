@@ -4,9 +4,10 @@ import { ProfileSchema, profileSchema } from '@/schema/profile';
 import { ProfileLink } from '@/types/Profile';
 import axiosErrorHandler from '@/utils/api/axiosErrorHandler';
 import { signedRequest } from '@/utils/api/signedRequest';
+import config from '@/utils/config';
 import { MAX_CHARACTERS } from '@/utils/contstants';
 import Icons from '@/utils/icons';
-import { uploadProfileImage } from '@/utils/utils';
+import { uploadImageRequest } from '@/utils/utils';
 import { Text, Textarea, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { Profile } from '@prisma/client';
@@ -45,20 +46,27 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
         (profile?.profile_links as ProfileLink[]) || ([] as ProfileLink[]),
     },
   });
+  console.log(form);
 
   const handleSubmit = async (values: typeof form.values) => {
     const valuesCopy = { ...values };
     setLoading(true);
     try {
       if (avatarImage) {
-        const data = await uploadProfileImage(avatarImage);
+        const data = await uploadImageRequest(
+          avatarImage,
+          config.images.profile.path
+        );
         if (data.ok) {
           valuesCopy.profile_image_url = data.results.url;
         }
       }
 
       if (headerImage) {
-        const data = await uploadProfileImage(headerImage);
+        const data = await uploadImageRequest(
+          headerImage,
+          config.images.profile.path
+        );
         if (data.ok) {
           valuesCopy.header_image_url = data.results.url;
         }

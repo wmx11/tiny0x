@@ -85,7 +85,7 @@ export const handleCampaignImageUpload = async (
     const data = await handleImageUpload(image, {
       height: config.images.campaign.header.height,
       width: config.images.campaign.header.width,
-      fit: 'contain',
+      fit: 'cover',
     });
     return { ok: true, results: data?.results as string };
   } catch (error) {

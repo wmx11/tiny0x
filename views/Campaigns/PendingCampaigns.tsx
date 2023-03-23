@@ -1,28 +1,44 @@
 import { CampaignCard } from '@/components/Cards/Cards';
+import apiRoutes from '@/routes/api';
 import generalRoutes from '@/routes/general';
-import { Title } from '@mantine/core';
+import { ResultsOrError } from '@/types/Results';
+import { signedRequest } from '@/utils/api/signedRequest';
+import { LoadingOverlay, Text, Title } from '@mantine/core';
+import { Campaign } from '@prisma/client';
 import React from 'react';
+import useSWR from 'swr';
 
 const PendingCampaigns = () => {
+  const { data, isLoading } = useSWR<{
+    data: { data: ResultsOrError<Campaign[]> };
+  }>('/pending-campaigns', () =>
+    signedRequest({
+      type: 'post',
+      url: apiRoutes.campaign.campaigns,
+      data: {
+        type: 'getPendingCampaigns',
+      },
+    })
+  );
+
+  const campaigns = data?.data.data.ok ? data?.data.data.results : [];
+
   return (
     <div>
-      <Title className="mb-4">Pending Campaigns</Title>
+      <Title order={2} className="mb-4">
+        Pending Campaigns
+      </Title>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <CampaignCard
-          image="https://pancakeswap.finance/_next/image?url=https%3A%2F%2Fstatic-nft.pancakeswap.com%2Fmainnet%2F0x012f90E777bdb2B4CA132f0f6EB9e7959075E9b2%2Fbanner-sm.png&w=750&q=75"
-          title="Campaign Name"
-          href={generalRoutes.campaign.replace('${id}', 'test')}
-        />
-        <CampaignCard
-          image="https://pancakeswap.finance/_next/image?url=https%3A%2F%2Fstatic-nft.pancakeswap.com%2Fmainnet%2F0x012f90E777bdb2B4CA132f0f6EB9e7959075E9b2%2Fbanner-sm.png&w=750&q=75"
-          title="Campaign Name"
-          href={generalRoutes.campaign.replace('${id}', 'test')}
-        />
-        <CampaignCard
-          image="https://pancakeswap.finance/_next/image?url=https%3A%2F%2Fstatic-nft.pancakeswap.com%2Fmainnet%2F0x012f90E777bdb2B4CA132f0f6EB9e7959075E9b2%2Fbanner-sm.png&w=750&q=75"
-          title="Campaign Name"
-          href={generalRoutes.campaign.replace('${id}', 'test')}
-        />
+        {campaigns && campaigns.length > 0 ? (
+          campaigns.map((item, index) => {
+            return (
+              <CampaignCard campaign={item} key={`pending_campaign_${index}`} />
+            );
+          })
+        ) : (
+          <Text>There are no pending campaigns</Text>
+        )}
+        <LoadingOverlay visible={isLoading} />
       </div>
     </div>
   );

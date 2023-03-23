@@ -1,30 +1,25 @@
 import { OrangeBackdrop } from '@/components/Backdrop';
 import GoBack from '@/components/GoBack';
 import { Section } from '@/components/Section';
-import { MAX_CHARACTERS } from '@/utils/contstants';
-import Icons from '@/utils/icons';
-import {
-  Badge,
-  Button,
-  Container,
-  Progress,
-  Text,
-  Textarea,
-  Title,
-} from '@mantine/core';
-import { modals } from '@mantine/modals';
+import { Container } from '@mantine/core';
+import { Campaign as CampaignTypes } from '@prisma/client';
+import { FC } from 'react';
 import CampaignContent from './CampaignContent';
 import CampaignHeader from './CampaignHeader';
 import CampaignVoting from './CampaignVoting';
 
-const Campaign = () => {
+type CampaignPageTypes = {
+  campaign: CampaignTypes;
+};
+
+const Campaign: FC<CampaignPageTypes> = ({ campaign }) => {
   return (
-    <Section backdrop={<OrangeBackdrop />}>
+    <Section backdrop={<OrangeBackdrop />} className="min-h-screen">
       <Container className="py-10">
         <GoBack />
-        <CampaignHeader />
-        <CampaignContent />
-        <CampaignVoting />
+        <CampaignHeader campaign={campaign} />
+        <CampaignContent campaign={campaign} />
+        <CampaignVoting campaign={campaign} />
       </Container>
     </Section>
   );

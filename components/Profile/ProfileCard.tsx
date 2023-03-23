@@ -5,7 +5,7 @@ import { GET_PROFILE_BY_USER } from '@/services/profile';
 import { ProfileLink } from '@/types/Profile';
 import { DEFAULT_URL } from '@/utils/contstants';
 import Icons from '@/utils/icons';
-import { Text } from '@mantine/core';
+import { Text, Title } from '@mantine/core';
 import { Profile } from '@prisma/client';
 import { useUser } from '@thirdweb-dev/react';
 import axios from 'axios';
@@ -42,7 +42,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
   return (
     <div className="max-w-[720px] w-full">
       <ProfileHeader src={profile?.header_image_url as string} />
-      <div className="translate-y-[-60px] md:ml-6 flex flex-col md:flex-row items-center md:items-end justify-between flex-wrap text-center md:text-left">
+      <div className="mt-[-60px] md:ml-6 flex flex-col md:flex-row items-center md:items-end justify-between flex-wrap text-center md:text-left">
         <ProfileImage
           title={profile?.name}
           subtitle={profile?.subtitle as string}
@@ -51,7 +51,9 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
         <div className="mt-4">
           {isProfileOwner ? (
             <Link href={generalRoutes.profile.edit} passHref>
-              <PrimaryButton>Edit Profile</PrimaryButton>
+              <PrimaryButton rightIcon={<Icons.Cogs />}>
+                Edit profile
+              </PrimaryButton>
             </Link>
           ) : canLeaveReview ? (
             <div>
@@ -60,6 +62,12 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
           ) : null}
         </div>
       </div>
+
+      <div className="my-8 text-center">
+        <Title color="white">{profile?.name || ''}</Title>
+        <Text>{profile?.subtitle || ''}</Text>
+      </div>
+
       {user && !canLeaveReview && !user?.session?.profileId ? (
         <div className="flex flex-col items-center gap-4">
           <Text>
@@ -83,7 +91,9 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
               Read Reviews
             </Link>
           ) : null}
-          <div className="mb-8">{profile?.description}</div>
+
+            <div className="my-8">{profile?.description}</div>
+            
           <div className="flex flex-col gap-4">
             {profile?.profile_links &&
               profile?.profile_links?.map((item, index) => {
@@ -91,7 +101,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
                   <SecondaryButton
                     key={`profile_link_${index}`}
                     size="lg"
-                    className="hover:-translate-y-1 hover:scale-105 transition"
+                    className="hover:-translate-y-1 hover:scale-110 transition"
                     href={
                       item.linkId && item.alias
                         ? `${DEFAULT_URL}/${item.alias}`
