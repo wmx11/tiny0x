@@ -11,7 +11,11 @@ const Roadmap = () => {
           Tiny Roadmap
         </Title>
 
-        <div></div>
+        <div>
+          <Title>Phase 1</Title>
+          <Title>Phase 2</Title>
+          <Title>Future</Title>
+        </div>
       </Container>
     </Section>
   );

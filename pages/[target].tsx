@@ -1,4 +1,6 @@
-import { OrangeBackdrop, YellowBackdrop } from '@/components/Backdrop';
+import {
+  PinkBackdrop
+} from '@/components/Backdrop';
 import { GlassCard } from '@/components/Cards/Cards';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import { Section } from '@/components/Section';
@@ -18,7 +20,7 @@ type ProfilePageOrRedirectTypes = {
 
 const ProfilePageOrRedirect: FC<ProfilePageOrRedirectTypes> = ({ userId }) => {
   return (
-    <Section className="" backdrop={<YellowBackdrop />}>
+    <Section className="" backdrop={<PinkBackdrop animate />}>
       <Container size="sm" className="flex items-center min-h-screen">
         <GlassCard className="">
           <ProfileCard userId={userId} canLeaveReview />

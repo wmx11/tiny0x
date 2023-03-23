@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout';
 import mantineCache from '@/mantineCache';
-import '@/styles/globals.css';
+import '@/styles/globals.scss';
 import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 

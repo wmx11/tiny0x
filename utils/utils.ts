@@ -1,11 +1,13 @@
 import apiRoutes from '@/routes/api';
 import { ImageUploadReturnTypes } from '@/types/Files';
 import { ResultsOrError } from '@/types/Results';
+import { differenceInHours } from 'date-fns';
 import { IncomingMessage } from 'http';
 import { nanoid } from 'nanoid';
 import { NextApiRequest } from 'next';
 import { signedRequest } from './api/signedRequest';
 import config from './config';
+import { ONE_DAY } from './contstants';
 
 export const sanitizeIp = (ip: string) => ip?.trim().replace(/(::ffff:)/g, '');
 
@@ -32,6 +34,12 @@ export const truncateAddress = (address: string, take = 4) => {
   return `${address.substring(0, take)}...${address.substring(
     address.length - take
   )}`;
+};
+
+export const checkCanVoteAfterOneDay = (lastDay?: string | Date | null) => {
+  return lastDay
+    ? differenceInHours(new Date(), new Date(lastDay)) >= ONE_DAY
+    : true;
 };
 
 /**

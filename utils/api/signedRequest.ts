@@ -10,7 +10,7 @@ type SignedRequest<T> = {
   headers?: Record<string, string>;
 };
 
-type SignedRequestReturnTypes<T> = {
+export type SignedRequestReturnTypes<T> = {
   data: {
     data: T;
   } & ErrorMessage & {

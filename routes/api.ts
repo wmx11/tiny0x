@@ -16,6 +16,7 @@ const apiRoutes = {
   campaign: {
     createOrUpdate: `${CAMPAIGN}/create-update`,
     campaigns: `${CAMPAIGN}/campaigns`,
+    votes: `${CAMPAIGN}/votes`,
   },
 };
 
