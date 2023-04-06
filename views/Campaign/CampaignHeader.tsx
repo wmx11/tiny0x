@@ -21,7 +21,7 @@ const CampaignHeader = ({ campaign }: { campaign: Campaign }) => {
             </Badge>
           ) : (
             <Badge variant="filled" color="red">
-              Pending
+              Awaiting Approval
             </Badge>
           )}
         </div>

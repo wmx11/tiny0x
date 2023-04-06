@@ -15,8 +15,8 @@ const Campaigns = () => {
           Create, update, and monitor your Tiny0x campaigns.
         </Text>
         <Link href={generalRoutes.profile.createCampaign} passHref>
-          <PrimaryButton rightIcon={<Icons.Add />} component="a">
-            Create new campaign
+          <PrimaryButton rightIcon={<Icons.Add />} component="a" size="lg">
+            Create a new campaign
           </PrimaryButton>
         </Link>
       </div>

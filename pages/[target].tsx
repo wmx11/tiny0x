@@ -1,6 +1,5 @@
-import {
-  PinkBackdrop
-} from '@/components/Backdrop';
+import { PinkBackdrop } from '@/components/Backdrop';
+import { PrimaryButton } from '@/components/Buttons/Buttons';
 import { GlassCard } from '@/components/Cards/Cards';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import { Section } from '@/components/Section';
@@ -8,8 +7,8 @@ import prisma from '@/prisma/prisma';
 import { setClickAction, setImpressionAction } from '@/services/action';
 import getDataFromIp from '@/utils/api/getDataFromIp';
 import { DEFAULT_URL } from '@/utils/contstants';
-import { getIpAddress } from '@/utils/utils';
-import { Container } from '@mantine/core';
+import { getIpAddress, truncateAddress } from '@/utils/utils';
+import { Container, Divider, ScrollArea, Text, Textarea } from '@mantine/core';
 import { GetServerSideProps } from 'next';
 import { FC } from 'react';
 import UAParser from 'ua-parser-js';
@@ -20,9 +19,9 @@ type ProfilePageOrRedirectTypes = {
 
 const ProfilePageOrRedirect: FC<ProfilePageOrRedirectTypes> = ({ userId }) => {
   return (
-    <Section className="" backdrop={<PinkBackdrop animate />}>
+    <Section backdrop={<PinkBackdrop animate />}>
       <Container size="sm" className="flex items-center min-h-screen">
-        <GlassCard className="">
+        <GlassCard className="relative">
           <ProfileCard userId={userId} canLeaveReview />
           <div className="text-center my-10">
             <a href={DEFAULT_URL}>Powered By Tiny0x</a>

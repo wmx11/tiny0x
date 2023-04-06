@@ -19,11 +19,13 @@ import {
   FaTimes,
   FaTrash,
   FaTwitter,
-  FaUser, FaWallet
+  FaUser,
+  FaWallet,
 } from 'react-icons/fa';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import { IoAnalytics } from 'react-icons/io5';
 import { MdCampaign, MdReviews } from 'react-icons/md';
+import { RiCoinsFill } from 'react-icons/ri';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -32,6 +34,7 @@ export default {
   ArrowLeft: FaArrowLeft,
   Cogs: FaCogs,
   Copy: FaCopy,
+  Coins: RiCoinsFill,
   ChevronDown: FaChevronDown,
   Camera: FaCamera,
   Check: FaCheck,

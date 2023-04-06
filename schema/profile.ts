@@ -21,7 +21,6 @@ export const profileSchema = z.object({
       alias: z.string().optional(),
       linkId: z.string().optional(),
       trackMetrics: z.boolean(),
-      doesAcceptAds: z.boolean(),
     })
     .array(),
 });

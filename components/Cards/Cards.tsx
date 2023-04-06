@@ -56,7 +56,7 @@ export const StatCard: FC<
           {value ?? <Loader />}
         </Title>
         <Text>{label}</Text>
-        {children ? children : null}
+        {children ? <div className="mt-4">{children}</div> : null}
       </div>
     </GlassCard>
   );
@@ -144,23 +144,14 @@ export const CampaignCard = ({
         <div>
           <Progress
             sections={[
-              { value: 50, color: 'teal' },
-              { value: 50, color: 'red' },
+              { value: 50, color: 'green' },
+              { value: 50, color: 'pink' },
             ]}
           />
         </div>
       )}
       {isUpdate ? (
         <div className="flex flex-wrap justify-between gap-4 mt-4">
-          <Link
-            href={generalRoutes.campaign.replace('${id}', campaign?.id)}
-            className="no-hover"
-            passHref
-          >
-            <PrimaryButton component="a" rightIcon={<Icons.ArrowRight />}>
-              View
-            </PrimaryButton>
-          </Link>
           <Link
             href={generalRoutes.profile.editCampaign.replace(
               '${id}',
@@ -172,6 +163,15 @@ export const CampaignCard = ({
             <SecondaryButton component="a" rightIcon={<Icons.Cogs />}>
               Edit campaign
             </SecondaryButton>
+          </Link>
+          <Link
+            href={generalRoutes.campaign.replace('${id}', campaign?.id)}
+            className="no-hover"
+            passHref
+          >
+            <PrimaryButton component="a" rightIcon={<Icons.ArrowRight />}>
+              View
+            </PrimaryButton>
           </Link>
         </div>
       ) : null}

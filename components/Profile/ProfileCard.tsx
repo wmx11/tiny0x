@@ -40,7 +40,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
   const isProfileOwner = user && user?.session?.profileId === profile?.id;
 
   return (
-    <div className="max-w-[720px] w-full">
+    <div className="max-w-[700px] w-full">
       <ProfileHeader src={profile?.header_image_url as string} />
       <div className="mt-[-60px] md:ml-6 flex flex-col md:flex-row items-center md:items-end justify-between flex-wrap text-center md:text-left">
         <ProfileImage
@@ -87,13 +87,14 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
                 '${profile}',
                 profile?.id as string
               )}
+              className="font-bold"
             >
               Read Reviews
             </Link>
           ) : null}
 
-            <div className="my-8">{profile?.description}</div>
-            
+          <div className="my-8">{profile?.description}</div>
+
           <div className="flex flex-col gap-4">
             {profile?.profile_links &&
               profile?.profile_links?.map((item, index) => {
@@ -101,7 +102,7 @@ const ProfileCard: FC<ProfileCardTypes> = ({ userId, canLeaveReview }) => {
                   <SecondaryButton
                     key={`profile_link_${index}`}
                     size="lg"
-                    className="hover:-translate-y-1 hover:scale-110 transition"
+                    className="hover:-translate-y-1 hover:scale-105 transition"
                     href={
                       item.linkId && item.alias
                         ? `${DEFAULT_URL}/${item.alias}`

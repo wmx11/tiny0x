@@ -4,5 +4,4 @@ export type ProfileLink = {
   alias: string;
   linkId: string;
   trackMetrics: boolean;
-  doesAcceptAds: boolean;
 };

@@ -29,7 +29,7 @@ const MyCampaigns = () => {
           campaigns.map((item, index) => {
             return (
               <div
-                className="md:max-w-[420px] w-full"
+                className=" md:max-w-[600px] w-full"
                 key={`campaign_${index}`}
               >
                 <CampaignCard campaign={item} isUpdate={true} />

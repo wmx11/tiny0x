@@ -6,7 +6,6 @@ import { IncomingMessage } from 'http';
 import { nanoid } from 'nanoid';
 import { NextApiRequest } from 'next';
 import { signedRequest } from './api/signedRequest';
-import config from './config';
 import { ONE_DAY } from './contstants';
 
 export const sanitizeIp = (ip: string) => ip?.trim().replace(/(::ffff:)/g, '');

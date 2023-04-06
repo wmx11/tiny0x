@@ -51,7 +51,3 @@ a:not(.no-hover):hover {
   z-index: 10;
   box-shadow: 1px 0px 2px rgba(0,0,0,0.2);
 }
-
-.perspective {
-  transform: perspective(35px) rotateY(1deg) rotateX(1deg)
-}

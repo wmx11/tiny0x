@@ -24,6 +24,7 @@ model User {
   posts        Post[]
   campaign     Campaign[]
   votes        Votes[]
+  comments     Comment[]
   date_created DateTime   @default(now())
   date_updated DateTime   @updatedAt
 }
@@ -73,26 +74,41 @@ model Review {
   date_updated DateTime  @updatedAt
 }
 
+model Comment {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  comment      String?
+  rating       Int       @default(0)
+  profile      Profile?  @relation(fields: [profileId], references: [id])
+  profileId    String?   @db.ObjectId
+  campaign     Campaign? @relation(fields: [campaignId], references: [id])
+  campaignId   String?   @db.ObjectId
+  commenter    User      @relation(fields: [userId], references: [id])
+  userId       String    @db.ObjectId
+  date_created DateTime  @default(now())
+  date_updated DateTime  @updatedAt
+}
+
 model Profile {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
   isPromoted        Boolean?
-  username          String   @unique
+  username          String    @unique
   name              String
   subtitle          String?
   description       String?
   profile_links     Json?
   header_image_url  String?
   profile_image_url String?
-  user              User     @relation(fields: [userId], references: [id])
-  userId            String   @unique @db.ObjectId
+  user              User      @relation(fields: [userId], references: [id])
+  userId            String    @unique @db.ObjectId
   reviews           Review[]
   actions           Action[]
   // nft                     Nft?     @relation(fields: [nftId], references: [id])
   // nftId                   String?  @unique @db.ObjectId
   nft               Nft[]
   nink              Link[]
-  date_created      DateTime @default(now())
-  date_updated      DateTime @updatedAt
+  comments          Comment[]
+  date_created      DateTime  @default(now())
+  date_updated      DateTime  @updatedAt
 }
 
 model Action {
@@ -129,6 +145,7 @@ model Campaign {
   userId             String    @db.ObjectId
   votes              Votes[]
   reviews            Review[]
+  comments           Comment[]
   voting_deadline    DateTime?
   date_created       DateTime  @default(now())
   date_updated       DateTime  @updatedAt

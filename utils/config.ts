@@ -7,7 +7,7 @@ export type LinkPriceEntries = {
 
 const config = {
   links: {
-    freePerIp: 5,
+    freePerIp: 3,
     prices: {
       default: 0.06,
       trackMetrics: 0.04,

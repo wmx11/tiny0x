@@ -46,7 +46,6 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
         (profile?.profile_links as ProfileLink[]) || ([] as ProfileLink[]),
     },
   });
-  console.log(form);
 
   const handleSubmit = async (values: typeof form.values) => {
     const valuesCopy = { ...values };
@@ -175,7 +174,6 @@ const ProfileForm: FC<ProfileFormTypes> = ({ isUpdate, profile }) => {
               form.insertListItem('profile_links', {
                 label: '',
                 target: '',
-                doesAcceptAds: false,
                 trackMetrics: false,
               } as ProfileLink)
             }

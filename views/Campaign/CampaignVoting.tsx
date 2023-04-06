@@ -104,12 +104,12 @@ const CampaignVoting = ({ campaign }: { campaign: Campaign }) => {
             size="xl"
             sections={[
               {
-                color: 'lime',
+                color: 'green',
                 value: votes?.[1].value || 0,
                 label: votes?.[1]._count.toString() || '0',
               },
               {
-                color: 'red',
+                color: 'pink',
                 value: votes?.[0].value || 0,
                 label: votes?.[0]._count.toString() || '0',
               },
@@ -122,7 +122,7 @@ const CampaignVoting = ({ campaign }: { campaign: Campaign }) => {
         {canVote ? (
           <div className="flex justify-between gap-4">
             <Button
-              color="lime"
+              color="green"
               rightIcon={<Icons.Check />}
               loading={loading}
               onClick={() => handleVote({ voteType: 1 })}
@@ -130,7 +130,7 @@ const CampaignVoting = ({ campaign }: { campaign: Campaign }) => {
               Approve
             </Button>
             <Button
-              color="red"
+              color="pink"
               rightIcon={<Icons.Times />}
               loading={loading}
               onClick={() =>

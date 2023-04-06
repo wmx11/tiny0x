@@ -1,9 +1,13 @@
+import { PrimaryButton } from '@/components/Buttons/Buttons';
 import { GlassCard, StatCard } from '@/components/Cards/Cards';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import { Session, UserSession } from '@/pages/api/auth/[...thirdweb]';
 import apiRoutes from '@/routes/api';
 import { GET_PROFILE_STATS_BY_USER, ProfileStats } from '@/services/profile';
 import { signedRequest } from '@/utils/api/signedRequest';
+import Icons from '@/utils/icons';
+import toCurrency from '@/utils/toCurrency';
+import { Button } from '@mantine/core';
 import { useUser } from '@thirdweb-dev/react';
 import useSWR from 'swr';
 import Links from './LinksTable';
@@ -31,6 +35,11 @@ const AuthenticatedProfile = () => {
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="flex flex-wrap gap-6 mb-16">
+          <StatCard value={toCurrency(542)} label="Rewards">
+            <PrimaryButton className="w-full" rightIcon={<Icons.Coins />}>
+              Claim
+            </PrimaryButton>
+          </StatCard>
           <StatCard value={stats?.linksCount} label="Total Links" />
           <StatCard
             value={stats?.totalLinkClicksCount}
